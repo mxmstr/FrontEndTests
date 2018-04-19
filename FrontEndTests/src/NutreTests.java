@@ -3,6 +3,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import org.junit.Test;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -38,11 +39,16 @@ public class NutreTests {
 		
 		System.setProperty("webdriver.chrome.driver", driverPath);
     	
+		threads = new ArrayList<Thread>();
         WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get(homePage);
         
-        threads = new ArrayList<Thread>();
+        driver.manage().window().maximize();
+        driver.manage().window().setSize(
+        		new Dimension(
+        				1440,
+        				driver.manage().window().getSize().getHeight()));
+        
+        driver.get(homePage);
         
         //addThread(new BrokenLinks(driver, homePage));
         addThread(new Search(driver, homePage));

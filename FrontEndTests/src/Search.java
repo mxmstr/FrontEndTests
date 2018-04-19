@@ -18,8 +18,6 @@ public class Search extends Thread {
 	private WebDriver driver;
 	private String homePage;
 	private static HttpURLConnection conn = null;
-	private boolean acceptNextAlert = true;
-	private StringBuffer verificationErrors = new StringBuffer();
 	
 	
 	public Search(WebDriver driver, String homePage) {
@@ -28,19 +26,6 @@ public class Search extends Thread {
 		this.homePage = homePage;
 	
 	}
-   
-	  public void setUp() {
-	    //driver = new FirefoxDriver();
-	    driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-	  }
-	  
-	  public void tearDown() {
-	    driver.quit();
-	    String verificationErrorString = verificationErrors.toString();
-	    if (!"".equals(verificationErrorString)) {
-	      fail(verificationErrorString);
-	    }
-	  }
 
 	  private boolean isElementPresent(By by) {
 	    try {
@@ -50,52 +35,22 @@ public class Search extends Thread {
 	      return false;
 	    }
 	  }
-
-	  private boolean isAlertPresent() {
-	    try {
-	      driver.switchTo().alert();
-	      return true;
-	    } catch (NoAlertPresentException e) {
-	      return false;
-	    }
-	  }
-
-	  private String closeAlertAndGetItsText() {
-	    try {
-	      Alert alert = driver.switchTo().alert();
-	      String alertText = alert.getText();
-	      if (acceptNextAlert) {
-	        alert.accept();
-	      } else {
-	        alert.dismiss();
-	      }
-	      return alertText;
-	    } finally {
-	      acceptNextAlert = true;
-	    }
-	  }
 	
 	
 	public void run() {
 		
 		try {
-				
-			setUp();
 			
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		    driver.get(homePage + "/");
 		    
-		    
-		    
-		    WebElement searchInput = driver.findElement(By.cssSelector("input.pt-input"));
-		    searchInput.clear();
-		    searchInput.sendKeys("p");
+		    driver.findElement(By.cssSelector("input.pt-input")).clear();
+		    driver.findElement(By.cssSelector("input.pt-input")).sendKeys("p");
 		    
 		    driver.findElement(By.linkText("Pasta")).click();
 		    
-		    if (isElementPresent(By.cssSelector("div.topbar__search-block")))
-		    	System.out.println("Autofill didn't close.");
-		    
-		    tearDown();
+		    assert(!isElementPresent(By.cssSelector("div.topbar__search-block")));
+		    //System.out.println("Autofill didn't close.");
 		    
 		}
 		catch (InvalidElementStateException e) {

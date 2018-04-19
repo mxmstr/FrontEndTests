@@ -12,23 +12,29 @@ public class NutreTests {
 	
 	private static String driverPath = "/users/ericlynch/documents/chromedriver";
 	private static String homePage = "http://dev.gonutre.com";
-	private ArrayList<Thread> threads;
+	private ArrayList<AsyncTester> threads;
 	
 	
 	private void addThread(Thread t) {
 		
-        t.start();
-        threads.add(t);
+		AsyncTester test = new AsyncTester(t);
+        test.start();
+        threads.add(test);
 		
 	}
 	
 	private void joinThreads() {
 		
-		for (Thread t : threads) {
+		for (AsyncTester test : threads) {
 			try {
-				t.join();
-			} catch (InterruptedException e) {
+				test.join();
+			} 
+			catch (InterruptedException e) {
 				e.printStackTrace();
+			}
+			catch (java.lang.AssertionError e) {
+				System.out.println("Assertion error");
+				fail();
 			}
 		}
 		
@@ -39,7 +45,7 @@ public class NutreTests {
 		
 		System.setProperty("webdriver.chrome.driver", driverPath);
     	
-		threads = new ArrayList<Thread>();
+		threads = new ArrayList<AsyncTester>();
         WebDriver driver = new ChromeDriver();
         
         driver.manage().window().maximize();
@@ -47,12 +53,9 @@ public class NutreTests {
         		new Dimension(
         				1440,
         				driver.manage().window().getSize().getHeight()));
-        
         driver.get(homePage);
         
-        //addThread(new BrokenLinks(driver, homePage));
         addThread(new Search(driver, homePage));
-        
         joinThreads();
         
         driver.quit();

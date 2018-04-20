@@ -17,8 +17,6 @@ public class Search extends Thread {
 	
 	private WebDriver driver;
 	private String homePage;
-	private static HttpURLConnection conn = null;
-	
 	
 	public Search(WebDriver driver, String homePage) {
 		
@@ -27,26 +25,24 @@ public class Search extends Thread {
 	
 	}
 
-	  private boolean isElementPresent(By by) {
-	    try {
-	      driver.findElement(by);
-	      return true;
-	    } catch (NoSuchElementException e) {
-	      return false;
+	private boolean isElementPresent(By by) {
+		
+		try {
+			driver.findElement(by);
+			return true;
+	    } 
+		catch (NoSuchElementException e) {
+			return false;
 	    }
-	  }
-	
+		
+	}
 	
 	public void run() {
 		
 		try {
-			
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		    driver.get(homePage + "/");
 		    
 		    driver.findElement(By.cssSelector("input.pt-input")).clear();
 		    driver.findElement(By.cssSelector("input.pt-input")).sendKeys("p");
-		    
 		    driver.findElement(By.linkText("Pasta")).click();
 		    
 		    assert(!isElementPresent(By.cssSelector("div.topbar__search-block")));

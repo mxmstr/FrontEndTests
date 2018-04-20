@@ -16,7 +16,6 @@ public class PageLoad extends Thread {
 	
 	private WebDriver driver;
 	private String homePage;
-	private static HttpURLConnection conn = null;
 	
 	public PageLoad(WebDriver driver, String homePage) {
 		

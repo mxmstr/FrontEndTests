@@ -11,7 +11,6 @@ public class Header extends Thread {
 	
 	private WebDriver driver;
 	private String homePage;
-	private static HttpURLConnection conn = null;
 	
 	public Header(WebDriver driver, String homePage) {
 		

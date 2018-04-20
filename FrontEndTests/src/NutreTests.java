@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 
 
 public class NutreTests {
@@ -46,7 +47,7 @@ public class NutreTests {
 		
 	}
 	
-	private void testSignin(){
+	private void signIn(){
 		
 	    try {
 	    	driver.findElement(By.linkText("Log In")).click();
@@ -80,7 +81,7 @@ public class NutreTests {
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         driver.get(homePage);
         
-        testSignin();
+        signIn();
 	
 	}
 	
@@ -90,6 +91,19 @@ public class NutreTests {
         addThread(new Search(driver, homePage));
         joinThreads();
 		
+	}
+	
+	private void add10ItemsToCart() {
+		
+	    driver.findElement(By.linkText("A la Carte")).click();
+	    driver.findElement(By.xpath("//label[contains(.,'Dinner')]")).click();
+	    driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div[2]/div/div/div[2]/label[3]")).click();
+	    new Select(driver.findElement(By.cssSelector("select"))).selectByVisibleText("5");
+	    new Select(driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div[2]/div[2]/div[2]/div/div/div[2]/div/div/select"))).selectByVisibleText("5");
+	    driver.findElement(By.cssSelector("button[name=\"Soup 1\"]")).click();
+	    driver.findElement(By.cssSelector("button[name=\"Pizza\"]")).click();
+	    //driver.findElement(By.xpath("//div[@id='root']/div/div/div/div/div/div/div/button")).click();
+	    
 	}
 	
 	//@Test
@@ -102,10 +116,16 @@ public class NutreTests {
 	
 	@Test
 	public void Promo() {
-
+		
+		
+		
 	    try {
 	    	
 	    	String bodyText;
+	    	
+	    	add10ItemsToCart();
+	    	
+	    	Thread.sleep(2000);
 	    	
 	    	driver.findElement(By.cssSelector(
 					"button.pt-button.pt-minimal.pt-icon-shopping-cart.topbar__cart-btn.topbar__ma-top-8")).click();

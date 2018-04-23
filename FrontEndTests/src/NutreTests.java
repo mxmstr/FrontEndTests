@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -27,6 +29,18 @@ public class NutreTests {
 	private WebDriver driver;
 	private ArrayList<AsyncTester> threads;
 	
+	
+	private boolean isElementPresent(By by) {
+		
+		try {
+			driver.findElement(by);
+			return true;
+	    } 
+		catch (NoSuchElementException e) {
+			return false;
+	    }
+		
+	}
 	
 	private void addThread(Thread t) {
 		
@@ -194,21 +208,101 @@ public class NutreTests {
 		
 	}
 	
-	@Test
+	//@Test
 	public void changeAccountDetails() throws InterruptedException {
 		
 		driver.findElement(By.linkText("Account")).click();
     	Thread.sleep(1000);
 		
 	    changeAccountName("Joe");
+	    Thread.sleep(1000);
 	    
 	    Assert.assertTrue(
-	    		"Name was not updated!",
+	    		"Edit module did not update!",
 	    		driver.findElement(By.cssSelector(
 	    				"div.row:nth-child(3) > div:nth-child(2)")).getText().contains("Joe"));
 	    
 	    changeAccountName("John");
 	    
+	    driver.findElement(By.linkText("Sign Out")).click();
+	    Thread.sleep(1000);
+	    
+	    Assert.assertTrue("Sign out access not downgraded!", !isElementPresent(By.linkText("Account")));
+	    
+	}
+	
+	private void changeItemPrice(String price) {
+		
+        driver.findElement(By.cssSelector("span.app__psedo-link")).click();
+        driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).clear();
+        driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).sendKeys(price);
+        driver.findElement(By.xpath("//div[12]/button")).click();
+		
+	}
+	
+	
+	private void testEditModule() throws InterruptedException {
+		
+		changeItemPrice("10.00");
+        Thread.sleep(1000);
+        
+        Assert.assertTrue(
+        		"Edit module did not update!",
+	    		driver.findElement(By.cssSelector(
+		        		".pt-table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3)")).getText().contains("10.00"));
+    	
+        changeItemPrice("9.00");
+        Thread.sleep(1000);
+		
+	}
+	
+	private void testMealPanel() throws InterruptedException {
+		
+		String bodyText;
+		
+		driver.findElement(By.xpath("//div[@id='root']/div/div/div/div/div/div/div[2]/button")).click();
+		driver.findElement(By.cssSelector("input.pt-fill:nth-child(2)")).clear();
+		driver.findElement(By.cssSelector("input.pt-fill:nth-child(2)")).sendKeys("New Meal");
+	    driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).clear();
+	    driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).sendKeys("20.00");
+	    new Select(driver.findElement(By.cssSelector("select"))).selectByVisibleText("Dinner");
+	    driver.findElement(By.xpath("//div[8]/label/textarea")).clear();
+	    driver.findElement(By.xpath("//div[8]/label/textarea")).sendKeys("a, b, c");
+	    driver.findElement(By.xpath("//div[12]/button")).click();
+		
+	    bodyText = driver.findElement(By.tagName("body")).getText();
+    	Assert.assertTrue("Meal wasn't added!", bodyText.contains("New Meal"));
+		
+    	
+    	WebElement baseTable = driver.findElement(By.cssSelector(".pt-table"));
+    	List<WebElement> tableRows = baseTable.findElements(By.tagName("tr"));
+    	
+    	for (WebElement e : tableRows) {
+    		if (e.getText().contains("New Meal")) {
+
+    			((JavascriptExecutor)driver).executeScript("arguments[0].click();", e);
+    			driver.findElement(By.cssSelector("button.pt-button:nth-child(4)")).click();
+    			driver.findElement(By.cssSelector("button.pt-intent-danger:nth-child(1)")).click();
+    			Thread.sleep(1000);
+    			break;
+    			
+    		}
+    	}
+    	
+		
+	}
+	
+	@Test
+	public void testControlPanel() throws InterruptedException {
+		
+		driver.findElement(By.linkText("Account")).click();
+    	Thread.sleep(1000);
+    	
+    	driver.findElement(By.linkText("Control Panel")).click();
+    	
+    	//testEditModule();
+    	testMealPanel();
+        
 	}
 	
 	@After

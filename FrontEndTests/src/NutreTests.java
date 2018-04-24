@@ -11,11 +11,13 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 
@@ -289,6 +291,110 @@ public class NutreTests {
     		}
     	}
     	
+	}
+	
+	private void addNewPromoCode() throws InterruptedException {
+		
+		driver.findElement(By.linkText("Coupons")).click();
+	    driver.findElement(By.cssSelector("button.pt-button:nth-child(1)")).click();
+		Thread.sleep(1000);
+	    
+		driver.findElement(By.cssSelector(
+				"div.col-6:nth-child(1) > label:nth-child(1) > input:nth-child(2)")).clear();
+		driver.findElement(By.cssSelector(
+				"div.col-6:nth-child(1) > label:nth-child(1) > input:nth-child(2)")).sendKeys("test");
+	    driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).clear();
+	    driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).sendKeys("10");
+	    driver.findElement(By.cssSelector(
+	    		"div.col-6:nth-child(4) > label:nth-child(1) > input:nth-child(2)")).clear();
+	    driver.findElement(By.cssSelector(
+	    		"div.col-6:nth-child(4) > label:nth-child(1) > input:nth-child(2)")).sendKeys("ABC123");
+	    
+	    driver.findElement(By.xpath("//div[11]/button")).click();
+	    
+	}
+	
+	
+	private void removePromoCode() throws InterruptedException {
+		
+		driver.findElement(By.linkText("Coupons")).click();
+		Thread.sleep(1000);
+	    
+		
+		WebElement baseTable = driver.findElement(By.cssSelector(".pt-table"));
+    	List<WebElement> tableRows = baseTable.findElements(By.tagName("tr"));
+    	
+    	for (WebElement e : tableRows) {
+    		if (e.getText().contains("test")) {
+
+    			((JavascriptExecutor)driver).executeScript("arguments[0].click();", e);
+    			driver.findElement(By.cssSelector("button.pt-button:nth-child(4)")).click();
+    			driver.findElement(By.cssSelector("button.pt-intent-danger:nth-child(1)")).click();
+    			Thread.sleep(1000);
+    			break;
+    			
+    		}
+    	}
+	    
+	}
+	
+	
+	private void testNewPromoCode() throws InterruptedException {
+		
+		String bodyText;
+		
+		addNewPromoCode();
+		Thread.sleep(1000);
+		
+		((JavascriptExecutor)driver).executeScript(
+	    		"arguments[0].click();", 
+	    		driver.findElement(By.cssSelector(".app-topbar__logo")));
+		
+		
+    	add10ItemsToCart();
+    	Thread.sleep(1000);
+    	
+    	driver.findElement(By.cssSelector(
+				"button.pt-button.pt-minimal.pt-icon-shopping-cart.topbar__cart-btn.topbar__ma-top-8")).click();
+    	Thread.sleep(1000);
+    	
+    	redeemPromoCode("abc123");
+    	Thread.sleep(1000);
+    	
+    	bodyText = driver.findElement(By.tagName("body")).getText();
+    	Assert.assertTrue("New code was not accepted!", !bodyText.contains("Code is invalid or already used."));
+    	
+    	Actions action = new Actions(driver);
+    	action.sendKeys(Keys.ESCAPE).build().perform();
+    	
+    	
+    	driver.findElement(By.linkText("Account")).click();
+    	Thread.sleep(1000);
+    	
+    	driver.findElement(By.linkText("Control Panel")).click();
+    	
+    	removePromoCode();
+    	Thread.sleep(1000);
+    	
+    	((JavascriptExecutor)driver).executeScript(
+	    		"arguments[0].click();", 
+	    		driver.findElement(By.cssSelector(".app-topbar__logo")));
+    	
+    	
+    	add10ItemsToCart();
+    	Thread.sleep(1000);
+    	
+    	driver.findElement(By.cssSelector(
+				"button.pt-button.pt-minimal.pt-icon-shopping-cart.topbar__cart-btn.topbar__ma-top-8")).click();
+    	Thread.sleep(1000);
+    	
+    	redeemPromoCode("abc123");
+    	Thread.sleep(1000);
+    	
+    	bodyText = driver.findElement(By.tagName("body")).getText();
+    	Assert.assertTrue("Old code was accepted!", bodyText.contains("Code is invalid or already used."));
+    	
+    	action.sendKeys(Keys.ESCAPE).build().perform();
 		
 	}
 	
@@ -301,7 +407,9 @@ public class NutreTests {
     	driver.findElement(By.linkText("Control Panel")).click();
     	
     	//testEditModule();
-    	testMealPanel();
+    	//testMealPanel();
+    	testNewPromoCode();
+    	
         
 	}
 	

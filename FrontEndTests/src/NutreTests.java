@@ -314,7 +314,6 @@ public class NutreTests {
 	    
 	}
 	
-	
 	private void removePromoCode() throws InterruptedException {
 		
 		driver.findElement(By.linkText("Coupons")).click();
@@ -337,7 +336,6 @@ public class NutreTests {
     	}
 	    
 	}
-	
 	
 	private void testNewPromoCode() throws InterruptedException {
 		
@@ -395,8 +393,116 @@ public class NutreTests {
     	Assert.assertTrue("Old code was accepted!", bodyText.contains("Code is invalid or already used."));
     	
     	action.sendKeys(Keys.ESCAPE).build().perform();
+    	Thread.sleep(1000);
 		
 	}
+	
+	private void addDeliveryZone() throws InterruptedException {
+		
+		driver.findElement(By.linkText("Delivery Zone")).click();
+		driver.findElement(By.xpath("//div[@id='root']/div/div/div/div/div/div/div/button")).click();
+		Thread.sleep(1000);
+		
+		driver.findElement(By.cssSelector("input.pt-fill")).clear();
+		driver.findElement(By.cssSelector("input.pt-fill")).sendKeys("New Delivery");
+		driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).clear();
+		driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).sendKeys("50");
+		driver.findElement(By.cssSelector("textarea.pt-input.pt-fill")).clear();
+		driver.findElement(By.cssSelector("textarea.pt-input.pt-fill")).sendKeys("12345");
+		driver.findElement(By.cssSelector("button.pt-large")).click();
+		
+	}
+	
+	private void removeNewDelivery() throws InterruptedException {
+		
+		driver.findElement(By.linkText("Delivery Zone")).click();
+		Thread.sleep(1000);
+	    
+		
+		WebElement baseTable = driver.findElement(By.cssSelector(".pt-table"));
+    	List<WebElement> tableRows = baseTable.findElements(By.tagName("tr"));
+    	
+    	for (WebElement e : tableRows) {
+    		if (e.getText().contains("New Delivery")) {
+
+    			((JavascriptExecutor)driver).executeScript("arguments[0].click();", e);
+    			driver.findElement(By.cssSelector("button.pt-button:nth-child(4)")).click();
+    			driver.findElement(By.cssSelector("button.pt-intent-danger:nth-child(1)")).click();
+    			Thread.sleep(1000);
+    			break;
+    			
+    		}
+    	}
+	    
+	}
+	
+	private void validateDeliveryZone() throws InterruptedException {
+		
+		driver.findElement(By.linkText("Account")).click();
+	    driver.findElement(By.linkText("Delivery Information")).click();
+	    
+	    driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div[3]/div/span")).click();
+	    driver.findElement(By.cssSelector("a.pt-button:nth-child(1)")).click();
+	    //driver.findElement(By.linkText("Add New Address")).click();
+	    Thread.sleep(1000);
+	    //driver.findElement(By.cssSelector(".account__edit"));
+	    
+	    driver.findElement(By.cssSelector(
+	    		"div.account__box:nth-child(4) > div:nth-child(1) > div:nth-child(2) > label:nth-child(1) > input:nth-child(1)")).clear();
+	    driver.findElement(By.cssSelector(
+	    		"div.account__box:nth-child(4) > div:nth-child(1) > div:nth-child(2) > label:nth-child(1) > input:nth-child(1)")).sendKeys("Street");
+	    driver.findElement(By.cssSelector(
+	    		"div.content__input-ma:nth-child(2) > div:nth-child(2) > label:nth-child(1) > input:nth-child(1)")).clear();
+	    driver.findElement(By.cssSelector(
+	    		"div.content__input-ma:nth-child(2) > div:nth-child(2) > label:nth-child(1) > input:nth-child(1)")).sendKeys("City");
+	    driver.findElement(By.cssSelector(
+	    		"label.pt-label:nth-child(3) > input:nth-child(1)")).clear();
+	    driver.findElement(By.cssSelector(
+	    		"label.pt-label:nth-child(3) > input:nth-child(1)")).sendKeys("12345");
+	    driver.findElement(By.cssSelector(
+	    		"div.content__input-value > input.pt-input.pt-large")).clear();
+	    driver.findElement(By.cssSelector(
+	    		"div.content__input-value > input.pt-input.pt-large")).sendKeys("(555) 555-5555");
+	    driver.findElement(By.xpath("//label[contains(.,'Set as default')]")).click();
+	    //driver.findElement(By.cssSelector("input[type=\"checkbox\"]")).click();
+	    driver.findElement(By.cssSelector("button.nu-button-h.content__button")).click();
+	    driver.findElement(By.xpath("//div[@id='root']/div/div/div/div/div/div/div/button")).click();
+	    driver.findElement(By.xpath("//button[@type='button']")).click();
+	    //driver.findElement(By.xpath("(//button[@type='button'])[3]")).click();
+	    Thread.sleep(1000);
+	    driver.findElement(By.cssSelector("div.row:nth-child(5) > div:nth-child(2) > label:nth-child(1)")).click();
+	    driver.findElement(By.cssSelector("button.pt-button:nth-child(8)")).click();
+	    Thread.sleep(1000);
+	    
+	    String bodyText = driver.findElement(By.tagName("body")).getText();
+    	Assert.assertTrue("New zip code not accepted!", !bodyText.contains("Sorry, we're not servicing your area at this time."));
+    	
+    	Actions action = new Actions(driver);
+    	action.sendKeys(Keys.ESCAPE).build().perform();
+    	Thread.sleep(1000);
+	    
+	}
+	
+	private void testNewDeliveryZone() throws InterruptedException {
+	
+		addDeliveryZone();
+		
+		((JavascriptExecutor)driver).executeScript(
+	    		"arguments[0].click();", 
+	    		driver.findElement(By.cssSelector(".app-topbar__logo")));
+		Thread.sleep(1000);
+    	
+		
+    	validateDeliveryZone();
+    	
+    	driver.findElement(By.linkText("Control Panel")).click();
+		Thread.sleep(1000);
+    	
+		
+		removeNewDelivery();
+		
+	}
+	
 	
 	@Test
 	public void testControlPanel() throws InterruptedException {
@@ -408,8 +514,8 @@ public class NutreTests {
     	
     	//testEditModule();
     	//testMealPanel();
-    	testNewPromoCode();
-    	
+    	//testNewPromoCode();
+    	testNewDeliveryZone();
         
 	}
 	

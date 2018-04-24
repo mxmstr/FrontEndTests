@@ -124,6 +124,18 @@ public class NutreTests {
 		
 	}
 	
+	private void removePaymentInfo() {
+		
+		driver.findElement(By.linkText("Account")).click();
+	    driver.findElement(By.linkText("Payment Information")).click();
+	    
+	    if (isElementPresent(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div[3]/div/span"))) {
+	    	driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div[3]/div/span")).click();
+	    	driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div[3]/div/div[3]/table/tbody/tr/td[5]/button")).click();
+	    }
+	    	
+	}
+	
 	private void add10ItemsToCart() throws InterruptedException {
 		
 	    driver.findElement(By.linkText("A la Carte")).click();
@@ -149,10 +161,12 @@ public class NutreTests {
     	
 	}
 	
-	//@Test
+	@Test
 	public void checkoutItems() throws InterruptedException {
 		
 		String bodyText;
+		
+		removePaymentInfo();
 		
     	add10ItemsToCart();
     	Thread.sleep(1000);
@@ -181,10 +195,25 @@ public class NutreTests {
     			!driver.findElement(By.cssSelector("button.cart__checkout-btn")).isEnabled());
     	
     	
-    	driver.findElement(By.xpath("//button[@type='button']")).click();
-    	driver.findElement(By.xpath("(//button[@type='button'])[3]")).click();
-    	//driver.findElement(By.name("Apply")).click();
+    	driver.findElement(By.cssSelector(".pt-intent-orange")).click();
+    	Thread.sleep(1000);
+	    
+    	driver.findElement(By.xpath("//label[contains(.,'Free Pick up')]")).click();
+    	driver.findElement(By.xpath("//label[contains(.,'Free Pick up')]")).click();
+    	driver.findElement(By.cssSelector("button.pt-button:nth-child(8)")).click();
+	    Thread.sleep(1000);
+    	
         driver.findElement(By.cssSelector("button.cart__checkout-btn")).click();
+        Thread.sleep(1000);
+        
+        //driver.findElement(By.cssSelector("div.StripeElement.StripeElement--empty")).click();
+        //driver.findElement(By.cssSelector("div.StripeElement.StripeElement--empty")).clear();
+        
+        //driver.findElement(By.cssSelector(".__PrivateStripeElement > iframe:nth-child(1)")).click();
+        
+        driver.switchTo().frame(driver.findElement(By.cssSelector(
+        		".__PrivateStripeElement > iframe:nth-child(1)")));
+        
         driver.findElement(By.name("cardnumber")).clear();
         driver.findElement(By.name("cardnumber")).sendKeys("4242 4242 4242 4242");
         driver.findElement(By.name("exp-date")).clear();
@@ -193,10 +222,15 @@ public class NutreTests {
         driver.findElement(By.name("cvc")).sendKeys("123");
         driver.findElement(By.name("postal")).clear();
         driver.findElement(By.name("postal")).sendKeys("02116");
+        
+        driver.switchTo().defaultContent();
+        
         driver.findElement(By.xpath("//form/div/div/button")).click();
     	
+        Thread.sleep(5000);
+        
 	}
-	
+
 	private void changeAccountName(String name) {
 		
 		driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/h2/span")).click();
@@ -441,11 +475,13 @@ public class NutreTests {
 		driver.findElement(By.linkText("Account")).click();
 	    driver.findElement(By.linkText("Delivery Information")).click();
 	    
-	    driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div[3]/div/span")).click();
-	    driver.findElement(By.cssSelector("a.pt-button:nth-child(1)")).click();
-	    //driver.findElement(By.linkText("Add New Address")).click();
+	    ((JavascriptExecutor)driver).executeScript(
+	    		"arguments[0].click();", 
+	    		driver.findElement(By.cssSelector(".account__edit")));
 	    Thread.sleep(1000);
-	    //driver.findElement(By.cssSelector(".account__edit"));
+	    driver.findElement(By.cssSelector("a.pt-button:nth-child(1)")).click();
+	    Thread.sleep(1000);
+	    
 	    
 	    driver.findElement(By.cssSelector(
 	    		"div.account__box:nth-child(4) > div:nth-child(1) > div:nth-child(2) > label:nth-child(1) > input:nth-child(1)")).clear();
@@ -464,11 +500,11 @@ public class NutreTests {
 	    driver.findElement(By.cssSelector(
 	    		"div.content__input-value > input.pt-input.pt-large")).sendKeys("(555) 555-5555");
 	    driver.findElement(By.xpath("//label[contains(.,'Set as default')]")).click();
-	    //driver.findElement(By.cssSelector("input[type=\"checkbox\"]")).click();
 	    driver.findElement(By.cssSelector("button.nu-button-h.content__button")).click();
-	    driver.findElement(By.xpath("//div[@id='root']/div/div/div/div/div/div/div/button")).click();
-	    driver.findElement(By.xpath("//button[@type='button']")).click();
-	    //driver.findElement(By.xpath("(//button[@type='button'])[3]")).click();
+	    
+	    driver.findElement(By.cssSelector(".pt-button")).click();
+	    driver.findElement(By.cssSelector(".pt-intent-orange")).click();
+	    
 	    Thread.sleep(1000);
 	    driver.findElement(By.cssSelector("div.row:nth-child(5) > div:nth-child(2) > label:nth-child(1)")).click();
 	    driver.findElement(By.cssSelector("button.pt-button:nth-child(8)")).click();
@@ -504,7 +540,7 @@ public class NutreTests {
 	}
 	
 	
-	@Test
+	//@Test
 	public void testControlPanel() throws InterruptedException {
 		
 		driver.findElement(By.linkText("Account")).click();

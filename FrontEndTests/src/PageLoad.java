@@ -1,29 +1,10 @@
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-
-import org.openqa.selenium.By;
+import org.junit.Test;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 
-public class PageLoad extends Thread {
+public class PageLoad extends FrontEndTest {
 	
-	private WebDriver driver;
-	private String homePage;
-	
-	public PageLoad(WebDriver driver, String homePage) {
-		
-		this.driver = driver;
-		this.homePage = homePage;
-	
-	}
-   
+	@Test
 	public void run() {
 		
 		Long navigationStart = (Long)((JavascriptExecutor)driver).executeScript(
@@ -40,5 +21,6 @@ public class PageLoad extends Thread {
 		System.out.println("Front End: " + frontendPerformance);
 	   
 	}
+	
 }
 

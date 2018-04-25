@@ -5,31 +5,25 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 
-public class BrokenLinks extends Thread {
+public class BrokenLinks extends FrontEndTest {
 	
-	private WebDriver driver;
-	private String homePage;
 	private static HttpURLConnection conn = null;
 	
-	public BrokenLinks(WebDriver driver, String homePage) {
-		
-		this.driver = driver;
-		this.homePage = homePage;
 	
-	}
-   
+	@Test
 	public void run() {
 		
 		String url = "";
 		List<WebElement> links = driver.findElements(By.tagName("a"));
 		Iterator<WebElement> it = links.iterator();
 		
-		while(it.hasNext()){
+		while (it.hasNext()) {
 	       
 			url = it.next().getAttribute("href");
 			
@@ -37,7 +31,7 @@ public class BrokenLinks extends Thread {
 		    	System.out.println(url + " URL is either not configured for anchor tag or it is empty");
 		    	continue;
 		    }
-	       
+		    
 	        if(!url.startsWith(homePage)){
 	        	System.out.println(url + " URL belongs to another domain, skipping it.");
 	        	continue;
@@ -60,7 +54,9 @@ public class BrokenLinks extends Thread {
 	        	e.printStackTrace();
 	        }
 	       
-	   }
+		}
 	   
 	}
+	
+	
 }

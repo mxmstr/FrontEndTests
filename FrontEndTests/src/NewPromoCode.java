@@ -46,6 +46,10 @@ public class NewPromoCode extends FrontEndTest {
 		clickJS(driver.findElement(By.cssSelector(".app-topbar__logo")));
 		
 		
+		System.out.println("//");
+		System.out.println("// Testing Valid Promo Code");
+		System.out.println("//");
+		
     	driver.findElement(By.cssSelector(
 				"button.pt-button.pt-minimal.pt-icon-shopping-cart.topbar__cart-btn.topbar__ma-top-8")).click();
     	Thread.sleep(1000);

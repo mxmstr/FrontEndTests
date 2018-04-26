@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -28,8 +29,11 @@ public class OrderSubscription extends FrontEndTest {
     	driver.findElement(By.cssSelector("button.pt-button:nth-child(8)")).click();
 	    Thread.sleep(1000);
 	    
-    	
+	    driver.findElement(By.cssSelector("button.cart__checkout-btn")).click();
+	    Thread.sleep(1000);
+	    
 	    checkout("4242 4242 4242 4242", "‎02 / ‎20", "123", "02116");
+	    Thread.sleep(10000);
 		
 	}
 

@@ -57,7 +57,7 @@ public class OrderAlacarte extends FrontEndTest {
     	
     	
     	System.out.println("//");
-		System.out.println("// Testing Checkout With Valid Card");
+		System.out.println("// Testing Checkout With Invalid Card");
 		System.out.println("//");
     	
     	driver.findElement(By.cssSelector(".pt-intent-orange")).click();
@@ -68,8 +68,32 @@ public class OrderAlacarte extends FrontEndTest {
     	driver.findElement(By.cssSelector("button.pt-button:nth-child(8)")).click();
 	    Thread.sleep(1000);
 	    
-    	
+	    driver.findElement(By.cssSelector("button.cart__checkout-btn")).click();
+	    Thread.sleep(1000);
+	    
+	    checkout("9999 9999 9999 9999", "‎02 / ‎20", "123", "02116");
+	    Thread.sleep(1000);
+	    Assert.assertTrue(
+	    		"Invalid card accepted!", 
+	    		isElementPresent(By.cssSelector(".__PrivateStripeElement > iframe:nth-child(1)")));
+		
+	    
+	    //sendEscapeKey();
+	    driver.findElement(By.cssSelector(".pt-dialog-close-button")).click();
+	    Thread.sleep(1000);
+	    
+	    driver.findElement(By.cssSelector("button.cart__checkout-btn")).click();
+	    Thread.sleep(1000);
+	    
+	    System.out.println("//");
+		System.out.println("// Testing Checkout With Valid Card");
+		System.out.println("//");
+	    
 	    checkout("4242 4242 4242 4242", "‎02 / ‎20", "123", "02116");
+	    Thread.sleep(10000);
+	    Assert.assertTrue(
+	    		"Valid card not accepted!", 
+	    		!isElementPresent(By.cssSelector(".__PrivateStripeElement > iframe:nth-child(1)")));
 		
 	}
 	

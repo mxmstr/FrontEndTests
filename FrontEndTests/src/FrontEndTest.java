@@ -160,6 +160,17 @@ public abstract class FrontEndTest {
 	    
 	}
 	
+	public void addSubscription() throws InterruptedException {
+		
+	    driver.findElement(By.xpath("//label[contains(.,'Gluten Free')]")).click();
+	    
+	    //driver.findElement(By.xpath("(//input[@value='on'])[5]")).click();
+	    new Select(driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div[2]/div[2]/div[2]/div[4]/div/div/div/div/select"))).selectByVisibleText("10");
+	    new Select(driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div[2]/div[2]/div[2]/div[2]/div/div/div/div/select"))).selectByVisibleText("5");
+	    driver.findElement(By.cssSelector("button.nu-button.carte__plan-weekly-btn")).click();
+	    
+	}
+	
 	public void redeemPromoCode(String code) {
 			
 		driver.findElement(By.cssSelector("input.pt-input.pt-fill")).clear();
@@ -185,6 +196,43 @@ public abstract class FrontEndTest {
     		}
     	}
 		
+	}
+	
+	public void removePaymentInfo() {
+		
+		driver.findElement(By.linkText("Account")).click();
+	    driver.findElement(By.linkText("Payment Information")).click();
+	    
+	    if (isElementPresent(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div[3]/div/span"))) {
+	    	driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div[3]/div/span")).click();
+	    	driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div[3]/div/div[3]/table/tbody/tr/td[5]/button")).click();
+	    }
+	    	
+	}
+	
+	public void checkout(String cardnumber, String date, String cvc, String postal) throws InterruptedException {
+		
+		driver.findElement(By.cssSelector("button.cart__checkout-btn")).click();
+	    Thread.sleep(1000);
+	    
+	    driver.switchTo().frame(driver.findElement(By.cssSelector(
+	    		".__PrivateStripeElement > iframe:nth-child(1)")));
+	    
+	    driver.findElement(By.name("cardnumber")).clear();
+	    driver.findElement(By.name("cardnumber")).sendKeys(cardnumber);
+	    driver.findElement(By.name("exp-date")).clear();
+	    driver.findElement(By.name("exp-date")).sendKeys(date);
+	    driver.findElement(By.name("cvc")).clear();
+	    driver.findElement(By.name("cvc")).sendKeys(cvc);
+	    driver.findElement(By.name("postal")).clear();
+	    driver.findElement(By.name("postal")).sendKeys(postal);
+	    
+	    driver.switchTo().defaultContent();
+	    
+	    driver.findElement(By.xpath("//form/div/div/button")).click();
+		
+	    Thread.sleep(10000);
+	    
 	}
 
 }

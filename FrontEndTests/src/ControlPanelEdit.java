@@ -2,7 +2,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-public class EditModule extends FrontEndTest  {
+public class ControlPanelEdit extends FrontEndTest  {
 
 	private void changeItemPrice(String price) {
 		
@@ -15,6 +15,10 @@ public class EditModule extends FrontEndTest  {
 	
 	@Test
 	public void run() throws InterruptedException {
+		
+		System.out.println("//");
+		System.out.println("// Testing Control Panel Edit Module");
+		System.out.println("//");
 		
 		driver.findElement(By.linkText("Account")).click();
     	Thread.sleep(1000);

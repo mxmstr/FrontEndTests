@@ -78,6 +78,10 @@ public class NewDeliveryZone extends FrontEndTest {
 	@Test
 	public void run() throws InterruptedException {
 		
+		System.out.println("//");
+		System.out.println("// Testing Add Delivery Zone");
+		System.out.println("//");
+		
 		driver.findElement(By.linkText("Account")).click();
     	Thread.sleep(1000);
     	
@@ -86,15 +90,23 @@ public class NewDeliveryZone extends FrontEndTest {
 		
 		addDeliveryZone("New Delivery", "50", "12345");
 		
+		
+		System.out.println("//");
+		System.out.println("// Testing Delivery Zone In Checkout");
+		System.out.println("//");
+		
 		clickJS(driver.findElement(By.cssSelector(".app-topbar__logo")));
 		Thread.sleep(1000);
-    	
 		
     	validateDeliveryZone();
     	
     	driver.findElement(By.linkText("Control Panel")).click();
 		Thread.sleep(1000);
     	
+		
+		System.out.println("//");
+		System.out.println("// Testing Remove Delivery Zone");
+		System.out.println("//");
 		
 		driver.findElement(By.linkText("Delivery Zone")).click();
 		Thread.sleep(1000);

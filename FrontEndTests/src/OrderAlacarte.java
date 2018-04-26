@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
 
-public class CheckoutItems extends FrontEndTest {
+public class OrderAlacarte extends FrontEndTest {
 
 	private void removePaymentInfo() {
 		
@@ -48,6 +48,10 @@ public class CheckoutItems extends FrontEndTest {
 		
 		String bodyText;
 		
+		System.out.println("//");
+		System.out.println("// Testing Adding Items");
+		System.out.println("//");
+		
 		removePaymentInfo();
 		
     	add10ItemsToCart();
@@ -58,6 +62,10 @@ public class CheckoutItems extends FrontEndTest {
     	Thread.sleep(1000);
     	
     	
+    	System.out.println("//");
+		System.out.println("// Testing Used Promo Code");
+		System.out.println("//");
+    	
     	redeemPromoCode("123123");
     	Thread.sleep(1000);
     	
@@ -65,6 +73,10 @@ public class CheckoutItems extends FrontEndTest {
     	Assert.assertTrue("Used code accepted!", bodyText.contains("Code is invalid or already used."));
     	
     	
+    	System.out.println("//");
+		System.out.println("// Testing Invalid Promo Code");
+		System.out.println("//");
+		
     	redeemPromoCode("abc");
     	Thread.sleep(1000);
     	
@@ -72,10 +84,18 @@ public class CheckoutItems extends FrontEndTest {
     	Assert.assertTrue("Invalid code accepted!", bodyText.contains("Code is invalid or already used."));
 		
     	
+    	System.out.println("//");
+		System.out.println("// Testing Checkout Without Shipping");
+		System.out.println("//");
+		
     	Assert.assertTrue(
     			"Checkout without shipping info!",
     			!driver.findElement(By.cssSelector("button.cart__checkout-btn")).isEnabled());
     	
+    	
+    	System.out.println("//");
+		System.out.println("// Testing Checkout With Valid Card");
+		System.out.println("//");
     	
     	driver.findElement(By.cssSelector(".pt-intent-orange")).click();
     	Thread.sleep(1000);

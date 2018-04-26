@@ -22,6 +22,10 @@ public class ChangeAccountDetails extends FrontEndTest {
 	@Test
 	public void run() throws InterruptedException {
 		
+		System.out.println("//");
+		System.out.println("// Testing Account Edit Module");
+		System.out.println("//");
+		
 		driver.findElement(By.linkText("Account")).click();
     	Thread.sleep(1000);
 		
@@ -34,6 +38,11 @@ public class ChangeAccountDetails extends FrontEndTest {
 	    				"div.row:nth-child(3) > div:nth-child(2)")).getText().contains("Joe"));
 	    
 	    changeAccountName("John");
+	    
+	    
+	    System.out.println("//");
+		System.out.println("// Testing Sign Out");
+		System.out.println("//");
 	    
 	    driver.findElement(By.linkText("Sign Out")).click();
 	    Thread.sleep(1000);

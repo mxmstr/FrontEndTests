@@ -29,6 +29,10 @@ public class NewPromoCode extends FrontEndTest {
 	@Test
 	public void run() throws InterruptedException {
 		
+		System.out.println("//");
+		System.out.println("// Testing Add Promo Code");
+		System.out.println("//");
+		
 		driver.findElement(By.linkText("Account")).click();
     	Thread.sleep(1000);
     	
@@ -54,6 +58,10 @@ public class NewPromoCode extends FrontEndTest {
     	
     	sendEscapeKey();
     	
+    	
+    	System.out.println("//");
+		System.out.println("// Testing Remove Promo Code");
+		System.out.println("//");
     	
     	driver.findElement(By.linkText("Account")).click();
     	Thread.sleep(1000);

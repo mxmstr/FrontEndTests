@@ -3,7 +3,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
-public class MealPanel extends FrontEndTest {
+public class NewMeal extends FrontEndTest {
 
 	private void addNewMeal(String name) throws InterruptedException {
 		
@@ -21,6 +21,10 @@ public class MealPanel extends FrontEndTest {
 	
 	@Test
 	public void run() throws InterruptedException {
+		
+		System.out.println("//");
+		System.out.println("// Testing Add Meal");
+		System.out.println("//");
 		
 		driver.findElement(By.linkText("Account")).click();
     	Thread.sleep(1000);

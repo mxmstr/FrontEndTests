@@ -16,8 +16,8 @@ public class RunNutreTests {
 		
 		
 		Result result = JUnitCore.runClasses(
-				BrokenLinks.class,
-				PageLoad.class,
+				BrokenLinks.class
+				/*PageLoad.class,
 				HeaderFooter.class,
 				SearchBar.class,
 				OrderAlacarte.class,
@@ -25,7 +25,7 @@ public class RunNutreTests {
 				ControlPanelEdit.class,
 				NewMeal.class,
 				NewPromoCode.class,
-				NewDeliveryZone.class
+				NewDeliveryZone.class*/
 				);
 
 		for (Failure failure : result.getFailures())

@@ -17,20 +17,16 @@ import org.openqa.selenium.WebElement;
 
 public class BrokenLinks extends FrontEndTest {
 	
-	ArrayList<String> checkedLinks = new ArrayList<String>();;
+	ArrayList<String> checkedLinks = new ArrayList<String>();
 	
-	@Test
-	public void run() {
+	private void parseLink(String homepage) {
 		
 		boolean broken = false;
 		HttpURLConnection conn = null;
 		String url = "";
 		List<WebElement> links = driver.findElements(By.tagName("a"));
+		ArrayList<String> linksToParse = new ArrayList<String>();
 		Iterator<WebElement> it = links.iterator();
-		
-		System.out.println("//");
-		System.out.println("// Testing Broken Links");
-		System.out.println("//");
 		
 		while (it.hasNext()) {
 	       
@@ -41,7 +37,7 @@ public class BrokenLinks extends FrontEndTest {
 		    	continue;
 		    }
 		    
-	        if(!url.startsWith(homePage)){
+	        if(!url.startsWith(homepage)){
 	        	System.out.println(url + " URL belongs to another domain, skipping it.");
 	        	continue;
 	        }
@@ -58,10 +54,18 @@ public class BrokenLinks extends FrontEndTest {
 	        	else {
 	        		System.out.println(url + " is a valid link");
 	        		
-	        		//if (url != homePage)
-	        		//	checkedLinks.add(url);
-	        		
+	        		if (url != homePage) {
+	        			
+	        			if (!checkedLinks.contains(url)) {
+	        				linksToParse.add(url);
+	        				checkedLinks.add(url);
+	        			}
+	        			
+	        		}
+	        			
 	        	}
+	        	
+	        	
 	        } 
 	        catch (MalformedURLException e) {
 	        	e.printStackTrace();
@@ -69,22 +73,31 @@ public class BrokenLinks extends FrontEndTest {
 	        catch (IOException e) {
 	        	e.printStackTrace();
 	        }
-	       
+	        
 		}
-		
-		
-		/*System.setProperty("homePage", url);
-		
-		addThread( new Thread(new Runnable() {
-            public void run() {
-            	JUnitCore.runClasses(BrokenLinks.class);
-            }
-        }));
-		
-		joinThreads();*/
-		
-		if (broken)
+	    
+		for (String link : linksToParse) {
+			
+			driver.get(link);
+			parseLink(link);
+			
+		}
+        
+        if (broken)
 			fail("One or more links are broken");
+		
+	}
+	
+	@Test
+	public void run() {
+		
+		System.out.println("//");
+		System.out.println("// Testing Broken Links");
+		System.out.println("//");
+		
+		parseLink(homePage);
+		
+		joinThreads();
 		
 	}
 	

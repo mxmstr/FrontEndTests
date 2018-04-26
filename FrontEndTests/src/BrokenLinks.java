@@ -11,6 +11,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -19,7 +20,7 @@ public class BrokenLinks extends FrontEndTest {
 	
 	ArrayList<String> checkedLinks = new ArrayList<String>();
 	
-	private void parseLink(String homepage) {
+	private void parseLink(String homepage) throws TimeoutException {
 		
 		boolean broken = false;
 		HttpURLConnection conn = null;
@@ -37,7 +38,7 @@ public class BrokenLinks extends FrontEndTest {
 		    	continue;
 		    }
 		    
-	        if(!url.startsWith(homepage)){
+	        if(!url.startsWith(homePage)){
 	        	System.out.println(url + " URL belongs to another domain, skipping it.");
 	        	continue;
 	        }
@@ -54,14 +55,10 @@ public class BrokenLinks extends FrontEndTest {
 	        	else {
 	        		System.out.println(url + " is a valid link");
 	        		
-	        		if (url != homePage) {
-	        			
-	        			if (!checkedLinks.contains(url)) {
-	        				linksToParse.add(url);
-	        				checkedLinks.add(url);
-	        			}
-	        			
-	        		}
+        			if (!checkedLinks.contains(url)) {
+        				linksToParse.add(url);
+        				checkedLinks.add(url);
+        			}
 	        			
 	        	}
 	        	
@@ -78,8 +75,15 @@ public class BrokenLinks extends FrontEndTest {
 	    
 		for (String link : linksToParse) {
 			
-			driver.get(link);
-			parseLink(link);
+			try {
+				if (!link.contains("logout")) {
+					driver.get(link);
+					parseLink(link);
+				}
+			} catch (TimeoutException e) {
+				System.out.println("Page: " + link + " did not load within 30 seconds!");
+				fail("One or more pages did not load");
+			}
 			
 		}
         

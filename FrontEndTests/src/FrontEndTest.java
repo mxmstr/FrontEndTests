@@ -34,6 +34,11 @@ public abstract class FrontEndTest {
 	@Before
 	public void setUp() throws Exception {
 		
+		System.setProperty("webdriver.chrome.driver", "/users/ericlynch/documents/chromedriver");
+		System.setProperty("homePage", "http://dev.gonutre.com");
+		System.setProperty("email", "lynch.er18@gmail.com");
+		System.setProperty("password", "123123");
+		
 		homePage = System.getProperty("homePage");
 		email = System.getProperty("email");
 		password = System.getProperty("password");

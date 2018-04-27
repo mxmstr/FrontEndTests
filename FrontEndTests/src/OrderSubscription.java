@@ -13,6 +13,7 @@ public class OrderSubscription extends FrontEndTest {
 		System.out.println("//");
 		
 		removePaymentInfo();
+		removeSubscription();
 		
 		driver.findElement(By.linkText("The Complete Plan")).click();
 	    driver.findElement(By.linkText("Get Started")).click();

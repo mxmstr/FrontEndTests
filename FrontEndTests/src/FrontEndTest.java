@@ -177,6 +177,19 @@ public abstract class FrontEndTest {
 	    
 	}
 	
+	public void removeSubscription() throws InterruptedException  {
+		
+	    driver.findElement(By.linkText("Subscription")).click();
+	    Thread.sleep(1000);
+	    
+	    if (isElementPresent(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div/div[2]/button[2]"))) {
+		    driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div/div[2]/button[2]")).click();
+		    Thread.sleep(1000);
+		    driver.findElement(By.cssSelector("button.nu-button.subscription__cancel__confirm")).click();
+	    }
+		
+	}
+	
 	public void addSubscription() throws InterruptedException {
 		
 	    driver.findElement(By.xpath("//label[contains(.,'Gluten Free')]")).click();
@@ -184,6 +197,8 @@ public abstract class FrontEndTest {
 	    //driver.findElement(By.xpath("(//input[@value='on'])[5]")).click();
 	    new Select(driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div[2]/div[2]/div[2]/div[4]/div/div/div/div/select"))).selectByVisibleText("10");
 	    new Select(driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div[2]/div[2]/div[2]/div[2]/div/div/div/div/select"))).selectByVisibleText("5");
+	    Thread.sleep(1000);
+	    
 	    driver.findElement(By.cssSelector("button.nu-button.carte__plan-weekly-btn")).click();
 	    
 	}

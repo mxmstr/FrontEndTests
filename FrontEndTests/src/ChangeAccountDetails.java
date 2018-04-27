@@ -6,9 +6,10 @@ import org.openqa.selenium.WebElement;
 
 public class ChangeAccountDetails extends FrontEndTest {
 
-	private void changeAccountName(String name) {
+	private void changeAccountName(String name) throws InterruptedException {
 		
 		driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/h2/span")).click();
+		Thread.sleep(1000);
 		
 	    WebElement nameField = driver.findElement(By.cssSelector("div.content__input-ma:nth-child(1) > div:nth-child(2) > input:nth-child(1)"));
 	    nameField.clear();

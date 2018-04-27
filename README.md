@@ -3,7 +3,7 @@
 Front end testing suite developed by Eric Lynch.
 
 Requirements:
-Google Chrome
+Google Chrome,
 Selenium Chrome driver (https://www.seleniumhq.org/download/)
 
 Make sure to specify the path to chromedriver.exe in RunNutreTests.java. 

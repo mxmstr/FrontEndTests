@@ -34,10 +34,12 @@ public abstract class FrontEndTest {
 	@Before
 	public void setUp() throws Exception {
 		
-		System.setProperty("webdriver.chrome.driver", "/users/ericlynch/documents/chromedriver");
-		System.setProperty("homePage", "http://dev.gonutre.com");
-		System.setProperty("email", "lynch.er18@gmail.com");
-		System.setProperty("password", "123123");
+		if (System.getProperty("webdriver.chrome.driver") == null) {
+			System.setProperty("webdriver.chrome.driver", "/users/ericlynch/documents/chromedriver");
+			System.setProperty("homePage", "http://dev.gonutre.com");
+			System.setProperty("email", "lynch.er18@gmail.com");
+			System.setProperty("password", "123123");
+		}
 		
 		homePage = System.getProperty("homePage");
 		email = System.getProperty("email");
@@ -140,6 +142,21 @@ public abstract class FrontEndTest {
 	    catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	    
+	}
+	
+	public void add1ItemToCart() throws InterruptedException {
+		
+	    driver.findElement(By.linkText("A la Carte")).click();
+	    driver.findElement(By.xpath("//label[contains(.,'Dinner')]")).click();
+	    
+	    Thread.sleep(1000);
+	    
+	    new Select(driver.findElement(By.cssSelector("select"))).selectByVisibleText("1");
+	    
+	    Thread.sleep(1000);
+	    
+	    driver.findElement(By.cssSelector("button[name=\"Soup 1\"]")).click();
 	    
 	}
 	

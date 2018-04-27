@@ -1,6 +1,6 @@
 # FrontEndTests
 
-Front end testing suite developed by Eric Lynch.
+Front end testing suite developed by Eric Lynch. Designed to be used as an Eclipse Junit project.
 
 Requirements:
 Google Chrome,

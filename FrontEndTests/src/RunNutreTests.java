@@ -16,16 +16,16 @@ public class RunNutreTests {
 		
 		
 		Result result = JUnitCore.runClasses(
-				BrokenLinks.class,
+				/*BrokenLinks.class,
 				HeaderFooter.class,
 				SearchBar.class,
-				OrderAlacarte.class,
-				OrderSubscription.class,
-				ChangeAccountDetails.class,
+				OrderAlacarte.class,*/
+				OrderSubscription.class
+				/*ChangeAccountDetails.class,
 				ControlPanelEdit.class,
 				NewMeal.class,
 				NewPromoCode.class,
-				NewDeliveryZone.class
+				NewDeliveryZone.class*/
 				);
 
 		for (Failure failure : result.getFailures())

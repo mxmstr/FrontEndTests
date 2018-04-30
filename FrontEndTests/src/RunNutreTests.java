@@ -9,7 +9,7 @@ public class RunNutreTests {
 	
 	public static void main(String[] args) {
 		
-		System.setProperty("webdriver.chrome.driver", "/users/ericlynch/documents/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "/Users/Lynch/Documents/chromedriver.exe");
 		System.setProperty("homePage", "http://dev.gonutre.com");
 		System.setProperty("email", "lynch.er18@gmail.com");
 		System.setProperty("password", "123123");

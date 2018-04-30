@@ -67,14 +67,14 @@ public class OrderAlacarte extends FrontEndTest {
     	
     	
     	System.out.println("//");
-		System.out.println("// Testing Used Promo Code");
+		System.out.println("// Testing Inactive Promo Code");
 		System.out.println("//");
     	
-    	redeemPromoCode("123123");
+    	redeemPromoCode("789");
     	Thread.sleep(1000);
     	
     	bodyText = driver.findElement(By.tagName("body")).getText();
-    	Assert.assertTrue("Used code accepted!", bodyText.contains("Code is invalid or already used."));
+    	Assert.assertTrue("Inactive code accepted!", bodyText.contains("Code is invalid or already used."));
     	
     	
     	System.out.println("//");
@@ -103,7 +103,7 @@ public class OrderAlacarte extends FrontEndTest {
 	    driver.findElement(By.cssSelector("button.cart__checkout-btn")).click();
 	    Thread.sleep(1000);
 	    
-	    checkout("9999 9999 9999 9999", "‎02 / ‎20", "123", "02116");
+	    checkout("9999 9999 9999 9999", "02 / 20", "123", "02116");
 	    Thread.sleep(1000);
 	    Assert.assertTrue(
 	    		"Invalid card accepted!", 
@@ -121,7 +121,7 @@ public class OrderAlacarte extends FrontEndTest {
 		System.out.println("// Testing Checkout With Valid Card");
 		System.out.println("//");
 	    
-	    checkout("4242 4242 4242 4242", "‎02 / ‎20", "123", "02116");
+	    checkout("4242 4242 4242 4242", "02 / 20", "123", "02116");
 	    Thread.sleep(10000);
 	    Assert.assertTrue(
 	    		"Valid card not accepted!", 

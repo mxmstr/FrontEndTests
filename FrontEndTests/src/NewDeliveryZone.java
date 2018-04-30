@@ -59,15 +59,13 @@ public class NewDeliveryZone extends FrontEndTest {
 	    
 	}
 	
-	private void validateDeliveryZone() throws InterruptedException {
+	private void validateDeliveryZone(String street, String city, String zip, String phone) throws InterruptedException {
 		
 		driver.findElement(By.linkText("Account")).click();
 	    driver.findElement(By.linkText("Delivery Information")).click();
 	    Thread.sleep(1000);
 	    
-	    
-	    changeDeliveryInfo("Street", "City", "12345", "(555) 555-555");
-	    
+	    changeDeliveryInfo(street, city, zip, phone);
 	    
 	    driver.findElement(By.cssSelector(".pt-button")).click();
 	    driver.findElement(By.cssSelector(".pt-intent-orange")).click();
@@ -76,12 +74,6 @@ public class NewDeliveryZone extends FrontEndTest {
 	    driver.findElement(By.cssSelector("div.row:nth-child(5) > div:nth-child(2) > label:nth-child(1)")).click();
 	    driver.findElement(By.cssSelector("button.pt-button:nth-child(8)")).click();
 	    Thread.sleep(1000);
-	    
-	    String bodyText = driver.findElement(By.tagName("body")).getText();
-    	Assert.assertTrue("New zip code not accepted!", !bodyText.contains("Sorry, we're not servicing your area at this time."));
-    	
-    	
-    	sendEscapeKey();
     	
 	}
 	
@@ -98,7 +90,7 @@ public class NewDeliveryZone extends FrontEndTest {
     	driver.findElement(By.linkText("Control Panel")).click();
 		
 		
-		addDeliveryZone("New Delivery", "50", "12345");
+		addDeliveryZone("New Delivery", "50", "99999");
 		
 		
 		System.out.println("//");
@@ -108,7 +100,12 @@ public class NewDeliveryZone extends FrontEndTest {
 		clickJS(driver.findElement(By.cssSelector(".app-topbar__logo")));
 		Thread.sleep(1000);
 		
-    	validateDeliveryZone();
+    	validateDeliveryZone("Street", "City", "99999", "(555) 555-555");
+    	
+    	String bodyText = driver.findElement(By.tagName("body")).getText();
+    	Assert.assertTrue("New zip code not accepted!", !bodyText.contains("Sorry, we're not servicing your area at this time."));
+    	
+    	sendEscapeKey();
     	
     	driver.findElement(By.linkText("Control Panel")).click();
 		Thread.sleep(1000);
@@ -121,6 +118,19 @@ public class NewDeliveryZone extends FrontEndTest {
 		driver.findElement(By.linkText("Delivery Zone")).click();
 		Thread.sleep(1000);
 		removeTableElement("New Delivery");
+		
+		
+		System.out.println("//");
+		System.out.println("// Testing Delivery Zone In Checkout");
+		System.out.println("//");
+		
+		clickJS(driver.findElement(By.cssSelector(".app-topbar__logo")));
+		Thread.sleep(1000);
+		
+    	validateDeliveryZone("Street", "City", "99999", "(555) 555-555");
+    	
+    	bodyText = driver.findElement(By.tagName("body")).getText();
+    	Assert.assertTrue("Old zip code accepted!", bodyText.contains("Sorry, we're not servicing your area at this time."));
 		
 	}
 	

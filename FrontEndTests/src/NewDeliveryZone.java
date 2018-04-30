@@ -23,10 +23,17 @@ public class NewDeliveryZone extends FrontEndTest {
 	
 	private void changeDeliveryInfo(String street, String city, String zip, String number) throws InterruptedException {
 		
-		clickJS(driver.findElement(By.cssSelector(".account__edit")));
-	    Thread.sleep(1000);
-	    driver.findElement(By.cssSelector("a.pt-button:nth-child(1)")).click();
-	    Thread.sleep(1000);
+		if (isElementPresent(By.cssSelector(".account__edit"))) {
+			clickJS(driver.findElement(By.cssSelector(".account__edit")));
+		    Thread.sleep(1000);
+		    driver.findElement(By.cssSelector("a.pt-button:nth-child(1)")).click();
+		    Thread.sleep(1000);
+		}
+		else {
+			driver.findElement(By.cssSelector("a.pt-button")).click();
+			Thread.sleep(1000);
+		}
+			 
 	
 		driver.findElement(By.cssSelector(
 	    		"div.account__box:nth-child(4) > div:nth-child(1) > div:nth-child(2) > label:nth-child(1) > input:nth-child(1)")).clear();
@@ -45,7 +52,9 @@ public class NewDeliveryZone extends FrontEndTest {
 	    driver.findElement(By.cssSelector(
 	    		"div.content__input-value > input.pt-input.pt-large")).sendKeys(number);
 	    
-	    driver.findElement(By.xpath("//label[contains(.,'Set as default')]")).click();
+	    if (!driver.findElement(By.cssSelector(".pt-control > input:nth-child(1)")).isSelected())
+	    	driver.findElement(By.xpath("//label[contains(.,'Set as default')]")).click();
+	    
 	    driver.findElement(By.cssSelector("button.nu-button-h.content__button")).click();
 	    
 	}
@@ -54,6 +63,7 @@ public class NewDeliveryZone extends FrontEndTest {
 		
 		driver.findElement(By.linkText("Account")).click();
 	    driver.findElement(By.linkText("Delivery Information")).click();
+	    Thread.sleep(1000);
 	    
 	    
 	    changeDeliveryInfo("Street", "City", "12345", "(555) 555-555");

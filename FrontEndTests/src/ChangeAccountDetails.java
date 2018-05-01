@@ -11,9 +11,10 @@ public class ChangeAccountDetails extends FrontEndTest {
 		driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/h2/span")).click();
 		Thread.sleep(1000);
 		
-	    WebElement nameField = driver.findElement(By.cssSelector("div.content__input-ma:nth-child(1) > div:nth-child(2) > input:nth-child(1)"));
-	    nameField.clear();
-	    nameField.sendKeys(name);
+	    driver.findElement(By.cssSelector(
+	    		"div.content__input-ma:nth-child(1) > div:nth-child(2) > input:nth-child(1)")).clear();
+	    driver.findElement(By.cssSelector(
+	    		"div.content__input-ma:nth-child(1) > div:nth-child(2) > input:nth-child(1)")).sendKeys(name);
 	    
 	    driver.findElement(By.cssSelector("button.nu-button-h.content__button")).click();
 	    driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/h2/span")).click();

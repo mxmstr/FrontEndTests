@@ -192,7 +192,8 @@ public abstract class FrontEndTest {
 	
 	public void addSubscription() throws InterruptedException {
 		
-		if (driver.findElement(By.xpath("//label[contains(.,'Gluten Free')]")).isSelected())
+		
+		if (driver.findElement(By.cssSelector("label.pt-control:nth-child(7) > span:nth-child(2)")).isSelected())
 			driver.findElement(By.xpath("//label[contains(.,'Gluten Free')]")).click();
 	    Thread.sleep(1000);
 	    

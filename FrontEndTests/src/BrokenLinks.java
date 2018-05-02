@@ -5,15 +5,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public class BrokenLinks extends FrontEndTest {
@@ -28,6 +32,17 @@ public class BrokenLinks extends FrontEndTest {
 		List<WebElement> links = driver.findElements(By.tagName("a"));
 		ArrayList<String> linksToParse = new ArrayList<String>();
 		Iterator<WebElement> it = links.iterator();
+		
+		
+		long startTime = System.currentTimeMillis();
+		long elapsedTime = 0L;
+		
+		while (driver.findElements(By.cssSelector(".pt-spinner-track")).size() > 0) {
+			elapsedTime = (new Date()).getTime() - startTime;
+			if (elapsedTime > 30 * 1000)
+				throw new TimeoutException();
+		}
+		
 		
 		while (it.hasNext()) {
 	       
@@ -81,7 +96,7 @@ public class BrokenLinks extends FrontEndTest {
 					parseLink(link);
 				}
 			} catch (TimeoutException e) {
-				System.out.println("Page: " + link + " did not load within 30 seconds!");
+				System.out.println("Page: " + link + " did not load within 15 seconds!");
 				fail("One or more pages did not load");
 			}
 			
@@ -98,8 +113,16 @@ public class BrokenLinks extends FrontEndTest {
 		System.out.println("//");
 		System.out.println("// Testing Broken Links");
 		System.out.println("//");
+
+        driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
+        
+		try {
+			parseLink(homePage);
+		} catch (TimeoutException e) {
+			System.out.println("Page: " + homePage + " did not load within 15 seconds!");
+			fail("One or more pages did not load");
+		}
 		
-		parseLink(homePage);
 		
 		joinThreads();
 		

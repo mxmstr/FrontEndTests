@@ -35,7 +35,7 @@ public abstract class FrontEndTest {
 	public void setUp() throws Exception {
 		
 		if (System.getProperty("webdriver.chrome.driver") == null) {
-			System.setProperty("webdriver.chrome.driver", "/users/ericlynch/documents/chromedriver");
+			System.setProperty("webdriver.chrome.driver", "/Users/Lynch/Documents/chromedriver.exe");
 			System.setProperty("homePage", "http://dev.gonutre.com");
 			System.setProperty("email", "lynch.er18@gmail.com");
 			System.setProperty("password", "123123");
@@ -192,14 +192,23 @@ public abstract class FrontEndTest {
 	
 	public void addSubscription() throws InterruptedException {
 		
-	    driver.findElement(By.xpath("//label[contains(.,'Gluten Free')]")).click();
+		
+		if (driver.findElement(By.cssSelector("label.pt-control:nth-child(7) > span:nth-child(2)")).isSelected())
+			driver.findElement(By.xpath("//label[contains(.,'Gluten Free')]")).click();
+	    Thread.sleep(1000);
 	    
-	    //driver.findElement(By.xpath("(//input[@value='on'])[5]")).click();
-	    new Select(driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div[2]/div[2]/div[2]/div[4]/div/div/div/div/select"))).selectByVisibleText("10");
-	    new Select(driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div[2]/div[2]/div[2]/div[2]/div/div/div/div/select"))).selectByVisibleText("5");
+	    //new Select(driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div[2]/div[2]/div[2]/div[4]/div/div/div/div/select"))).selectByVisibleText("10");
+	    //new Select(driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div[2]/div[2]/div[2]/div[2]/div/div/div/div/select"))).selectByVisibleText("5");
 	    Thread.sleep(1000);
 	    
 	    driver.findElement(By.cssSelector("button.nu-button.carte__plan-weekly-btn")).click();
+	    Thread.sleep(1000);
+	    
+	    String bodyText = driver.findElement(By.tagName("body")).getText();
+    	if (bodyText.contains("You didn't customize your order, are you sure you want to add it to your cart?"))
+    		driver.findElement(By.cssSelector(
+    				"body > div.pt-portal > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-alert-footer > button:nth-child(1) > span")).click();
+	    
 	    
 	}
 	

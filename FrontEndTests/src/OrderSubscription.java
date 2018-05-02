@@ -33,7 +33,7 @@ public class OrderSubscription extends FrontEndTest {
 	    driver.findElement(By.cssSelector("button.cart__checkout-btn")).click();
 	    Thread.sleep(1000);
 	    
-	    checkout("4242 4242 4242 4242", "‎02 / ‎20", "123", "02116");
+	    checkout("4242 4242 4242 4242", "02 / 20", "123", "02116");
 	    Thread.sleep(10000);
 		
 	}

@@ -11,7 +11,7 @@ public class RunNutreTests {
 		
 		System.setProperty("webdriver.chrome.driver", "/users/ericlynch/documents/chromedriver");
 		System.setProperty("homePage", "http://dev.gonutre.com");
-		System.setProperty("email", "lynch.er18@gmail.com");
+		System.setProperty("email", "v.yesaulov@gmail.com");//"lynch.er18@gmail.com");
 		System.setProperty("password", "123123");
 		
 		

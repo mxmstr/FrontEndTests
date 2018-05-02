@@ -115,7 +115,6 @@ public class BrokenLinks extends FrontEndTest {
 		System.out.println("//");
 
         driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
-        //homePage = "http://dev.gonutre.com/account/subscriptions";
         
 		try {
 			parseLink(homePage);

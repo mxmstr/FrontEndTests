@@ -18,7 +18,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.Select;
 
 
@@ -35,7 +37,9 @@ public abstract class FrontEndTest {
 	public void setUp() throws Exception {
 		
 		if (System.getProperty("webdriver.chrome.driver") == null) {
-			System.setProperty("webdriver.chrome.driver", "/Users/Lynch/Documents/chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", "/users/ericlynch/documents/chromedriver");
+			System.setProperty("webdriver.gecko.driver", "/users/ericlynch/documents/geckodriver");
+			System.setProperty("browser", "0");
 			System.setProperty("homePage", "http://dev.gonutre.com");
 			System.setProperty("email", "lynch.er18@gmail.com");
 			System.setProperty("password", "123123");
@@ -50,7 +54,17 @@ public abstract class FrontEndTest {
 		while (true) {
 			
 			try {
-				driver = new ChromeDriver();
+				switch(Integer.parseInt(System.getProperty("browser"))) {
+					case 0:
+						driver = new ChromeDriver();
+						break;
+					case 1:
+						driver = new FirefoxDriver();
+						break;
+					case 2:
+						driver = new SafariDriver();
+						break;
+				}
 				break;
 			}
 			catch (WebDriverException e) {}
@@ -119,6 +133,13 @@ public abstract class FrontEndTest {
 		
 	}
 	
+	public void scrollUpJS() {
+		
+		WebElement header = driver.findElement(By.id("root"));
+		((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", header);
+		
+	}
+	
 	public void sendEscapeKey() throws InterruptedException {
 		
 		Actions action = new Actions(driver);
@@ -130,7 +151,9 @@ public abstract class FrontEndTest {
 	public void signIn(){
 		
 	    try {
-	    	driver.findElement(By.linkText("Log In")).click();
+	    	clickJS(driver.findElement(By.linkText("Log In")));
+	    	//driver.findElement(By.linkText("Log In")).click();
+	    	Thread.sleep(1000);
 		    driver.findElement(By.cssSelector("input[type='email']")).clear();
 		    driver.findElement(By.cssSelector("input[type='email']")).sendKeys(email);
 		    driver.findElement(By.cssSelector("input[type='password']")).clear();
@@ -143,6 +166,16 @@ public abstract class FrontEndTest {
 			e.printStackTrace();
 		}
 	    
+	}
+	
+	public void openCart() throws InterruptedException {
+		
+		scrollUpJS();
+		Thread.sleep(1000);
+		
+		driver.findElement(By.cssSelector(
+				"button.pt-button.pt-minimal.pt-icon-shopping-cart.topbar__cart-btn.topbar__ma-top-8")).click();
+		
 	}
 	
 	public void add1ItemToCart() throws InterruptedException {

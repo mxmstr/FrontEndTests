@@ -19,10 +19,10 @@ public class OrderAlacarte extends FrontEndTest {
 		
 		add1ItemToCart();
 		Thread.sleep(1000);
-		driver.findElement(By.cssSelector(
-				"button.pt-button.pt-minimal.pt-icon-shopping-cart.topbar__cart-btn.topbar__ma-top-8")).click();
-    	Thread.sleep(1000);
-    	
+		
+		openCart();
+		Thread.sleep(1000);
+		
     	
     	System.out.println("//");
 		System.out.println("// Testing Checkout Without Shipping");
@@ -61,9 +61,8 @@ public class OrderAlacarte extends FrontEndTest {
     	add10ItemsToCart();
     	Thread.sleep(1000);
     	
-    	driver.findElement(By.cssSelector(
-				"button.pt-button.pt-minimal.pt-icon-shopping-cart.topbar__cart-btn.topbar__ma-top-8")).click();
-    	Thread.sleep(1000);
+    	openCart();
+		Thread.sleep(1000);
     	
     	
     	System.out.println("//");

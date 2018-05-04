@@ -48,16 +48,16 @@ public class BrokenLinks extends FrontEndTest {
 	       
 			url = it.next().getAttribute("href");
 			
-		    if(url == null || url.isEmpty()) {
+		    if (url == null || url.isEmpty()) {
 		    	System.out.println(url + " URL is either not configured for anchor tag or it is empty");
 		    	continue;
 		    }
 		    
-	        if(!url.startsWith(homePage)){
+	        if (!url.startsWith(homePage)) {
 	        	System.out.println(url + " URL belongs to another domain, skipping it.");
 	        	continue;
 	        }
-	       
+	        
 	        try {
 	        	conn = (HttpURLConnection)(new URL(url).openConnection());
 	        	conn.setRequestMethod("HEAD");

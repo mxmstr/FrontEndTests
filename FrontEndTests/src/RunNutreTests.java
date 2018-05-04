@@ -13,9 +13,11 @@ public class RunNutreTests {
 	
 	public static void main(String[] args) {
 		
-		System.setProperty("webdriver.chrome.driver", "/Users/Lynch/Documents/chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "/users/ericlynch/documents/chromedriver");
+		System.setProperty("webdriver.gecko.driver", "/users/ericlynch/documents/geckodriver");
+		System.setProperty("browser", "0");
 		System.setProperty("homePage", "http://dev.gonutre.com");
-		System.setProperty("email", "v.yesaulov@gmail.com");//"lynch.er18@gmail.com");
+		System.setProperty("email", "lynch.er18@gmail.com");
 		System.setProperty("password", "123123");
 		
 		
@@ -23,7 +25,9 @@ public class RunNutreTests {
 		try {
 			configFile.load(RunNutreTests.class.getClassLoader().getResourceAsStream("config.cfg"));
 			
-			System.setProperty("webdriver.chrome.driver", configFile.getProperty("driver"));
+			System.setProperty("webdriver.chrome.driver", configFile.getProperty("chromeDriverPath"));
+			System.setProperty("webdriver.gecko.driver", configFile.getProperty("geckoDriverPath"));
+			System.setProperty("browser", configFile.getProperty("browser"));
 			System.setProperty("homePage", configFile.getProperty("homePage"));
 			System.setProperty("email", configFile.getProperty("email"));
 			System.setProperty("password", configFile.getProperty("password"));

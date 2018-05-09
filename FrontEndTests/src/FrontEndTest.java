@@ -148,23 +148,17 @@ public abstract class FrontEndTest {
 		
 	}
 	
-	public void signIn(){
+	public void signIn() throws InterruptedException {
 		
-	    try {
-	    	clickJS(driver.findElement(By.linkText("Log In")));
-	    	//driver.findElement(By.linkText("Log In")).click();
-	    	Thread.sleep(1000);
-		    driver.findElement(By.cssSelector("input[type='email']")).clear();
-		    driver.findElement(By.cssSelector("input[type='email']")).sendKeys(email);
-		    driver.findElement(By.cssSelector("input[type='password']")).clear();
-		    driver.findElement(By.cssSelector("input[type='password']")).sendKeys(password);
-		    driver.findElement(By.xpath("//button[contains(.,'Log In')]")).click();
-		    
-			Thread.sleep(500);
-		} 
-	    catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+    	clickJS(driver.findElement(By.linkText("Log In")));
+    	Thread.sleep(1000);
+    	
+	    driver.findElement(By.cssSelector("input[type='email']")).clear();
+	    driver.findElement(By.cssSelector("input[type='email']")).sendKeys(email);
+	    driver.findElement(By.cssSelector("input[type='password']")).clear();
+	    driver.findElement(By.cssSelector("input[type='password']")).sendKeys(password);
+	    driver.findElement(By.xpath("//button[contains(.,'Log In')]")).click();
+		Thread.sleep(1000);
 	    
 	}
 	
@@ -230,17 +224,14 @@ public abstract class FrontEndTest {
 			driver.findElement(By.xpath("//label[contains(.,'Gluten Free')]")).click();
 	    Thread.sleep(1000);
 	    
-	    //new Select(driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div[2]/div[2]/div[2]/div[4]/div/div/div/div/select"))).selectByVisibleText("10");
-	    //new Select(driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div[2]/div[2]/div[2]/div[2]/div/div/div/div/select"))).selectByVisibleText("5");
-	    Thread.sleep(1000);
-	    
 	    driver.findElement(By.cssSelector("button.nu-button.carte__plan-weekly-btn")).click();
 	    Thread.sleep(1000);
 	    
 	    String bodyText = driver.findElement(By.tagName("body")).getText();
     	if (bodyText.contains("You didn't customize your order, are you sure you want to add it to your cart?"))
     		driver.findElement(By.cssSelector(
-    				"body > div.pt-portal > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-alert-footer > button:nth-child(1) > span")).click();
+    				"body > div.pt-portal > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-alert-footer > button:nth-child(1) > span")
+    				).click();
 	    
 	    
 	}

@@ -1,0 +1,141 @@
+{
+	"selectors" : {
+		
+		"Header-Alacarte" : {
+			"by" : "linkText",
+			"selector" : "A la Carte"
+		},
+		"Header-Login" : {
+			"by" : "linkText",
+			"selector" : "Log In"
+		},
+		"Header-Account" : {
+			"by" : "linkText",
+			"selector" : "Account"
+		},
+		"Header-Cart" : {
+			"by" : "cssSelector",
+			"selector" : "button.pt-button.pt-minimal.pt-icon-shopping-cart.topbar__cart-btn.topbar__ma-top-8"
+		},
+		
+		"Alacarte-Item1-Dropdown" : {
+			"by" : "cssSelector",
+			"selector" : "select"
+		},
+		"Alacarte-Item1-Add" : {
+			"by" : "cssSelector",
+			"selector" : "button[name='Soup 1']"
+		},
+		"Alacarte-Item2-Dropdown" : {
+			"by" : "xpath",
+			"selector" : "//div[@id='root']/div/div/div[2]/div[2]/div[2]/div[2]/div/div/div[2]/div/div/select"
+		},
+		"Alacarte-Item2-Add" : {
+			"by" : "cssSelector",
+			"selector" : "button[name='Pizza']"
+		},
+		
+		"Plan-Gluten-Checkbox" : {
+			"by" : "cssSelector",
+			"selector" : "label.pt-control:nth-child(7) > span:nth-child(2)"
+		},
+		"Plan-Gluten-Label" : {
+			"by" : "xpath",
+			"selector" : "//label[contains(.,'Gluten Free')]"
+		},
+		"Plan-Create" : {
+			"by" : "cssSelector",
+			"selector" : "button.nu-button.carte__plan-weekly-btn"
+		},
+		"Plan-Create-Confirm" : {
+			"by" : "cssSelector",
+			"selector" : "body > div.pt-portal > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-alert-footer > button:nth-child(1) > span"
+		},
+		
+		"Cart-Code-Input" : {
+			"by" : "cssSelector",
+			"selector" : "input.pt-input.pt-fill"
+		},
+		"Cart-Code-Apply" : {
+			"by" : "cssSelector",
+			"selector" : "button.cart__promocode-btn"
+		},
+		"Cart-Checkout-Card-Frame" : {
+			"by" : "cssSelector",
+			"selector" : ".__PrivateStripeElement > iframe:nth-child(1)"
+		},
+		"Cart-Checkout-Card-Number" : {
+			"by" : "name",
+			"selector" : "cardnumber"
+		},
+		"Cart-Checkout-Card-Date" : {
+			"by" : "name",
+			"selector" : "exp-date"
+		},
+		"Cart-Checkout-Card-CVC" : {
+			"by" : "name",
+			"selector" : "cvc"
+		},
+		"Cart-Checkout-Card-Zip" : {
+			"by" : "name",
+			"selector" : "postal"
+		},
+		"Cart-Checkout-Confirm" : {
+			"by" : "xpath",
+			"selector" : "//form/div/div/button"
+		},
+		
+		"Account-Payment" : {
+			"by" : "linkText",
+			"selector" : "Payment Information"
+		},
+		"Account-Payment-Delete" : {
+			"by" : "xpath",
+			"selector" : "//div[@id='root']/div/div/div[2]/div/div/div[2]/div[3]/div/span"
+		},
+		"Account-Payment-Delete-Confirm" : {
+			"by" : "xpath",
+			"selector" : "//div[@id='root']/div/div/div[2]/div/div/div[2]/div[3]/div/div[3]/table/tbody/tr/td[5]/button"
+		},
+		"Account-Subscription" : {
+			"by" : "linkText",
+			"selector" : "Subscription"
+		},
+		"Account-Subscription-Cancel" : {
+			"by" : "xpath",
+			"selector" : "//div[@id='root']/div/div/div[2]/div/div/div[2]/div/div[2]/button[2]"
+		},
+		"Account-Subscription-Cancel-Confirm" : {
+			"by" : "cssSelector",
+			"selector" : "button.nu-button.subscription__cancel__confirm"
+		},
+		
+		"Login-Email" : {
+			"by" : "cssSelector",
+			"selector" : "input[type='email']"
+		},
+		"Login-Password" : {
+			"by" : "cssSelector",
+			"selector" : "input[type='password']"
+		},
+		"Login-Confirm" : {
+			"by" : "xpath",
+			"selector" : "//button[contains(.,'Log In')]"
+		},
+		
+		"ControlPanel-Table" : {
+			"by" : "cssSelector",
+			"selector" : ".pt-table"
+		},
+		"ControlPanel-Table-Delete" : {
+			"by" : "cssSelector",
+			"selector" : "button.pt-button:nth-child(4)"
+		},
+		"ControlPanel-Table-Delete-Confirm" : {
+			"by" : "cssSelector",
+			"selector" : "button.pt-intent-danger:nth-child(1)"
+		}
+		
+		
+	}
+}

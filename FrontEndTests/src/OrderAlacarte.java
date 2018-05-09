@@ -31,6 +31,7 @@ public class OrderAlacarte extends FrontEndTest {
     	Assert.assertTrue(
     			"Checkout without shipping info!",
     			!driver.findElement(By.cssSelector("button.cart__checkout-btn")).isEnabled());
+    	Thread.sleep(1000);
     	
     	
     	System.out.println("//");
@@ -40,9 +41,13 @@ public class OrderAlacarte extends FrontEndTest {
     	driver.findElement(By.cssSelector(".pt-intent-orange")).click();
     	Thread.sleep(1000);
 	    
-    	driver.findElement(By.xpath("//label[contains(.,'Free Pick up')]")).click();
-    	driver.findElement(By.xpath("//label[contains(.,'Free Pick up')]")).click();
-    	driver.findElement(By.cssSelector("button.pt-button:nth-child(8)")).click();
+    	driver.findElement(By.xpath("//label[contains(.,'Empire State Building')]")).click();
+    	driver.findElement(By.xpath("//label[contains(.,'Empire State Building')]")).click();
+    	driver.findElement(By.cssSelector(
+    			"body > div:nth-child(9) > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-dialog-body.bootstrap-wrapper > div > button"
+    			)).click();
+    	//clickJS(driver.findElement(By.xpath("//button[contains(.,'Apply')]")));
+	    //clickJS(driver.findElement(By.cssSelector("button.pt-button.pt-fill.pt-intent-orange")));
 	    Thread.sleep(1000);
 
 	    driver.findElement(By.cssSelector("button.cart__checkout-btn")).click();
@@ -94,9 +99,11 @@ public class OrderAlacarte extends FrontEndTest {
     	driver.findElement(By.cssSelector(".pt-intent-orange")).click();
     	Thread.sleep(1000);
 	    
-    	driver.findElement(By.xpath("//label[contains(.,'Free Pick up')]")).click();
-    	driver.findElement(By.xpath("//label[contains(.,'Free Pick up')]")).click();
-    	driver.findElement(By.cssSelector("button.pt-button:nth-child(8)")).click();
+    	driver.findElement(By.xpath("//label[contains(.,'Empire State Building')]")).click();
+    	driver.findElement(By.xpath("//label[contains(.,'Empire State Building')]")).click();
+    	driver.findElement(By.cssSelector(
+    			"body > div:nth-child(9) > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-dialog-body.bootstrap-wrapper > div > button"
+    			)).click();
 	    Thread.sleep(1000);
 	    
 	    driver.findElement(By.cssSelector("button.cart__checkout-btn")).click();

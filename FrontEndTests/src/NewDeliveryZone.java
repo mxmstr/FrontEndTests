@@ -33,8 +33,8 @@ public class NewDeliveryZone extends FrontEndTest {
 			driver.findElement(By.cssSelector("a.pt-button")).click();
 			Thread.sleep(1000);
 		}
-			 
-	
+		
+		
 		driver.findElement(By.cssSelector(
 	    		"div.account__box:nth-child(4) > div:nth-child(1) > div:nth-child(2) > label:nth-child(1) > input:nth-child(1)")).clear();
 	    driver.findElement(By.cssSelector(
@@ -67,8 +67,8 @@ public class NewDeliveryZone extends FrontEndTest {
 	    
 	    changeDeliveryInfo(street, city, zip, phone);
 	    
-	    driver.findElement(By.cssSelector(".pt-button")).click();
-	    driver.findElement(By.cssSelector(".pt-intent-orange")).click();
+	    driver.findElement(By.cssSelector(".pt-button")).click();//cart
+	    driver.findElement(By.cssSelector(".pt-intent-orange")).click();//shipping
 	    Thread.sleep(1000);
 	    
 	    driver.findElement(By.cssSelector("div.row:nth-child(5) > div:nth-child(2) > label:nth-child(1)")).click();

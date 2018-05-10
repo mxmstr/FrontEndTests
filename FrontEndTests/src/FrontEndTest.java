@@ -1,16 +1,15 @@
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -22,6 +21,10 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.Select;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 
 public abstract class FrontEndTest {
@@ -31,10 +34,141 @@ public abstract class FrontEndTest {
 	public String password;
 	public WebDriver driver;
 	public ArrayList<AsyncTester> threads;
+	public SelectorTable table;
+	public SelectorData select;
+	public static String elementJson = "src//PageElements.json";
+	
+	
+	public static class SelectorString {
+		
+		public String by;
+		public String selector;
+		
+	}
+	
+	public static class SelectorData {
+		
+		public SelectorString Body;
+		public SelectorString Spinner;
+		
+		public SelectorString Header_Topbar;
+		public SelectorString Header_Logo;
+		public SelectorString Header_Alacarte;
+		public SelectorString Header_Plan;
+		public SelectorString Header_Search;
+		public SelectorString Header_Search_Input;
+		public SelectorString Header_Search_Result1;
+		public SelectorString Header_Login;
+		public SelectorString Header_Account;
+		public SelectorString Header_Cart;
+		
+		public SelectorString Alacarte_Item1_Dropdown;
+		public SelectorString Alacarte_Item1_Add;
+		public SelectorString Alacarte_Item2_Dropdown;
+		public SelectorString Alacarte_Item2_Add;
+		
+		public SelectorString Plan_GoToMenu;
+		public SelectorString Plan_Gluten_Checkbox;
+		public SelectorString Plan_Gluten_Label;
+		public SelectorString Plan_Create;
+		public SelectorString Plan_Create_Confirm;
+		
+		public SelectorString Cart_Code_Input;
+		public SelectorString Cart_Code_Apply;
+		public SelectorString Cart_Shipping;
+		public SelectorString Cart_Shipping_Address1;
+		public SelectorString Cart_Shipping_Pickup;
+		public SelectorString Cart_Shipping_Confirm;
+		public SelectorString Cart_Checkout;
+		public SelectorString Cart_Checkout_Card_Frame;
+		public SelectorString Cart_Checkout_Card_Number;
+		public SelectorString Cart_Checkout_Card_Date;
+		public SelectorString Cart_Checkout_Card_CVC;
+		public SelectorString Cart_Checkout_Card_Zip;
+		public SelectorString Cart_Checkout_Close;
+		public SelectorString Cart_Checkout_Confirm;
+		
+		public SelectorString Account_Detail_Name;
+		public SelectorString Account_Detail_Edit;
+		public SelectorString Account_Detail_Edit_FirstName;
+		public SelectorString Account_Detail_Edit_Save;
+		public SelectorString Account_Delivery;
+		public SelectorString Account_Delivery_Edit;
+		public SelectorString Account_Delivery_Edit_Delete;
+		public SelectorString Account_Delivery_Add;
+		public SelectorString Account_Delivery_Add_Street;
+		public SelectorString Account_Delivery_Add_City;
+		public SelectorString Account_Delivery_Add_Zip;
+		public SelectorString Account_Delivery_Add_Number;
+		public SelectorString Account_Delivery_Add_Default_Check;
+		public SelectorString Account_Delivery_Add_Default_Label;
+		public SelectorString Account_Delivery_Add_Default_Save;
+		public SelectorString Account_Payment;
+		public SelectorString Account_Payment_Delete;
+		public SelectorString Account_Payment_Delete_Confirm;
+		public SelectorString Account_Subscription;
+		public SelectorString Account_Subscription_Cancel;
+		public SelectorString Account_Subscription_Cancel_Confirm;
+		public SelectorString Account_ControlPanel;
+		public SelectorString Account_SignOut;
+		
+		public SelectorString Login_Email;
+		public SelectorString Login_Password;
+		public SelectorString Login_Confirm;
+		
+		public SelectorString ControlPanel_Table;
+		public SelectorString ControlPanel_Table_Delete;
+		public SelectorString ControlPanel_Table_Delete_Confirm;
+		public SelectorString ControlPanel_Meal_Add;
+		public SelectorString ControlPanel_Meal_Add_Name;
+		public SelectorString ControlPanel_Meal_Add_Price;
+		public SelectorString ControlPanel_Meal_Add_Category;
+		public SelectorString ControlPanel_Meal_Add_Ingredients;
+		public SelectorString ControlPanel_Meal_Add_Create;
+		public SelectorString ControlPanel_Meal_Edit;
+		public SelectorString ControlPanel_Meal_Edit_Price;
+		public SelectorString ControlPanel_Meal_Edit_Save;
+		public SelectorString ControlPanel_Meal_FirstItem;
+		public SelectorString ControlPanel_Coupon;
+		public SelectorString ControlPanel_Coupon_Add;
+		public SelectorString ControlPanel_Coupon_Name;
+		public SelectorString ControlPanel_Coupon_Percent;
+		public SelectorString ControlPanel_Coupon_Code;
+		public SelectorString ControlPanel_Coupon_Create;
+		public SelectorString ControlPanel_Delivery;
+		public SelectorString ControlPanel_Delivery_Add;
+		public SelectorString ControlPanel_Delivery_Add_Title;
+		public SelectorString ControlPanel_Delivery_Add_Price;
+		public SelectorString ControlPanel_Delivery_Add_Zips;
+		public SelectorString ControlPanel_Delivery_Add_Create;
+		
+	}
+	
+	public static class SelectorTable {
+		
+		public SelectorData selectors;
+		
+	}
+	
+	public static class Car {
+	    private String brand = null;
+	    private int doors = 0;
+
+	    public String getBrand() { return this.brand; }
+	    public void   setBrand(String brand){ this.brand = brand;}
+
+	    public int  getDoors() { return this.doors; }
+	    public void setDoors (int doors) { this.doors = doors; }
+	}
 	
 	
 	@Before
 	public void setUp() throws Exception {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		table = mapper.readValue(new File(elementJson), SelectorTable.class);
+		select = table.selectors;
+		
 		
 		if (System.getProperty("webdriver.chrome.driver") == null) {
 			System.setProperty("webdriver.chrome.driver", "/users/ericlynch/documents/chromedriver");

@@ -5,5 +5,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="libs/selenium-java-3.11.0.zip"/>
 	<classpathentry kind="lib" path="libs/selenium-server-standalone-3.11.0.jar"/>
+	<classpathentry kind="lib" path="libs/jackson-core-2.9.5.jar"/>
+	<classpathentry kind="lib" path="libs/jackson-databind-2.9.5.jar"/>
+	<classpathentry kind="lib" path="libs/jackson-annotations-2.9.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

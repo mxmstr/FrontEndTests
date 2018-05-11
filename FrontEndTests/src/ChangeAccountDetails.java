@@ -8,17 +8,16 @@ public class ChangeAccountDetails extends FrontEndTest {
 
 	private void changeAccountName(String name) throws InterruptedException {
 		
-		driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/h2/span")).click();
+		click(select.Account_Detail_Edit);
+		
 		Thread.sleep(1000);
 		
-	    driver.findElement(By.cssSelector(
-	    		"div.content__input-ma:nth-child(1) > div:nth-child(2) > input:nth-child(1)")).clear();
-	    driver.findElement(By.cssSelector(
-	    		"div.content__input-ma:nth-child(1) > div:nth-child(2) > input:nth-child(1)")).sendKeys(name);
-	    
-	    driver.findElement(By.cssSelector("button.nu-button-h.content__button")).click();
-	    driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/h2/span")).click();
+		clear(select.Account_Detail_Edit_FirstName);
+		sendKeys(select.Account_Detail_Edit_FirstName, name);
 		
+		click(select.Account_Detail_Edit_Save);
+		click(select.Account_Detail_Edit);
+	    
 	}
 	
 	@Test
@@ -28,7 +27,8 @@ public class ChangeAccountDetails extends FrontEndTest {
 		System.out.println("// Testing Account Edit Module");
 		System.out.println("//");
 		
-		driver.findElement(By.linkText("Account")).click();
+		click(select.Header_Account);
+		
     	Thread.sleep(1000);
 		
 	    changeAccountName("Joe");
@@ -36,8 +36,7 @@ public class ChangeAccountDetails extends FrontEndTest {
 	    
 	    Assert.assertTrue(
 	    		"Edit module did not update!",
-	    		driver.findElement(By.cssSelector(
-	    				"div.row:nth-child(3) > div:nth-child(2)")).getText().contains("Joe"));
+	    		getElement(select.Account_Detail_Name).getText().contains("Joe"));
 	    
 	    changeAccountName("John");
 	    
@@ -46,10 +45,10 @@ public class ChangeAccountDetails extends FrontEndTest {
 		System.out.println("// Testing Sign Out");
 		System.out.println("//");
 	    
-	    driver.findElement(By.linkText("Sign Out")).click();
+	    click(select.Account_SignOut);
 	    Thread.sleep(1000);
 	    
-	    Assert.assertTrue("Sign out access not downgraded!", !isElementPresent(By.linkText("Account")));
+	    Assert.assertTrue("Sign out access not downgraded!", !isElementPresent(select.Header_Account));
 	    
 	}
 	

@@ -14,13 +14,13 @@ public class SearchBar extends FrontEndTest {
 		
 		try {
 		    
-		    driver.findElement(By.cssSelector("input.pt-input")).clear();
-		    driver.findElement(By.cssSelector("input.pt-input")).sendKeys("p");
-		    driver.findElement(By.linkText("Pasta")).click();
+			clear(select.Header_Search_Input);
+			sendKeys(select.Header_Search_Input, "p");
+		    click(select.Header_Search_Result1);
 		    
 		    Assert.assertTrue(
 		    		"Autofill didn't close!",
-		    		!isElementPresent(By.cssSelector("div.topbar__search-block")));
+		    		!isElementPresent(select.Header_Search));
 		    
 		}
 		catch (InvalidElementStateException e) {

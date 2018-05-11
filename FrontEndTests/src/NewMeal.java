@@ -7,15 +7,19 @@ public class NewMeal extends FrontEndTest {
 
 	private void addNewMeal(String name) throws InterruptedException {
 		
-		driver.findElement(By.xpath("//div[@id='root']/div/div/div/div/div/div/div[2]/button")).click();
-		driver.findElement(By.cssSelector("input.pt-fill:nth-child(2)")).clear();
-		driver.findElement(By.cssSelector("input.pt-fill:nth-child(2)")).sendKeys(name);
-	    driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).clear();
-	    driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).sendKeys("20.00");
-	    new Select(driver.findElement(By.cssSelector("select"))).selectByVisibleText("Dinner");
-	    driver.findElement(By.xpath("//div[8]/label/textarea")).clear();
-	    driver.findElement(By.xpath("//div[8]/label/textarea")).sendKeys("a, b, c");
-	    driver.findElement(By.xpath("//div[12]/button")).click();
+		click(select.ControlPanel_Meal_Add);
+		
+		clear(select.ControlPanel_Meal_Add_Name);
+		sendKeys(select.ControlPanel_Meal_Add_Name, name);
+		clear(select.ControlPanel_Meal_Add_Price);
+		sendKeys(select.ControlPanel_Meal_Add_Price, "20.00");
+		
+	    new Select(getElement(select.ControlPanel_Meal_Add_Category)).selectByVisibleText("Dinner");
+	    
+	    clear(select.ControlPanel_Meal_Add_Ingredients);
+	    sendKeys(select.ControlPanel_Meal_Add_Ingredients, "a, b, c");
+	    
+	    click(select.ControlPanel_Meal_Add_Create);
 		
 	}
 	
@@ -26,16 +30,14 @@ public class NewMeal extends FrontEndTest {
 		System.out.println("// Testing Add Meal");
 		System.out.println("//");
 		
-		driver.findElement(By.linkText("Account")).click();
+		click(select.Header_Account);
+		
     	Thread.sleep(1000);
     	
-    	driver.findElement(By.linkText("Control Panel")).click();
-		
-		
+    	click(select.Account_ControlPanel);
 		addNewMeal("New Meal");
 		
-	    String bodyText = driver.findElement(By.tagName("body")).getText();
-    	Assert.assertTrue("Meal wasn't added!", bodyText.contains("New Meal"));
+		Assert.assertTrue("Meal wasn't added!", textOnPage("New Meal"));
 		
     	removeTableElement("New Meal");
 		

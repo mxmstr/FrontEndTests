@@ -18,6 +18,10 @@
 		},
 		"Header_Logo" : {
 			"by" : "cssSelector",
+			"selector" : "a.topbar__logo"
+		},
+		"Header_Logo_ControlPanel" : {
+			"by" : "cssSelector",
 			"selector" : ".app-topbar__logo"
 		},
 		"Header_Alacarte" : {
@@ -54,6 +58,10 @@
 		},
 		
 		
+		"Alacarte_Dinner_Checkbox" : {
+			"by" : "xpath",
+			"selector" : "//label[contains(.,'Dinner')]"
+		},
 		"Alacarte_Item1_Dropdown" : {
 			"by" : "cssSelector",
 			"selector" : "select"
@@ -74,7 +82,7 @@
 		
 		"Plan_GoToMenu" : {
 			"by" : "cssSelector",
-			"selector" : "Get Started"
+			"selector" : "a.nu-button.plan-description__menu-btn"
 		},
 		"Plan_Gluten_Checkbox" : {
 			"by" : "cssSelector",
@@ -115,8 +123,8 @@
 			"selector" : "//label[contains(.,'Empire State Building')]"
 		},
 		"Cart_Shipping_Confirm" : {
-			"by" : "cssSelector",
-			"selector" : "button.pt-button.pt-fill.pt-intent-orange"
+			"by" : "xpath",
+			"selector" : "(//button[@type='button'])[3]"
 		},
 		"Cart_Checkout" : {
 			"by" : "cssSelector",
@@ -179,7 +187,7 @@
 		},
 		"Account_Delivery_Edit_Delete" : {
 			"by" : "cssSelector",
-			"selector" : ".a.pt-button:nth-child(1)"
+			"selector" : "#root > div > div.bootstrap-wrapper.nu-content > div.container-flued > div > div > div.account__info > div:nth-child(4) > div > div.col-12.account__table-container > table > tbody > tr > td:nth-child(6) > a"
 		},
 		"Account_Delivery_Add" : {
 			"by" : "cssSelector",
@@ -276,6 +284,7 @@
 			"by" : "cssSelector",
 			"selector" : "button.pt-intent-danger:nth-child(1)"
 		},
+		
 		"ControlPanel_Meal_Add" : {
 			"by" : "xpath",
 			"selector" : "//div[@id='root']/div/div/div/div/div/div/div[2]/button"

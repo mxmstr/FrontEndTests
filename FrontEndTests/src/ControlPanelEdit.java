@@ -6,10 +6,10 @@ public class ControlPanelEdit extends FrontEndTest  {
 
 	private void changeItemPrice(String price) {
 		
-        driver.findElement(By.cssSelector("span.app__psedo-link")).click();
-        driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).clear();
-        driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).sendKeys(price);
-        driver.findElement(By.xpath("//div[12]/button")).click();
+		click(select.ControlPanel_Meal_Edit);
+		clear(select.ControlPanel_Meal_Edit_Price);
+		sendKeys(select.ControlPanel_Meal_Edit_Price, price);
+		click(select.ControlPanel_Meal_Edit_Save);
 		
 	}
 	
@@ -20,10 +20,11 @@ public class ControlPanelEdit extends FrontEndTest  {
 		System.out.println("// Testing Control Panel Edit Module");
 		System.out.println("//");
 		
-		driver.findElement(By.linkText("Account")).click();
+		click(select.Header_Account);
+		
     	Thread.sleep(1000);
     	
-    	driver.findElement(By.linkText("Control Panel")).click();
+    	click(select.Account_ControlPanel);
     	
 		
 		changeItemPrice("10.00");
@@ -31,8 +32,7 @@ public class ControlPanelEdit extends FrontEndTest  {
         
         Assert.assertTrue(
         		"Edit module did not update!",
-	    		driver.findElement(By.cssSelector(
-		        		".pt-table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3)")).getText().contains("10.00"));
+        		getElement(select.ControlPanel_Meal_FirstItem).getText().contains("10.00"));
     	
         changeItemPrice("9.00");
         Thread.sleep(1000);

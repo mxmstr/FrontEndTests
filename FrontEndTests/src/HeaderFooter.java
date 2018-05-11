@@ -15,7 +15,7 @@ public class HeaderFooter extends FrontEndTest {
 		
 		Assert.assertTrue(
 	    		"Header does not exist!",
-	    		isElementPresent(By.className("topbar__menu")));
+	    		isElementPresent(select.Header_Topbar));
 		
 	}
 	

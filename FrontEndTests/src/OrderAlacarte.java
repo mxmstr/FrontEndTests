@@ -16,11 +16,12 @@ public class OrderAlacarte extends FrontEndTest {
 		System.out.println("//");
 		
 		removePaymentInfo();
-		
 		add1ItemToCart();
+		
 		Thread.sleep(1000);
 		
 		openCart();
+		
 		Thread.sleep(1000);
 		
     	
@@ -28,9 +29,8 @@ public class OrderAlacarte extends FrontEndTest {
 		System.out.println("// Testing Checkout Without Shipping");
 		System.out.println("//");
 		
-    	Assert.assertTrue(
-    			"Checkout without shipping info!",
-    			!driver.findElement(By.cssSelector("button.cart__checkout-btn")).isEnabled());
+    	Assert.assertTrue("Checkout without shipping info!", !isEnabled(select.Cart_Checkout));
+    	
     	Thread.sleep(1000);
     	
     	
@@ -38,35 +38,36 @@ public class OrderAlacarte extends FrontEndTest {
 		System.out.println("// Testing Checkout With Less Than 10 items");
 		System.out.println("//");
     	
-    	driver.findElement(By.cssSelector(".pt-intent-orange")).click();
+    	click(select.Cart_Shipping);
+    	
     	Thread.sleep(1000);
 	    
-    	driver.findElement(By.xpath("//label[contains(.,'Empire State Building')]")).click();
-    	driver.findElement(By.xpath("//label[contains(.,'Empire State Building')]")).click();
-    	driver.findElement(By.cssSelector(
-    			"body > div:nth-child(9) > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-dialog-body.bootstrap-wrapper > div > button"
-    			)).click();
-    	//clickJS(driver.findElement(By.xpath("//button[contains(.,'Apply')]")));
-	    //clickJS(driver.findElement(By.cssSelector("button.pt-button.pt-fill.pt-intent-orange")));
+    	//click(select.Cart_Shipping_Pickup);
+    	//click(select.Cart_Shipping_Pickup);
+	    click(select.Cart_Shipping_Confirm);
+	    
 	    Thread.sleep(1000);
 
-	    driver.findElement(By.cssSelector("button.cart__checkout-btn")).click();
+	    click(select.Cart_Checkout);
+	    
 	    Thread.sleep(1000);
 	    
-		bodyText = driver.findElement(By.tagName("body")).getText();
-    	Assert.assertTrue(
+		Assert.assertTrue(
     			"Checkout with less than 10 items!", 
-    			bodyText.contains("You must to have at least 10 meal items in the cart."));
+    			textOnPage("You must to have at least 10 meal items in the cart."));
 		
     	sendEscapeKey();
+    	
     	Thread.sleep(1000);
     	
-    	driver.findElement(By.cssSelector(".topbar__logo")).click();
+    	click(select.Header_Logo);
     	
     	add10ItemsToCart();
+    	
     	Thread.sleep(1000);
     	
     	openCart();
+    	
 		Thread.sleep(1000);
     	
     	
@@ -75,10 +76,10 @@ public class OrderAlacarte extends FrontEndTest {
 		System.out.println("//");
     	
     	redeemPromoCode("789");
+    	
     	Thread.sleep(1000);
     	
-    	bodyText = driver.findElement(By.tagName("body")).getText();
-    	Assert.assertTrue("Inactive code accepted!", bodyText.contains("Code is invalid or already used."));
+    	Assert.assertTrue("Inactive code accepted!", textOnPage("Code is invalid or already used."));
     	
     	
     	System.out.println("//");
@@ -86,41 +87,43 @@ public class OrderAlacarte extends FrontEndTest {
 		System.out.println("//");
 		
     	redeemPromoCode("abc");
+    	
     	Thread.sleep(1000);
     	
-    	bodyText = driver.findElement(By.tagName("body")).getText();
-    	Assert.assertTrue("Invalid code accepted!", bodyText.contains("Code is invalid or already used."));
+    	Assert.assertTrue("Invalid code accepted!", textOnPage("Code is invalid or already used."));
 		
     	
     	System.out.println("//");
 		System.out.println("// Testing Checkout With Invalid Card");
 		System.out.println("//");
     	
-    	driver.findElement(By.cssSelector(".pt-intent-orange")).click();
-    	Thread.sleep(1000);
+		click(select.Cart_Shipping);
+    	
+    	Thread.sleep(5000);
 	    
-    	driver.findElement(By.xpath("//label[contains(.,'Empire State Building')]")).click();
-    	driver.findElement(By.xpath("//label[contains(.,'Empire State Building')]")).click();
-    	driver.findElement(By.cssSelector(
-    			"body > div:nth-child(9) > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-dialog-body.bootstrap-wrapper > div > button"
-    			)).click();
+    	//click(select.Cart_Shipping_Pickup);
+    	//click(select.Cart_Shipping_Pickup);
+	    click(select.Cart_Shipping_Confirm);
+	    
 	    Thread.sleep(1000);
 	    
-	    driver.findElement(By.cssSelector("button.cart__checkout-btn")).click();
+	    click(select.Cart_Checkout);
+	    
 	    Thread.sleep(1000);
 	    
 	    checkout("9999 9999 9999 9999", "02 / 20", "123", "02116");
+	    
 	    Thread.sleep(1000);
-	    Assert.assertTrue(
-	    		"Invalid card accepted!", 
-	    		isElementPresent(By.cssSelector(".__PrivateStripeElement > iframe:nth-child(1)")));
+	    
+	    Assert.assertTrue("Invalid card accepted!", isElementPresent(select.Cart_Checkout_Card_Frame));
 		
 	    
-	    //sendEscapeKey();
-	    driver.findElement(By.cssSelector(".pt-dialog-close-button")).click();
+	    click(select.Cart_Checkout_Close);
+	    
 	    Thread.sleep(1000);
 	    
-	    driver.findElement(By.cssSelector("button.cart__checkout-btn")).click();
+	    click(select.Cart_Checkout);
+	    
 	    Thread.sleep(1000);
 	    
 	    System.out.println("//");
@@ -128,10 +131,10 @@ public class OrderAlacarte extends FrontEndTest {
 		System.out.println("//");
 	    
 	    checkout("4242 4242 4242 4242", "02 / 20", "123", "02116");
+	    
 	    Thread.sleep(10000);
-	    Assert.assertTrue(
-	    		"Valid card not accepted!", 
-	    		!isElementPresent(By.cssSelector(".__PrivateStripeElement > iframe:nth-child(1)")));
+	    
+	    Assert.assertTrue("Valid card not accepted!", !isElementPresent(select.Cart_Checkout_Card_Frame));
 		
 	}
 	

@@ -2,6 +2,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -53,6 +54,7 @@ public abstract class FrontEndTest {
 		
 		public SelectorString Header_Topbar;
 		public SelectorString Header_Logo;
+		public SelectorString Header_Logo_ControlPanel;
 		public SelectorString Header_Alacarte;
 		public SelectorString Header_Plan;
 		public SelectorString Header_Search;
@@ -61,7 +63,8 @@ public abstract class FrontEndTest {
 		public SelectorString Header_Login;
 		public SelectorString Header_Account;
 		public SelectorString Header_Cart;
-		
+
+		public SelectorString Alacarte_Dinner_Checkbox;
 		public SelectorString Alacarte_Item1_Dropdown;
 		public SelectorString Alacarte_Item1_Add;
 		public SelectorString Alacarte_Item2_Dropdown;
@@ -148,17 +151,6 @@ public abstract class FrontEndTest {
 		
 		public SelectorData selectors;
 		
-	}
-	
-	public static class Car {
-	    private String brand = null;
-	    private int doors = 0;
-
-	    public String getBrand() { return this.brand; }
-	    public void   setBrand(String brand){ this.brand = brand;}
-
-	    public int  getDoors() { return this.doors; }
-	    public void setDoors (int doors) { this.doors = doors; }
 	}
 	
 	
@@ -249,21 +241,80 @@ public abstract class FrontEndTest {
 		
 	}
 	
-	public boolean isElementPresent(By by) {
+	public WebElement getElement(SelectorString s) {
 		
 		try {
-			driver.findElement(by);
+			java.lang.reflect.Method method = By.class.getMethod(s.by, String.class);
+			return driver.findElement((By)method.invoke(null, s.selector));
+		}
+		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
+	
+	public boolean isElementPresent(SelectorString s) {
+		
+		try {
+			java.lang.reflect.Method method = By.class.getMethod(s.by, String.class);
+			driver.findElement((By)method.invoke(null, s.selector));
 			return true;
 	    } 
-		catch (NoSuchElementException e) {
+		catch (NoSuchElementException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			return false;
 	    }
 		
 	}
 	
-	public void clickJS(WebElement e) {
+	public boolean isEnabled(SelectorString s) {
 		
+		return getElement(s).isEnabled();
+		
+	}
+	
+	public boolean isSelected(SelectorString s) {
+		
+		return getElement(s).isSelected();
+		
+	}
+	
+	public boolean textOnPage(String string) {
+		
+		String bodyText = driver.findElement(By.tagName("body")).getText();
+    	return bodyText.contains(string);
+		
+	}
+	
+	public void click(SelectorString s) {
+		
+		getElement(s).click();
+		
+	}
+	
+	public void clickJS(SelectorString s) {
+		
+		WebElement e = getElement(s);
 		((JavascriptExecutor)driver).executeScript("arguments[0].click();", e);
+		
+	}
+	
+	public void clear(SelectorString s) {
+		
+		getElement(s).clear();
+		
+	}
+	
+	public void sendKeys(SelectorString s, String keys) {
+		
+		getElement(s).sendKeys(keys);
+		
+	}
+	
+	public void selectByVisibleText(SelectorString s, String text) {
+		
+		new Select(getElement(s)).selectByVisibleText(text);
 		
 	}
 	
@@ -284,14 +335,16 @@ public abstract class FrontEndTest {
 	
 	public void signIn() throws InterruptedException {
 		
-    	clickJS(driver.findElement(By.linkText("Log In")));
+    	clickJS(select.Header_Login);
+    	
     	Thread.sleep(1000);
     	
-	    driver.findElement(By.cssSelector("input[type='email']")).clear();
-	    driver.findElement(By.cssSelector("input[type='email']")).sendKeys(email);
-	    driver.findElement(By.cssSelector("input[type='password']")).clear();
-	    driver.findElement(By.cssSelector("input[type='password']")).sendKeys(password);
-	    driver.findElement(By.xpath("//button[contains(.,'Log In')]")).click();
+    	clear(select.Login_Email);
+    	sendKeys(select.Login_Email, email);
+    	clear(select.Login_Password);
+    	sendKeys(select.Login_Password, password);
+    	click(select.Login_Confirm);
+    	
 		Thread.sleep(1000);
 	    
 	}
@@ -299,96 +352,94 @@ public abstract class FrontEndTest {
 	public void openCart() throws InterruptedException {
 		
 		scrollUpJS();
+		
 		Thread.sleep(1000);
 		
-		driver.findElement(By.cssSelector(
-				"button.pt-button.pt-minimal.pt-icon-shopping-cart.topbar__cart-btn.topbar__ma-top-8")).click();
+		click(select.Header_Cart);
 		
 	}
 	
 	public void add1ItemToCart() throws InterruptedException {
 		
-	    driver.findElement(By.linkText("A la Carte")).click();
-	    driver.findElement(By.xpath("//label[contains(.,'Dinner')]")).click();
+		click(select.Header_Alacarte);
+		click(select.Alacarte_Dinner_Checkbox);
+		
+	    Thread.sleep(1000);
+	    
+	    selectByVisibleText(select.Alacarte_Item1_Dropdown, "1");
 	    
 	    Thread.sleep(1000);
 	    
-	    new Select(driver.findElement(By.cssSelector("select"))).selectByVisibleText("1");
-	    
-	    Thread.sleep(1000);
-	    
-	    driver.findElement(By.cssSelector("button[name=\"Soup 1\"]")).click();
+	    click(select.Alacarte_Item1_Add);
 	    
 	}
-	
+
 	public void add10ItemsToCart() throws InterruptedException {
 		
-	    driver.findElement(By.linkText("A la Carte")).click();
-	    driver.findElement(By.xpath("//label[contains(.,'Dinner')]")).click();
+		click(select.Header_Alacarte);
+		click(select.Alacarte_Dinner_Checkbox);
 	    
 	    Thread.sleep(1000);
 	    
-	    new Select(driver.findElement(By.cssSelector("select"))).selectByVisibleText("5");
-	    new Select(driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div[2]/div[2]/div[2]/div/div/div[2]/div/div/select"))).selectByVisibleText("5");
+	    selectByVisibleText(select.Alacarte_Item1_Dropdown, "5");
+	    selectByVisibleText(select.Alacarte_Item2_Dropdown, "5");
 	    
 	    Thread.sleep(1000);
 	    
-	    driver.findElement(By.cssSelector("button[name=\"Soup 1\"]")).click();
-	    driver.findElement(By.cssSelector("button[name=\"Pizza\"]")).click();
+	    click(select.Alacarte_Item1_Add);
+	    click(select.Alacarte_Item2_Add);
 	    
 	}
 	
 	public void removeSubscription() throws InterruptedException  {
 		
-	    driver.findElement(By.linkText("Subscription")).click();
+		click(select.Account_Subscription);
+		
 	    Thread.sleep(1000);
 	    
-	    if (isElementPresent(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div/div[2]/button[2]"))) {
-		    driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div/div[2]/button[2]")).click();
+	    if (isElementPresent(select.Account_Subscription_Cancel)) {
+		    click(select.Account_Subscription_Cancel);
 		    Thread.sleep(1000);
-		    driver.findElement(By.cssSelector("button.nu-button.subscription__cancel__confirm")).click();
+		    click(select.Account_Subscription_Cancel_Confirm);
 	    }
 		
 	}
 	
 	public void addSubscription() throws InterruptedException {
 		
+		if (isSelected(select.Plan_Gluten_Checkbox))
+			click(select.Plan_Gluten_Label);
 		
-		if (driver.findElement(By.cssSelector("label.pt-control:nth-child(7) > span:nth-child(2)")).isSelected())
-			driver.findElement(By.xpath("//label[contains(.,'Gluten Free')]")).click();
 	    Thread.sleep(1000);
 	    
-	    driver.findElement(By.cssSelector("button.nu-button.carte__plan-weekly-btn")).click();
+	    click(select.Plan_Create);
+	    
 	    Thread.sleep(1000);
 	    
-	    String bodyText = driver.findElement(By.tagName("body")).getText();
-    	if (bodyText.contains("You didn't customize your order, are you sure you want to add it to your cart?"))
-    		driver.findElement(By.cssSelector(
-    				"body > div.pt-portal > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-alert-footer > button:nth-child(1) > span")
-    				).click();
-	    
+	    if (textOnPage("You didn't customize your order, are you sure you want to add it to your cart?"))
+    		click(select.Plan_Create_Confirm);
 	    
 	}
 	
 	public void redeemPromoCode(String code) {
 			
-		driver.findElement(By.cssSelector("input.pt-input.pt-fill")).clear();
-	    driver.findElement(By.cssSelector("input.pt-input.pt-fill")).sendKeys(code);
-	    driver.findElement(By.cssSelector("button.cart__promocode-btn")).click();
+		clear(select.Cart_Code_Input);
+		sendKeys(select.Cart_Code_Input, code);
+		click(select.Cart_Code_Apply);
     	
 	}
 	
 	public void removeTableElement(String name) throws InterruptedException {
 		
-		WebElement table = driver.findElement(By.cssSelector(".pt-table"));
+		WebElement table = getElement(select.ControlPanel_Table);
     	List<WebElement> tableRows = table.findElements(By.tagName("tr"));
     	
     	for (WebElement e : tableRows) {
     		if (e.getText().contains(name)) {
 
-    			clickJS(e);
-    			driver.findElement(By.cssSelector("button.pt-button:nth-child(4)")).click();
-    			driver.findElement(By.cssSelector("button.pt-intent-danger:nth-child(1)")).click();
+    			((JavascriptExecutor)driver).executeScript("arguments[0].click();", e);
+    			click(select.ControlPanel_Table_Delete);
+    			click(select.ControlPanel_Table_Delete_Confirm);
     			Thread.sleep(1000);
     			break;
     			
@@ -399,38 +450,43 @@ public abstract class FrontEndTest {
 	
 	public void removePaymentInfo() {
 		
-		driver.findElement(By.linkText("Account")).click();
-	    driver.findElement(By.linkText("Payment Information")).click();
+		click(select.Header_Account);
+		click(select.Account_Payment);
 	    
-	    if (isElementPresent(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div[3]/div/span"))) {
-	    	driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div[3]/div/span")).click();
-	    	driver.findElement(By.xpath("//div[@id='root']/div/div/div[2]/div/div/div[2]/div[3]/div/div[3]/table/tbody/tr/td[5]/button")).click();
+	    if (isElementPresent(select.Account_Payment_Delete)) {
+	    	click(select.Account_Payment_Delete);
+	    	click(select.Account_Payment_Delete_Confirm);
 	    }
 	    
 	}
 	
 	public void checkout(String cardnumber, String date, String cvc, String postal) throws InterruptedException {
 		
-	    driver.switchTo().frame(driver.findElement(By.cssSelector(
-	    		".__PrivateStripeElement > iframe:nth-child(1)")));
+	    driver.switchTo().frame(getElement(select.Cart_Checkout_Card_Frame));
 	    
-	    driver.findElement(By.name("cardnumber")).clear();
-	    driver.findElement(By.name("cardnumber")).sendKeys(cardnumber);
+	    clear(select.Cart_Checkout_Card_Number);
+	    sendKeys(select.Cart_Checkout_Card_Number, cardnumber);
+	    
 	    Thread.sleep(1000);
-	    driver.findElement(By.name("exp-date")).clear();
-	    driver.findElement(By.name("exp-date")).sendKeys(date);
+	    
+	    clear(select.Cart_Checkout_Card_Date);
+	    sendKeys(select.Cart_Checkout_Card_Date, date);
+	    
 	    Thread.sleep(1000);
-	    driver.findElement(By.name("cvc")).clear();
-	    driver.findElement(By.name("cvc")).sendKeys(cvc);
+	    
+	    clear(select.Cart_Checkout_Card_CVC);
+	    sendKeys(select.Cart_Checkout_Card_CVC, cvc);
+	    
 	    Thread.sleep(1000);
-	    if (isElementPresent(By.name("postal"))) {
-		    driver.findElement(By.name("postal")).clear();
-		    driver.findElement(By.name("postal")).sendKeys(postal);
+	    
+	    if (isElementPresent(select.Cart_Checkout_Card_Zip)) {
+	    	clear(select.Cart_Checkout_Card_Zip);
+		    sendKeys(select.Cart_Checkout_Card_Zip, postal);
 	    }
 	    
 	    driver.switchTo().defaultContent();
 	    
-	    driver.findElement(By.xpath("//form/div/div/button")).click();
+	    click(select.Cart_Checkout_Confirm);
 	    
 	}
 

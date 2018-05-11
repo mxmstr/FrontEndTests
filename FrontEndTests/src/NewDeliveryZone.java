@@ -7,72 +7,73 @@ public class NewDeliveryZone extends FrontEndTest {
 
 	private void addDeliveryZone(String name, String price, String zip) throws InterruptedException {
 		
-		driver.findElement(By.linkText("Delivery Zone")).click();
-		driver.findElement(By.xpath("//div[@id='root']/div/div/div/div/div/div/div/button")).click();
+		click(select.ControlPanel_Delivery);
+		click(select.ControlPanel_Delivery_Add);
+		
 		Thread.sleep(1000);
 		
-		driver.findElement(By.cssSelector("input.pt-fill")).clear();
-		driver.findElement(By.cssSelector("input.pt-fill")).sendKeys(name);
-		driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).clear();
-		driver.findElement(By.cssSelector("div.pt-input-group.pt-large > input.pt-input")).sendKeys(price);
-		driver.findElement(By.cssSelector("textarea.pt-input.pt-fill")).clear();
-		driver.findElement(By.cssSelector("textarea.pt-input.pt-fill")).sendKeys(zip);
-		driver.findElement(By.cssSelector("button.pt-large")).click();
+		clear(select.ControlPanel_Delivery_Add_Title);
+		sendKeys(select.ControlPanel_Delivery_Add_Title, name);
+		clear(select.ControlPanel_Delivery_Add_Price);
+		sendKeys(select.ControlPanel_Delivery_Add_Price, price);
+		clear(select.ControlPanel_Delivery_Add_Zips);
+		sendKeys(select.ControlPanel_Delivery_Add_Zips, zip);
+		click(select.ControlPanel_Delivery_Add_Create);
 		
 	}
 	
 	private void changeDeliveryInfo(String street, String city, String zip, String number) throws InterruptedException {
 		
-		if (isElementPresent(By.cssSelector(".account__edit"))) {
-			clickJS(driver.findElement(By.cssSelector(".account__edit")));
+		if (isElementPresent(select.Account_Delivery_Edit)) {
+			clickJS(select.Account_Delivery_Edit);
 		    Thread.sleep(1000);
-		    driver.findElement(By.cssSelector("a.pt-button:nth-child(1)")).click();
-		    Thread.sleep(1000);
+		    click(select.Account_Delivery_Edit_Delete);
 		}
-		else {
-			driver.findElement(By.cssSelector("a.pt-button")).click();
-			Thread.sleep(1000);
-		}
+		else
+			click(select.Account_Delivery_Add);
+		
+		Thread.sleep(1000);
 		
 		
-		driver.findElement(By.cssSelector(
-	    		"div.account__box:nth-child(4) > div:nth-child(1) > div:nth-child(2) > label:nth-child(1) > input:nth-child(1)")).clear();
-	    driver.findElement(By.cssSelector(
-	    		"div.account__box:nth-child(4) > div:nth-child(1) > div:nth-child(2) > label:nth-child(1) > input:nth-child(1)")).sendKeys(street);
-	    driver.findElement(By.cssSelector(
-	    		"div.content__input-ma:nth-child(2) > div:nth-child(2) > label:nth-child(1) > input:nth-child(1)")).clear();
-	    driver.findElement(By.cssSelector(
-	    		"div.content__input-ma:nth-child(2) > div:nth-child(2) > label:nth-child(1) > input:nth-child(1)")).sendKeys(city);
-	    driver.findElement(By.cssSelector(
-	    		"label.pt-label:nth-child(3) > input:nth-child(1)")).clear();
-	    driver.findElement(By.cssSelector(
-	    		"label.pt-label:nth-child(3) > input:nth-child(1)")).sendKeys(zip);
-	    driver.findElement(By.cssSelector(
-	    		"div.content__input-value > input.pt-input.pt-large")).clear();
-	    driver.findElement(By.cssSelector(
-	    		"div.content__input-value > input.pt-input.pt-large")).sendKeys(number);
+		clear(select.Account_Delivery_Add_Street);
+		sendKeys(select.Account_Delivery_Add_Street, street);
+		
+		clear(select.Account_Delivery_Add_City);
+		sendKeys(select.Account_Delivery_Add_City, city);
+		
+		clear(select.Account_Delivery_Add_Zip);
+		sendKeys(select.Account_Delivery_Add_Zip, zip);
+		
+		clear(select.Account_Delivery_Add_Number);
+		sendKeys(select.Account_Delivery_Add_Number, number);
 	    
-	    if (!driver.findElement(By.cssSelector(".pt-control > input:nth-child(1)")).isSelected())
-	    	driver.findElement(By.xpath("//label[contains(.,'Set as default')]")).click();
+	    if (!isSelected(select.Account_Delivery_Add_Default_Check))
+	    	click(select.Account_Delivery_Add_Default_Label);
 	    
-	    driver.findElement(By.cssSelector("button.nu-button-h.content__button")).click();
+	    click(select.Account_Delivery_Add_Default_Save);
 	    
 	}
 	
 	private void validateDeliveryZone(String street, String city, String zip, String phone) throws InterruptedException {
 		
-		driver.findElement(By.linkText("Account")).click();
-	    driver.findElement(By.linkText("Delivery Information")).click();
+		click(select.Header_Account);
+	    click(select.Account_Delivery);
+	    
 	    Thread.sleep(1000);
 	    
 	    changeDeliveryInfo(street, city, zip, phone);
 	    
-	    driver.findElement(By.cssSelector(".pt-button")).click();//cart
-	    driver.findElement(By.cssSelector(".pt-intent-orange")).click();//shipping
+	    click(select.Header_Cart);
+	    
 	    Thread.sleep(1000);
 	    
-	    driver.findElement(By.cssSelector("div.row:nth-child(5) > div:nth-child(2) > label:nth-child(1)")).click();
-	    driver.findElement(By.cssSelector("button.pt-button:nth-child(8)")).click();
+	    click(select.Cart_Shipping);
+	    
+	    Thread.sleep(1000);
+	    
+	    click(select.Cart_Shipping_Address1);
+	    click(select.Cart_Shipping_Confirm);
+	    
 	    Thread.sleep(1000);
     	
 	}
@@ -84,11 +85,11 @@ public class NewDeliveryZone extends FrontEndTest {
 		System.out.println("// Testing Add Delivery Zone");
 		System.out.println("//");
 		
-		driver.findElement(By.linkText("Account")).click();
+		click(select.Header_Account);
+		
     	Thread.sleep(1000);
     	
-    	driver.findElement(By.linkText("Control Panel")).click();
-		
+    	click(select.Account_ControlPanel);
 		
 		addDeliveryZone("New Delivery", "50", "99999");
 		
@@ -97,17 +98,21 @@ public class NewDeliveryZone extends FrontEndTest {
 		System.out.println("// Testing Delivery Zone In Checkout");
 		System.out.println("//");
 		
-		clickJS(driver.findElement(By.cssSelector(".app-topbar__logo")));
+		clickJS(select.Header_Logo_ControlPanel);
+		
 		Thread.sleep(1000);
 		
     	validateDeliveryZone("Street", "City", "99999", "(555) 555-555");
     	
-    	String bodyText = driver.findElement(By.tagName("body")).getText();
-    	Assert.assertTrue("New zip code not accepted!", !bodyText.contains("Sorry, we're not servicing your area at this time."));
+    	Assert.assertTrue(
+    			"New zip code not accepted!", 
+    			!textOnPage("Sorry, we're not servicing your area at this time."));
     	
-    	sendEscapeKey();
+    	driver.navigate().refresh();
+    	//sendEscapeKey();
     	
-    	driver.findElement(By.linkText("Control Panel")).click();
+    	click(select.Account_ControlPanel);
+    	
 		Thread.sleep(1000);
     	
 		
@@ -115,8 +120,10 @@ public class NewDeliveryZone extends FrontEndTest {
 		System.out.println("// Testing Remove Delivery Zone");
 		System.out.println("//");
 		
-		driver.findElement(By.linkText("Delivery Zone")).click();
+		click(select.ControlPanel_Delivery);
+		
 		Thread.sleep(1000);
+		
 		removeTableElement("New Delivery");
 		
 		
@@ -124,13 +131,13 @@ public class NewDeliveryZone extends FrontEndTest {
 		System.out.println("// Testing Delivery Zone In Checkout");
 		System.out.println("//");
 		
-		clickJS(driver.findElement(By.cssSelector(".app-topbar__logo")));
+		clickJS(select.Header_Logo);
+		
 		Thread.sleep(1000);
 		
     	validateDeliveryZone("Street", "City", "99999", "(555) 555-555");
     	
-    	bodyText = driver.findElement(By.tagName("body")).getText();
-    	Assert.assertTrue("Old zip code accepted!", bodyText.contains("Sorry, we're not servicing your area at this time."));
+    	Assert.assertTrue("Old zip code accepted!", textOnPage("Sorry, we're not servicing your area at this time."));
 		
 	}
 	

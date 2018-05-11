@@ -15,25 +15,31 @@ public class OrderSubscription extends FrontEndTest {
 		removePaymentInfo();
 		removeSubscription();
 		
-		driver.findElement(By.linkText("The Complete Plan")).click();
-	    driver.findElement(By.linkText("Get Started")).click();
+		click(select.Header_Plan);
+	    click(select.Plan_GoToMenu);
+	    
 	    Thread.sleep(1000);
 	    
 	    addSubscription();
+	    
 	    Thread.sleep(1000);
 	    
-	    driver.findElement(By.cssSelector(".pt-intent-orange")).click();
+	    click(select.Cart_Shipping);
+	    
     	Thread.sleep(1000);
 	    
-    	driver.findElement(By.xpath("//label[contains(.,'Free Pick up')]")).click();
-    	driver.findElement(By.xpath("//label[contains(.,'Free Pick up')]")).click();
-    	driver.findElement(By.cssSelector("button.pt-button:nth-child(8)")).click();
+    	//click(select.Cart_Shipping_Pickup);
+    	//click(select.Cart_Shipping_Pickup);
+	    click(select.Cart_Shipping_Confirm);
+    	
 	    Thread.sleep(1000);
+
+	    click(select.Cart_Checkout);
 	    
-	    driver.findElement(By.cssSelector("button.cart__checkout-btn")).click();
 	    Thread.sleep(1000);
 	    
 	    checkout("4242 4242 4242 4242", "02 / 20", "123", "02116");
+	    
 	    Thread.sleep(10000);
 		
 	}

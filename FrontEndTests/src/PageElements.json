@@ -120,7 +120,7 @@
 		},
 		"Cart_Shipping_Pickup" : {
 			"by" : "xpath",
-			"selector" : "//label[contains(.,'Empire State Building')]"
+			"selector" : "//label[contains(.,'Launchbyte')]"
 		},
 		"Cart_Shipping_Confirm" : {
 			"by" : "xpath",

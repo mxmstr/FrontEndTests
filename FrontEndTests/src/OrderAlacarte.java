@@ -42,8 +42,8 @@ public class OrderAlacarte extends FrontEndTest {
     	
     	Thread.sleep(1000);
 	    
-    	//click(select.Cart_Shipping_Pickup);
-    	//click(select.Cart_Shipping_Pickup);
+    	click(select.Cart_Shipping_Pickup);
+    	click(select.Cart_Shipping_Pickup);
 	    click(select.Cart_Shipping_Confirm);
 	    
 	    Thread.sleep(1000);
@@ -101,8 +101,8 @@ public class OrderAlacarte extends FrontEndTest {
     	
     	Thread.sleep(5000);
 	    
-    	//click(select.Cart_Shipping_Pickup);
-    	//click(select.Cart_Shipping_Pickup);
+    	click(select.Cart_Shipping_Pickup);
+    	click(select.Cart_Shipping_Pickup);
 	    click(select.Cart_Shipping_Confirm);
 	    
 	    Thread.sleep(1000);

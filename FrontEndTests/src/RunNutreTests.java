@@ -47,12 +47,11 @@ public class RunNutreTests {
 		
 		Result result = JUnitCore.runClasses(
 				BrokenLinks.class,
-				HeaderFooter.class,
 				SearchBar.class,
-				OrderAlacarte.class,
-				OrderSubscription.class,
 				ChangeAccountDetails.class,
 				ControlPanelEdit.class,
+				OrderAlacarte.class,
+				OrderSubscription.class,
 				NewMeal.class,
 				NewPromoCode.class,
 				NewDeliveryZone.class

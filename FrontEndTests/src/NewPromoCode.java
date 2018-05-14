@@ -79,7 +79,7 @@ public class NewPromoCode extends FrontEndTest {
     	
     	Thread.sleep(1000);
     	
-    	clickJS(select.Header_Logo_ControlPanel);
+    	click(select.Header_Logo_ControlPanel);
     	
     	
     	add10ItemsToCart();

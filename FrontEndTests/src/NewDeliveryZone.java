@@ -98,7 +98,7 @@ public class NewDeliveryZone extends FrontEndTest {
 		System.out.println("// Testing Delivery Zone In Checkout");
 		System.out.println("//");
 		
-		clickJS(select.Header_Logo_ControlPanel);
+		click(select.Header_Logo_ControlPanel);
 		
 		Thread.sleep(1000);
 		
@@ -131,7 +131,7 @@ public class NewDeliveryZone extends FrontEndTest {
 		System.out.println("// Testing Delivery Zone In Checkout");
 		System.out.println("//");
 		
-		clickJS(select.Header_Logo);
+		click(select.Header_Logo_ControlPanel);
 		
 		Thread.sleep(1000);
 		

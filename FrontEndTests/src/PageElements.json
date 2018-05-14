@@ -102,6 +102,10 @@
 		},
 		
 		
+		"Cart_Subtotal" : {
+			"by" : "cssSelector",
+			"selector" : "body > div.pt-portal > div > span > div.cart.pt-overlay-content > div.cart__footer > div:nth-child(6) > div.cart__footer-half.text-right"
+		},
 		"Cart_Code_Input" : {
 			"by" : "cssSelector",
 			"selector" : "input.pt-input.pt-fill"

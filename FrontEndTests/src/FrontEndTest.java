@@ -75,7 +75,8 @@ public abstract class FrontEndTest {
 		public SelectorString Plan_Gluten_Label;
 		public SelectorString Plan_Create;
 		public SelectorString Plan_Create_Confirm;
-		
+
+		public SelectorString Cart_Subtotal;
 		public SelectorString Cart_Code_Input;
 		public SelectorString Cart_Code_Apply;
 		public SelectorString Cart_Shipping;

@@ -50,15 +50,25 @@ public class NewPromoCode extends FrontEndTest {
 		System.out.println("// Testing Valid Promo Code");
 		System.out.println("//");
 		
+		add1ItemToCart();
 		openCart();
 		
 		Thread.sleep(1000);
     	
+		String subtotal1 = getElement(select.Cart_Subtotal).getText();
     	redeemPromoCode("abc123");
+    	Thread.sleep(1000);
+    	String subtotal2 = getElement(select.Cart_Subtotal).getText();
     	
     	Thread.sleep(1000);
     	
     	Assert.assertTrue("New code was not accepted!", !textOnPage("Code is invalid or already used."));
+    	
+    	Assert.assertTrue(
+    			"Discount was not applied!", 
+    			Double.parseDouble(subtotal2.replaceAll("[$ ]","")) / 
+    			Double.parseDouble(subtotal1.replaceAll("[$ ]","")) < 1.0
+    			);
     	
     	sendEscapeKey();
     	

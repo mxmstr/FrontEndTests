@@ -27,14 +27,14 @@ public class ControlPanelEdit extends FrontEndTest  {
     	click(select.Account_ControlPanel);
     	
 		
-		changeItemPrice("10.00");
+		changeItemPrice(System.getProperty("newPrice"));
         Thread.sleep(1000);
         
         Assert.assertTrue(
         		"Edit module did not update!",
-        		getElement(select.ControlPanel_Meal_FirstItem).getText().contains("10.00"));
+        		getElement(select.ControlPanel_Meal_FirstItem).getText().contains(System.getProperty("newPrice")));
     	
-        changeItemPrice("9.00");
+        changeItemPrice(System.getProperty("defaultPrice"));
         Thread.sleep(1000);
 		
 	}

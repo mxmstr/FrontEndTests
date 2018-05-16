@@ -39,7 +39,7 @@ public class BrokenLinks extends FrontEndTest {
 		
 		while (driver.findElements(By.cssSelector(".pt-spinner-track")).size() > 0) {
 			elapsedTime = (new Date()).getTime() - startTime;
-			if (elapsedTime > 30 * 1000)
+			if (elapsedTime > Integer.parseInt(System.getProperty("pageLoadTimeout")))
 				throw new TimeoutException();
 		}
 		
@@ -114,7 +114,8 @@ public class BrokenLinks extends FrontEndTest {
 		System.out.println("// Testing Broken Links");
 		System.out.println("//");
 
-        driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
+        driver.manage().timeouts().implicitlyWait(
+        		Integer.parseInt(System.getProperty("pageSwitchDelay")), TimeUnit.MILLISECONDS);
         
 		try {
 			parseLink(homePage);

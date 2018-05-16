@@ -39,7 +39,11 @@ public class NewPromoCode extends FrontEndTest {
 		
 		Thread.sleep(1000);
 		
-		addNewPromoCode("New Code", "10", "abc123");
+		addNewPromoCode(
+				System.getProperty("codeName"), 
+				System.getProperty("codePercent"), 
+				System.getProperty("codeValue")
+				);
 		
 		Thread.sleep(1000);
 		
@@ -56,8 +60,10 @@ public class NewPromoCode extends FrontEndTest {
 		Thread.sleep(1000);
     	
 		String subtotal1 = getElement(select.Cart_Subtotal).getText();
-    	redeemPromoCode("abc123");
+    	redeemPromoCode(System.getProperty("codeValue"));
+    	
     	Thread.sleep(1000);
+    	
     	String subtotal2 = getElement(select.Cart_Subtotal).getText();
     	
     	Thread.sleep(1000);
@@ -85,7 +91,7 @@ public class NewPromoCode extends FrontEndTest {
 		
 		Thread.sleep(1000);
     	
-    	removeTableElement("New Code");
+    	removeTableElement(System.getProperty("codeName"));
     	
     	Thread.sleep(1000);
     	
@@ -100,7 +106,7 @@ public class NewPromoCode extends FrontEndTest {
     	
 		Thread.sleep(1000);
     	
-    	redeemPromoCode("abc123");
+    	redeemPromoCode(System.getProperty("codeValue"));
     	
     	Thread.sleep(1000);
     	

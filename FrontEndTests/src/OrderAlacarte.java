@@ -75,7 +75,7 @@ public class OrderAlacarte extends FrontEndTest {
 		System.out.println("// Testing Inactive Promo Code");
 		System.out.println("//");
     	
-    	redeemPromoCode("789");
+    	redeemPromoCode(System.getProperty("inactiveCode"));
     	
     	Thread.sleep(1000);
     	
@@ -86,7 +86,7 @@ public class OrderAlacarte extends FrontEndTest {
 		System.out.println("// Testing Invalid Promo Code");
 		System.out.println("//");
 		
-    	redeemPromoCode("abc");
+    	redeemPromoCode(System.getProperty("invalidCode"));
     	
     	Thread.sleep(1000);
     	
@@ -111,7 +111,12 @@ public class OrderAlacarte extends FrontEndTest {
 	    
 	    Thread.sleep(1000);
 	    
-	    checkout("9999 9999 9999 9999", "02 / 20", "123", "02116");
+	    checkout(
+	    		System.getProperty("invalidCardNumber"), 
+	    		System.getProperty("invalidCardDate"), 
+	    		System.getProperty("invalidCardCVC"), 
+	    		System.getProperty("invalidCardZip")
+	    		);
 	    
 	    Thread.sleep(1000);
 	    
@@ -130,7 +135,12 @@ public class OrderAlacarte extends FrontEndTest {
 		System.out.println("// Testing Checkout With Valid Card");
 		System.out.println("//");
 	    
-	    checkout("4242 4242 4242 4242", "02 / 20", "123", "02116");
+		checkout(
+	    		System.getProperty("validCardNumber"), 
+	    		System.getProperty("validCardDate"), 
+	    		System.getProperty("validCardCVC"), 
+	    		System.getProperty("validCardZip")
+	    		);
 	    
 	    Thread.sleep(10000);
 	    

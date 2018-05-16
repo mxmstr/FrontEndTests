@@ -15,7 +15,7 @@ public class SearchBar extends FrontEndTest {
 		try {
 		    
 			clear(select.Header_Search_Input);
-			sendKeys(select.Header_Search_Input, "p");
+			sendKeys(select.Header_Search_Input, System.getProperty("searchInput"));
 		    click(select.Header_Search_Result1);
 		    
 		    Assert.assertTrue(

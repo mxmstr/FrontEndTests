@@ -1,5 +1,7 @@
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Properties;
 
@@ -10,42 +12,16 @@ import org.junit.runner.notification.Failure;
 
 public class RunNutreTests {
 	
+	private static int numTests = 9;
 	
-	public static void main(String[] args) {
+	
+	public static void main(String[] args) throws IOException {
 		
-		System.setProperty("webdriver.chrome.driver", "/users/ericlynch/documents/chromedriver");
-		System.setProperty("webdriver.gecko.driver", "/users/ericlynch/documents/geckodriver");
-		System.setProperty("browser", "0");
-		System.setProperty("homePage", "http://dev.gonutre.com");
-		System.setProperty("email", "lynch.er18@gmail.com");
-		System.setProperty("password", "123123");
+		int i = 0;
+		boolean success = true;
+		Result[] results = new Result[numTests];
 		
-		
-		Properties configFile = new java.util.Properties();
-		try {
-			configFile.load(RunNutreTests.class.getClassLoader().getResourceAsStream("config.cfg"));
-			
-			System.setProperty("webdriver.chrome.driver", configFile.getProperty("chromeDriverPath"));
-			System.setProperty("webdriver.gecko.driver", configFile.getProperty("geckoDriverPath"));
-			System.setProperty("browser", configFile.getProperty("browser"));
-			System.setProperty("homePage", configFile.getProperty("homePage"));
-			System.setProperty("email", configFile.getProperty("email"));
-			System.setProperty("password", configFile.getProperty("password"));
-			
-			if (Integer.parseInt(configFile.getProperty("log")) != 0) {
-				try {
-					System.setOut(new PrintStream(new File("RunNutreTests.log")));
-				} 
-				catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-				
-		}
-		catch(Exception e) {}
-		
-		
-		Result result = JUnitCore.runClasses(
+		Class[] classes = {
 				BrokenLinks.class,
 				SearchBar.class,
 				ChangeAccountDetails.class,
@@ -55,12 +31,31 @@ public class RunNutreTests {
 				NewMeal.class,
 				NewPromoCode.class,
 				NewDeliveryZone.class
-				);
- 
-		for (Failure failure : result.getFailures())
-			System.out.println(failure.toString());
+				};
 		
-		if (result.wasSuccessful())
+		
+		Properties configFile = new java.util.Properties();
+		configFile.load(new FileInputStream(new File("config.cfg")));
+		
+		
+		for (Class c : classes) {
+			if (Integer.parseInt(configFile.getProperty(c.getName())) != 0)
+				results[i] = JUnitCore.runClasses(c);
+			i++;
+		}
+		
+		
+		for (Result r : results) {
+			if (r != null) {
+				for (Failure failure : r.getFailures())
+					System.out.println(failure.toString());
+				if (!r.wasSuccessful())
+					success = false;
+			}
+		}
+		
+		
+		if (success)
 			System.out.println("Success");
 		else
 			System.out.println("Failure");

@@ -31,14 +31,14 @@ public class ChangeAccountDetails extends FrontEndTest {
 		
     	Thread.sleep(1000);
 		
-	    changeAccountName("Joe");
+	    changeAccountName(System.getProperty("newName"));
 	    Thread.sleep(1000);
 	    
 	    Assert.assertTrue(
 	    		"Edit module did not update!",
-	    		getElement(select.Account_Detail_Name).getText().contains("Joe"));
+	    		getElement(select.Account_Detail_Name).getText().contains(System.getProperty("newName")));
 	    
-	    changeAccountName("John");
+	    changeAccountName(System.getProperty("defaultName"));
 	    
 	    
 	    System.out.println("//");

@@ -1,10 +1,15 @@
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
@@ -37,7 +42,7 @@ public abstract class FrontEndTest {
 	public ArrayList<AsyncTester> threads;
 	public SelectorTable table;
 	public SelectorData select;
-	public static String elementJson = "src//PageElements.json";
+	public static String elementJson = "PageElements.json";
 	
 	
 	public static class SelectorString {
@@ -163,14 +168,20 @@ public abstract class FrontEndTest {
 		select = table.selectors;
 		
 		
-		if (System.getProperty("webdriver.chrome.driver") == null) {
-			System.setProperty("webdriver.chrome.driver", "/users/ericlynch/documents/chromedriver");
-			System.setProperty("webdriver.gecko.driver", "/users/ericlynch/documents/geckodriver");
-			System.setProperty("browser", "0");
-			System.setProperty("homePage", "http://dev.gonutre.com");
-			System.setProperty("email", "lynch.er18@gmail.com");
-			System.setProperty("password", "123123");
+		Properties configFile = new java.util.Properties();
+		try {
+			configFile.load(new FileInputStream(new File("config.cfg")));
+			
+			for (String prop : configFile.stringPropertyNames()) {
+				System.setProperty(prop, configFile.getProperty(prop));
+			}
 		}
+		catch(Exception e) {}
+		
+		
+		if (Integer.parseInt(System.getProperty("log")) != 0)
+			System.setOut(new PrintStream(new File("RunNutreTests.log")));
+		
 		
 		homePage = System.getProperty("homePage");
 		email = System.getProperty("email");

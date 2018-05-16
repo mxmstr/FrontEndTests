@@ -91,7 +91,11 @@ public class NewDeliveryZone extends FrontEndTest {
     	
     	click(select.Account_ControlPanel);
 		
-		addDeliveryZone("New Delivery", "50", "99999");
+		addDeliveryZone(
+				System.getProperty("deliveryName"), 
+				System.getProperty("deliveryPrice"), 
+				System.getProperty("deliveryZips")
+				);
 		
 		
 		System.out.println("//");
@@ -102,14 +106,18 @@ public class NewDeliveryZone extends FrontEndTest {
 		
 		Thread.sleep(1000);
 		
-    	validateDeliveryZone("Street", "City", "99999", "(555) 555-555");
+    	validateDeliveryZone(
+    			System.getProperty("shippingStreet"), 
+				System.getProperty("shippingCity"), 
+				System.getProperty("shippingZip"), 
+				System.getProperty("shippingPhone")
+				);
     	
     	Assert.assertTrue(
     			"New zip code not accepted!", 
     			!textOnPage("Sorry, we're not servicing your area at this time."));
     	
-    	driver.navigate().refresh();
-    	//sendEscapeKey();
+    	sendEscapeKey();
     	
     	click(select.Account_ControlPanel);
     	
@@ -135,7 +143,12 @@ public class NewDeliveryZone extends FrontEndTest {
 		
 		Thread.sleep(1000);
 		
-    	validateDeliveryZone("Street", "City", "99999", "(555) 555-555");
+		validateDeliveryZone(
+    			System.getProperty("shippingStreet"), 
+				System.getProperty("shippingCity"), 
+				System.getProperty("shippingZip"), 
+				System.getProperty("shippingPhone")
+				);
     	
     	Assert.assertTrue("Old zip code accepted!", textOnPage("Sorry, we're not servicing your area at this time."));
 		

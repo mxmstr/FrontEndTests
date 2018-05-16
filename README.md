@@ -1,10 +1,10 @@
 # FrontEndTests
 
-Front end testing suite developed by Eric Lynch. Designed to be used as an Eclipse Junit project.
+Front end testing suite developed by Eric Lynch. Set test options in Config.cfg and use PageElements.json to redefine the CSS element locators.
 
 Requirements:
-Google Chrome,
-Selenium Chrome driver (https://www.seleniumhq.org/download/)
+Java Runtime Environment,
+Google Chrome, Firefox, or Safari
+Selenium Chrome driver, Gecko Driver, or Safari Driver (https://www.seleniumhq.org/download/)
 
-Make sure to specify the path to chromedriver.exe in RunNutreTests.java. 
-Tests may also be ran individually. FrontEndTest.java contains the default setting for the driver path.
+Make sure to select a driver and specify its path in Config.cfg. 

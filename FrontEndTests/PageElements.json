@@ -62,7 +62,11 @@
 			"by" : "xpath",
 			"selector" : "//label[contains(.,'Dinner')]"
 		},
-		"Alacarte_Item1_Dropdown" : {
+		"Alacarte_Menu_Item" : {
+			"by" : "className",
+			"selector" : "carte__item"
+		},
+		"Alacarte_Item_Select" : {
 			"by" : "cssSelector",
 			"selector" : "select"
 		},

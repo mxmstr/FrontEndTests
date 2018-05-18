@@ -70,7 +70,8 @@ public abstract class FrontEndTest {
 		public SelectorString Header_Cart;
 
 		public SelectorString Alacarte_Dinner_Checkbox;
-		public SelectorString Alacarte_Item1_Dropdown;
+		public SelectorString Alacarte_Menu_Item;
+		public SelectorString Alacarte_Item_Select;
 		public SelectorString Alacarte_Item1_Add;
 		public SelectorString Alacarte_Item2_Dropdown;
 		public SelectorString Alacarte_Item2_Add;
@@ -267,6 +268,34 @@ public abstract class FrontEndTest {
 		
 	}
 	
+	public WebElement getElement(WebElement inElement, SelectorString s) {
+		
+		try {
+			java.lang.reflect.Method method = By.class.getMethod(s.by, String.class);
+			return inElement.findElement((By)method.invoke(null, s.selector));
+		}
+		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
+	
+	public List<WebElement> getElements(SelectorString s) {
+		
+		try {
+			java.lang.reflect.Method method = By.class.getMethod(s.by, String.class);
+			return driver.findElements((By)method.invoke(null, s.selector));
+		}
+		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
+	
 	public boolean isElementPresent(SelectorString s) {
 		
 		try {
@@ -371,6 +400,17 @@ public abstract class FrontEndTest {
 		
 	}
 	
+	public void selectFromDropdown(String itemName, SelectorString itemElement, String option) {
+		
+		for (WebElement e : getElements(itemElement)) {
+	    	if (e.getText().contains(itemName)) {
+	    		new Select(getElement(e, select.Alacarte_Item_Select)).selectByVisibleText(option);
+	    		break;
+	    	}
+	    }
+		
+	}
+	
 	public void add1ItemToCart() throws InterruptedException {
 		
 		click(select.Header_Alacarte);
@@ -378,7 +418,7 @@ public abstract class FrontEndTest {
 		
 	    Thread.sleep(1000);
 	    
-	    selectByVisibleText(select.Alacarte_Item1_Dropdown, "1");
+	    selectFromDropdown(System.getProperty("item1Name"), select.Alacarte_Menu_Item, "1");
 	    
 	    Thread.sleep(1000);
 	    
@@ -393,8 +433,10 @@ public abstract class FrontEndTest {
 	    
 	    Thread.sleep(1000);
 	    
-	    selectByVisibleText(select.Alacarte_Item1_Dropdown, "5");
-	    selectByVisibleText(select.Alacarte_Item2_Dropdown, "5");
+	    selectFromDropdown(System.getProperty("item1Name"), select.Alacarte_Menu_Item, "5");
+	    selectFromDropdown(System.getProperty("item2Name"), select.Alacarte_Menu_Item, "5");
+	    //selectByVisibleText(select.Alacarte_Item1_Dropdown, "5");
+	    //selectByVisibleText(select.Alacarte_Item2_Dropdown, "5");
 	    
 	    Thread.sleep(1000);
 	    

@@ -62,6 +62,7 @@ public abstract class FrontEndTest {
 		public SelectorString Header_Logo_ControlPanel;
 		public SelectorString Header_Alacarte;
 		public SelectorString Header_Plan;
+		public SelectorString Header_Plan_Complete;
 		public SelectorString Header_Search;
 		public SelectorString Header_Search_Input;
 		public SelectorString Header_Search_Result1;
@@ -69,6 +70,7 @@ public abstract class FrontEndTest {
 		public SelectorString Header_Account;
 		public SelectorString Header_Cart;
 
+		public SelectorString Alacarte_Subscribe_Dialogue;
 		public SelectorString Alacarte_Dinner_Checkbox;
 		public SelectorString Alacarte_Menu_Item;
 		public SelectorString Alacarte_Item_Select;
@@ -76,7 +78,6 @@ public abstract class FrontEndTest {
 		public SelectorString Alacarte_Item2_Dropdown;
 		public SelectorString Alacarte_Item2_Add;
 		
-		public SelectorString Plan_GoToMenu;
 		public SelectorString Plan_Gluten_Checkbox;
 		public SelectorString Plan_Gluten_Label;
 		public SelectorString Plan_Create;
@@ -366,6 +367,15 @@ public abstract class FrontEndTest {
 		
 	}
 	
+	public void scrollTo(SelectorString s) {
+		
+		((JavascriptExecutor)driver).executeScript(
+				"arguments[0].scrollIntoView();", 
+				getElement(s)
+				);
+		
+	}
+	
 	public void sendEscapeKey() throws InterruptedException {
 		
 		Actions action = new Actions(driver);
@@ -413,7 +423,15 @@ public abstract class FrontEndTest {
 	
 	public void add1ItemToCart() throws InterruptedException {
 		
+		//System.out.println(getElement(select.Alacarte_Subscribe_Dialogue).isDisplayed());
+		
 		click(select.Header_Alacarte);
+		
+		Thread.sleep(3000);
+		
+		if (getElement(select.Alacarte_Subscribe_Dialogue).isDisplayed())
+			sendEscapeKey();
+		
 		click(select.Alacarte_Dinner_Checkbox);
 		
 	    Thread.sleep(1000);
@@ -455,6 +473,7 @@ public abstract class FrontEndTest {
 		    click(select.Account_Subscription_Cancel);
 		    Thread.sleep(1000);
 		    click(select.Account_Subscription_Cancel_Confirm);
+		    Thread.sleep(1000);
 	    }
 		
 	}

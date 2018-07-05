@@ -20,6 +20,9 @@ public class NewMeal extends FrontEndTest {
 	    clear(select.ControlPanel_Meal_Add_Ingredients);
 	    sendKeys(select.ControlPanel_Meal_Add_Ingredients, zips);
 	    
+	    Thread.sleep(1000);
+		scrollTo(select.ControlPanel_Meal_Add_Create);
+	    
 	    click(select.ControlPanel_Meal_Add_Create);
 		
 	}
@@ -43,8 +46,10 @@ public class NewMeal extends FrontEndTest {
 				System.getProperty("mealDescription")
 				);
 		
-		Assert.assertTrue("Meal wasn't added!", textOnPage("New Meal"));
+		Thread.sleep(1000);
 		
+		Assert.assertTrue("Meal wasn't added!", textOnPage("New Meal"));
+
     	removeTableElement("New Meal");
 		
 	}

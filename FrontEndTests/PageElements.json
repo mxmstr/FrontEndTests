@@ -30,7 +30,11 @@
 		},
 		"Header_Plan" : {
 			"by" : "linkText",
-			"selector" : "The Complete Plan"
+			"selector" : "Meal Plans"
+		},
+		"Header_Plan_Complete" : {
+			"by" : "linkText",
+			"selector" : "Complete Plan"
 		},
 		"Header_Search" : {
 			"by" : "cssSelector",
@@ -58,6 +62,10 @@
 		},
 		
 		
+		"Alacarte_Subscribe_Dialogue" : {
+			"by" : "cssSelector",
+			"selector" : "body > div.pt-portal > div > span > div.pt-dialog-container.pt-overlay-content > div"
+		},
 		"Alacarte_Dinner_Checkbox" : {
 			"by" : "xpath",
 			"selector" : "//label[contains(.,'Dinner')]"
@@ -84,10 +92,6 @@
 		},
 		
 		
-		"Plan_GoToMenu" : {
-			"by" : "cssSelector",
-			"selector" : "a.nu-button.plan-description__menu-btn"
-		},
 		"Plan_Gluten_Checkbox" : {
 			"by" : "cssSelector",
 			"selector" : "label.pt-control:nth-child(7) > span:nth-child(2)"
@@ -97,8 +101,8 @@
 			"selector" : "//label[contains(.,'Gluten Free')]"
 		},
 		"Plan_Create" : {
-			"by" : "cssSelector",
-			"selector" : "button.nu-button.carte__plan-weekly-btn"
+			"by" : "xpath",
+			"selector" : "//button[contains(.,'Create Weekly Subscription')]"
 		},
 		"Plan_Create_Confirm" : {
 			"by" : "cssSelector",
@@ -286,7 +290,7 @@
 		},
 		"ControlPanel_Table_Delete" : {
 			"by" : "cssSelector",
-			"selector" : "button.pt-button:nth-child(4)"
+			"selector" : "body > div.pt-portal > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-dialog-body.bootstrap-wrapper > div > div:nth-child(14) > button.pt-button.pt-intent-danger.pt-large.pt-fill.pt-minimal"
 		},
 		"ControlPanel_Table_Delete_Confirm" : {
 			"by" : "cssSelector",
@@ -310,12 +314,12 @@
 			"selector" : "select"
 		},
 		"ControlPanel_Meal_Add_Ingredients" : {
-			"by" : "xpath",
-			"selector" : "//div[8]/label/textarea"
+			"by" : "cssSelector",
+			"selector" : "body > div.pt-portal > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-dialog-body.bootstrap-wrapper > div > div:nth-child(10) > label > textarea"
 		},
 		"ControlPanel_Meal_Add_Create" : {
-			"by" : "xpath",
-			"selector" : "//div[12]/button"
+			"by" : "cssSelector",
+			"selector" : "body > div.pt-portal > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-dialog-body.bootstrap-wrapper > div > div:nth-child(14) > button"
 		},
 		"ControlPanel_Meal_Edit" : {
 			"by" : "cssSelector",
@@ -327,7 +331,7 @@
 		},
 		"ControlPanel_Meal_Edit_Save" : {
 			"by" : "xpath",
-			"selector" : "//div[12]/button"
+			"selector" : "/html/body/div[5]/div/span/div[2]/div/div[2]/div/div[14]/button[1]"
 		},
 		"ControlPanel_Meal_FirstItem" : {
 			"by" : "cssSelector",
@@ -355,8 +359,8 @@
 			"selector" : "div.col-6:nth-child(4) > label:nth-child(1) > input:nth-child(2)"
 		},
 		"ControlPanel_Coupon_Create" : {
-			"by" : "xpath",
-			"selector" : "//div[11]/button"
+			"by" : "cssSelector",
+			"selector" : "body > div.pt-portal > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-dialog-body.bootstrap-wrapper > div > div:nth-child(14) > button"
 		},
 		
 		"ControlPanel_Delivery" : {

@@ -199,7 +199,7 @@
 		},
 		"Account_Delivery_Edit_Delete" : {
 			"by" : "cssSelector",
-			"selector" : "#root > div > div.bootstrap-wrapper.nu-content > div.container-flued > div > div > div.account__info > div:nth-child(4) > div > div.col-12.account__table-container > table > tbody > tr > td:nth-child(6) > a"
+			"selector" : "button.pt-button:nth-child(1)"
 		},
 		"Account_Delivery_Add" : {
 			"by" : "cssSelector",
@@ -289,8 +289,8 @@
 			"selector" : ".pt-table"
 		},
 		"ControlPanel_Table_Delete" : {
-			"by" : "cssSelector",
-			"selector" : "body > div.pt-portal > div > span > div.pt-dialog-container.pt-overlay-content > div > div.pt-dialog-body.bootstrap-wrapper > div > div:nth-child(14) > button.pt-button.pt-intent-danger.pt-large.pt-fill.pt-minimal"
+			"by" : "xpath",
+			"selector" : "//button[contains(.,'Delete')]"
 		},
 		"ControlPanel_Table_Delete_Confirm" : {
 			"by" : "cssSelector",

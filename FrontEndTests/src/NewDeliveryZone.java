@@ -27,11 +27,10 @@ public class NewDeliveryZone extends FrontEndTest {
 		if (isElementPresent(select.Account_Delivery_Edit)) {
 			clickJS(select.Account_Delivery_Edit);
 		    Thread.sleep(1000);
-		    click(select.Account_Delivery_Edit_Delete);
+		    clickJS(select.Account_Delivery_Edit_Delete);
 		}
-		else
-			click(select.Account_Delivery_Add);
 		
+		click(select.Account_Delivery_Add);
 		Thread.sleep(1000);
 		
 		
@@ -102,7 +101,9 @@ public class NewDeliveryZone extends FrontEndTest {
 		System.out.println("// Testing Delivery Zone In Checkout");
 		System.out.println("//");
 		
-		click(select.Header_Logo_ControlPanel);
+		Thread.sleep(1000);
+		
+		clickJS(select.Header_Logo_ControlPanel);
 		
 		Thread.sleep(1000);
 		

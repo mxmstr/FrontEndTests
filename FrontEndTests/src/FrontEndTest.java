@@ -511,8 +511,9 @@ public abstract class FrontEndTest {
     		if (e.getText().contains(name)) {
 
     			((JavascriptExecutor)driver).executeScript("arguments[0].click();", e);
-    			click(select.ControlPanel_Table_Delete);
-    			click(select.ControlPanel_Table_Delete_Confirm);
+    			Thread.sleep(1000);
+    			clickJS(select.ControlPanel_Table_Delete);
+    			clickJS(select.ControlPanel_Table_Delete_Confirm);
     			Thread.sleep(1000);
     			break;
     			

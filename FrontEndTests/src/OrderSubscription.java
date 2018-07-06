@@ -16,6 +16,7 @@ public class OrderSubscription extends FrontEndTest {
 		removeSubscription();
 		
 		click(select.Header_Plan);
+	    Thread.sleep(1000);
 		click(select.Header_Plan_Complete);
 	    
 	    Thread.sleep(1000);

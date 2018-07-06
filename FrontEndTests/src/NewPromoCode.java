@@ -47,7 +47,7 @@ public class NewPromoCode extends FrontEndTest {
 		
 		Thread.sleep(1000);
 		
-		click(select.Header_Logo_ControlPanel);
+		clickJS(select.Header_Logo_ControlPanel);
 		
 		
 		System.out.println("//");

@@ -28,10 +28,11 @@ public class NewDeliveryZone extends FrontEndTest {
 			clickJS(select.Account_Delivery_Edit);
 		    Thread.sleep(1000);
 		    clickJS(select.Account_Delivery_Edit_Delete);
+		    Thread.sleep(1000);
 		}
 		
 		click(select.Account_Delivery_Add);
-		Thread.sleep(1000);
+		Thread.sleep(3000);
 		
 		
 		clear(select.Account_Delivery_Add_Street);
@@ -62,14 +63,16 @@ public class NewDeliveryZone extends FrontEndTest {
 	    
 	    changeDeliveryInfo(street, city, zip, phone);
 	    
-	    click(select.Header_Cart);
-	    
 	    Thread.sleep(1000);
 	    
-	    click(select.Cart_Shipping);
+	    openCart();
 	    
 	    Thread.sleep(1000);
+
+	    clickJS(select.Cart_Shipping);
 	    
+	    Thread.sleep(1000);
+
 	    click(select.Cart_Shipping_Address1);
 	    click(select.Cart_Shipping_Confirm);
 	    

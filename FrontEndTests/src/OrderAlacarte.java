@@ -38,7 +38,7 @@ public class OrderAlacarte extends FrontEndTest {
 		System.out.println("// Testing Checkout With Less Than 10 items");
 		System.out.println("//");
     	
-    	click(select.Cart_Shipping);
+		openCart();
     	
     	Thread.sleep(1000);
 	    
@@ -101,7 +101,6 @@ public class OrderAlacarte extends FrontEndTest {
 		System.out.println("//");
     	
 		openCart();
-		click(select.Cart_Shipping);
 		
     	Thread.sleep(1000);
 	    

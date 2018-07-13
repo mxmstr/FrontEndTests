@@ -112,7 +112,7 @@
 		
 		"Cart_Subtotal" : {
 			"by" : "cssSelector",
-			"selector" : "body > div.pt-portal > div > span > div.cart.pt-overlay-content > div.cart__footer > div:nth-child(6) > div.cart__footer-half.text-right"
+			"selector" : "div.cart__footer-subtotal:nth-child(8) > div:nth-child(2)"
 		},
 		"Cart_Code_Input" : {
 			"by" : "cssSelector",

@@ -65,16 +65,16 @@ public class OrderAlacarte extends FrontEndTest {
     	add10ItemsToCart();
     	
     	Thread.sleep(1000);
+		
     	
-    	openCart();
-    	
-		Thread.sleep(1000);
-    	
-    	
-    	System.out.println("//");
+		System.out.println("//");
 		System.out.println("// Testing Inactive Promo Code");
 		System.out.println("//");
     	
+		openCart();
+    	
+		Thread.sleep(1000);
+		
     	redeemPromoCode(System.getProperty("inactiveCode"));
     	
     	Thread.sleep(1000);
@@ -92,14 +92,18 @@ public class OrderAlacarte extends FrontEndTest {
     	
     	Assert.assertTrue("Invalid code accepted!", textOnPage("Code is invalid or already used."));
 		
+    	sendEscapeKey();
+	    Thread.sleep(1000);
+    	
     	
     	System.out.println("//");
 		System.out.println("// Testing Checkout With Invalid Card");
 		System.out.println("//");
     	
+		openCart();
 		click(select.Cart_Shipping);
-    	
-    	Thread.sleep(5000);
+		
+    	Thread.sleep(1000);
 	    
     	click(select.Cart_Shipping_Pickup);
     	click(select.Cart_Shipping_Pickup);

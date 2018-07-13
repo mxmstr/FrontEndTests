@@ -440,13 +440,20 @@ public abstract class FrontEndTest {
 	    
 	    Thread.sleep(1000);
 	    
-	    click(select.Alacarte_Item1_Add);
+	    getElement(select.Alacarte_Menu_Item).findElement(
+	    		By.cssSelector("button[name='" + System.getProperty("item1Name") + "']")
+	    		).click();
 	    
 	}
 
 	public void add10ItemsToCart() throws InterruptedException {
 		
 		click(select.Header_Alacarte);
+
+	    Thread.sleep(3000);
+	    
+		sendEscapeKey();
+		
 		click(select.Alacarte_Dinner_Checkbox);
 	    
 	    Thread.sleep(1000);
@@ -456,10 +463,27 @@ public abstract class FrontEndTest {
 	    //selectByVisibleText(select.Alacarte_Item1_Dropdown, "5");
 	    //selectByVisibleText(select.Alacarte_Item2_Dropdown, "5");
 	    
-	    Thread.sleep(1000);
+	    Thread.sleep(4000);
 	    
-	    click(select.Alacarte_Item1_Add);
-	    click(select.Alacarte_Item2_Add);
+	    /*List<WebElement> items = getElements(select.Alacarte_Menu_Item);
+	    
+	    for (WebElement item : items) {
+	    	WebElement button = item.findElement(By.cssSelector("button[name='" + System.getProperty("item1Name") + "']"));
+	    	if (Element)
+	    	item.findElement(
+		    		By.cssSelector("button[name='" + System.getProperty("item1Name") + "']")
+		    		).click();
+	    }
+	    
+	    getElement(select.Alacarte_Menu_Item).findElement(
+	    		By.cssSelector("button[name='" + System.getProperty("item1Name") + "']")
+	    		).click();
+	    getElement(select.Alacarte_Menu_Item).findElement(
+	    		By.cssSelector("button[name='" + System.getProperty("item2Name") + "']")
+	    		).click();*/
+	    
+	    driver.findElement((By.cssSelector("button[name='" + System.getProperty("item1Name") + "']"))).click();
+	    driver.findElement((By.cssSelector("button[name='" + System.getProperty("item2Name") + "']"))).click();
 	    
 	}
 	
@@ -498,7 +522,7 @@ public abstract class FrontEndTest {
 			
 		clear(select.Cart_Code_Input);
 		sendKeys(select.Cart_Code_Input, code);
-		click(select.Cart_Code_Apply);
+		clickJS(select.Cart_Code_Apply);
     	
 	}
 	

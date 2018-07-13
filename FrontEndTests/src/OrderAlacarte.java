@@ -37,11 +37,11 @@ public class OrderAlacarte extends FrontEndTest {
     	System.out.println("//");
 		System.out.println("// Testing Checkout With Less Than 10 items");
 		System.out.println("//");
-    	
-		openCart();
-    	
+
+    	click(select.Cart_Shipping);
+		
     	Thread.sleep(1000);
-	    
+    	
     	click(select.Cart_Shipping_Pickup);
     	click(select.Cart_Shipping_Pickup);
 	    click(select.Cart_Shipping_Confirm);
@@ -103,7 +103,11 @@ public class OrderAlacarte extends FrontEndTest {
 		openCart();
 		
     	Thread.sleep(1000);
-	    
+
+    	click(select.Cart_Shipping);
+		
+    	Thread.sleep(1000);
+    	
     	click(select.Cart_Shipping_Pickup);
     	click(select.Cart_Shipping_Pickup);
 	    click(select.Cart_Shipping_Confirm);

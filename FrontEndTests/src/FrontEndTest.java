@@ -40,9 +40,12 @@ public abstract class FrontEndTest {
 	public String password;
 	public WebDriver driver;
 	public ArrayList<AsyncTester> threads;
-	public SelectorTable table;
+	public SelectorTable selector_table;
 	public SelectorData select;
+	public OrderTable order_table;
+	public List<String> orders_to_test;
 	public static String elementJson = "PageElements.json";
+	public static String ordersJson = "MealOrders.json";
 	
 	
 	public static class SelectorString {
@@ -73,7 +76,11 @@ public abstract class FrontEndTest {
 		public SelectorString Alacarte_Subscribe_Dialogue;
 		public SelectorString Alacarte_Dinner_Checkbox;
 		public SelectorString Alacarte_Menu_Item;
+		public SelectorString Alacarte_Item_Title;
 		public SelectorString Alacarte_Item_Select;
+		public SelectorString Alacarte_Item_Medium;
+		public SelectorString Alacarte_Item_Large;
+		public SelectorString Alacarte_Item_Add;
 		public SelectorString Alacarte_Item1_Add;
 		public SelectorString Alacarte_Item2_Dropdown;
 		public SelectorString Alacarte_Item2_Add;
@@ -161,13 +168,36 @@ public abstract class FrontEndTest {
 		
 	}
 	
+	public static class MealInfo {
+		
+		public String name;
+		public int quantity;
+		public String size;
+		
+	}
+	
+	public static class Order {
+		
+		public String name;
+		public MealInfo[] meals;
+		
+	}
+	
+	public static class OrderTable {
+		
+		public Order[] orders;
+		
+	}
+	
 	
 	@Before
 	public void setUp() throws Exception {
 		
 		ObjectMapper mapper = new ObjectMapper();
-		table = mapper.readValue(new File(elementJson), SelectorTable.class);
-		select = table.selectors;
+		selector_table = mapper.readValue(new File(elementJson), SelectorTable.class);
+		select = selector_table.selectors;
+		order_table = mapper.readValue(new File(ordersJson), OrderTable.class);
+		orders_to_test = new ArrayList<String>();
 		
 		
 		Properties configFile = new java.util.Properties();
@@ -175,7 +205,11 @@ public abstract class FrontEndTest {
 			configFile.load(new FileInputStream(new File("config.cfg")));
 			
 			for (String prop : configFile.stringPropertyNames()) {
-				System.setProperty(prop, configFile.getProperty(prop));
+				if (prop.equals("order")) {
+					orders_to_test.add(configFile.getProperty(prop));
+				}
+				else
+					System.setProperty(prop, configFile.getProperty(prop));
 			}
 		}
 		catch(Exception e) {}
@@ -310,6 +344,19 @@ public abstract class FrontEndTest {
 		
 	}
 	
+	public boolean isElementPresent(WebElement inElement, SelectorString s) {
+		
+		try {
+			java.lang.reflect.Method method = By.class.getMethod(s.by, String.class);
+			inElement.findElement((By)method.invoke(null, s.selector));
+			return true;
+	    } 
+		catch (NoSuchElementException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			return false;
+	    }
+		
+	}
+	
 	public boolean isEnabled(SelectorString s) {
 		
 		return getElement(s).isEnabled();
@@ -410,14 +457,18 @@ public abstract class FrontEndTest {
 		
 	}
 	
-	public void selectFromDropdown(String itemName, SelectorString itemElement, String option) {
+	public void selectFromDropdown(WebElement e, String option) {
 		
-		for (WebElement e : getElements(itemElement)) {
-	    	if (e.getText().contains(itemName)) {
-	    		new Select(getElement(e, select.Alacarte_Item_Select)).selectByVisibleText(option);
-	    		break;
-	    	}
-	    }
+		new Select(getElement(e, select.Alacarte_Item_Select)).selectByVisibleText(option);
+		
+	}
+	
+	public void selectMealSize(WebElement e, String option) {
+		
+		if (option.equals("Large"))
+			getElement(e, select.Alacarte_Item_Large).click();
+		else
+			getElement(e, select.Alacarte_Item_Medium).click();
 		
 	}
 	
@@ -436,7 +487,7 @@ public abstract class FrontEndTest {
 		
 	    Thread.sleep(1000);
 	    
-	    selectFromDropdown(System.getProperty("item1Name"), select.Alacarte_Menu_Item, "1");
+	    //selectFromDropdown(System.getProperty("item1Name"), "1");
 	    
 	    Thread.sleep(1000);
 	    
@@ -454,38 +505,21 @@ public abstract class FrontEndTest {
 	    
 		sendEscapeKey();
 		
-		click(select.Alacarte_Dinner_Checkbox);
+		//click(select.Alacarte_Dinner_Checkbox);
 	    
 	    Thread.sleep(1000);
 	    
-	    selectFromDropdown(System.getProperty("item1Name"), select.Alacarte_Menu_Item, "5");
-	    selectFromDropdown(System.getProperty("item2Name"), select.Alacarte_Menu_Item, "5");
-	    //selectByVisibleText(select.Alacarte_Item1_Dropdown, "5");
-	    //selectByVisibleText(select.Alacarte_Item2_Dropdown, "5");
+	    //selectFromDropdown(System.getProperty("item1Name"), "5");
+	    //selectFromDropdown(System.getProperty("item2Name"), "5");
 	    
 	    Thread.sleep(4000);
-	    
-	    /*List<WebElement> items = getElements(select.Alacarte_Menu_Item);
-	    
-	    for (WebElement item : items) {
-	    	WebElement button = item.findElement(By.cssSelector("button[name='" + System.getProperty("item1Name") + "']"));
-	    	if (Element)
-	    	item.findElement(
-		    		By.cssSelector("button[name='" + System.getProperty("item1Name") + "']")
-		    		).click();
-	    }
-	    
-	    getElement(select.Alacarte_Menu_Item).findElement(
-	    		By.cssSelector("button[name='" + System.getProperty("item1Name") + "']")
-	    		).click();
-	    getElement(select.Alacarte_Menu_Item).findElement(
-	    		By.cssSelector("button[name='" + System.getProperty("item2Name") + "']")
-	    		).click();*/
 	    
 	    driver.findElement((By.cssSelector("button[name='" + System.getProperty("item1Name") + "']"))).click();
 	    driver.findElement((By.cssSelector("button[name='" + System.getProperty("item2Name") + "']"))).click();
 	    
 	}
+	
+	
 	
 	public void removeSubscription() throws InterruptedException  {
 		

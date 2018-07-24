@@ -1,16 +1,52 @@
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 
 public class OrderAlacarte extends FrontEndTest {
-
+	
+	public void addItemsToCart() throws InterruptedException {
+		
+		click(select.Header_Alacarte);
+		
+		Thread.sleep(4000);
+	    
+		sendEscapeKey();
+		
+	    Thread.sleep(1000);
+	    
+	    for (Order order : order_table.orders) {
+	    	if (orders_to_test.contains(order.name)) {
+	    		for (MealInfo info : order.meals) {
+	    			
+	    			for (WebElement e : getElements(select.Alacarte_Menu_Item)) {
+	    		    	if (getElement(e, select.Alacarte_Item_Title).getText().equals(info.name)) {
+			    			selectFromDropdown(e, Integer.toString(info.quantity));
+			    			if (info.size != null)
+			    				selectMealSize(e, info.size);
+			    			getElement(e, select.Alacarte_Item_Add).click();
+			    			break;
+	    		    	}
+	    			}
+	    			
+	    		}
+	    	}
+	    }
+	    
+	    Thread.sleep(1000);
+	    
+	}
+	
 	@Test
 	public void run() throws InterruptedException {
 		
 		String bodyText;
 		
+		addItemsToCart();
+		
+		/*
 		System.out.println("//");
 		System.out.println("// Testing Adding Items");
 		System.out.println("//");
@@ -152,7 +188,7 @@ public class OrderAlacarte extends FrontEndTest {
 	    Thread.sleep(10000);
 	    
 	    Assert.assertTrue("Valid card not accepted!", !isElementPresent(select.Cart_Checkout_Card_Frame));
-		
+		*/
 	}
 	
 }

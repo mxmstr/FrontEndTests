@@ -98,10 +98,6 @@ public class NewPromoCode extends FrontEndTest {
     	click(select.Header_Logo_ControlPanel);
     	
     	
-    	add10ItemsToCart();
-    	
-    	Thread.sleep(1000);
-    	
     	openCart();
     	
 		Thread.sleep(1000);

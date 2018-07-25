@@ -25,10 +25,6 @@ public class OrderSubscription extends FrontEndTest {
 	    
 	    addSubscription();
 	    
-	    Thread.sleep(1000);
-	    
-	    openCart();
-	    
     	Thread.sleep(1000);
 	    
     	click(select.Cart_Shipping);

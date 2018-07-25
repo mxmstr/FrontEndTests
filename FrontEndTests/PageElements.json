@@ -10,6 +10,14 @@
 			"by" : "cssSelector",
 			"selector" : ".pt-spinner-track"
 		},
+		"Chat_Frame" : {
+			"by" : "cssSelector",
+			"selector" : "#drift-widget"
+		},
+		"Chat_Dismiss" : {
+			"by" : "cssSelector",
+			"selector" : "._2So8ItJQ9P6IqaCUlCO-2f"
+		},
 		
 		
 		"Header_Topbar" : {
@@ -130,6 +138,14 @@
 			"by" : "cssSelector",
 			"selector" : "div.cart__footer-subtotal:nth-child(8) > div:nth-child(2)"
 		},
+		"Cart_Item" : {
+			"by" : "className",
+			"selector" : "cart__item"
+		},
+		"Cart_Item_Remove" : {
+			"by" : "cssSelector",
+			"selector" : "div:nth-child(2) > div:nth-child(3) > p:nth-child(2)"
+		},
 		"Cart_Code_Input" : {
 			"by" : "cssSelector",
 			"selector" : "input.pt-input.pt-fill"
@@ -139,8 +155,8 @@
 			"selector" : "button.cart__promocode-btn"
 		},
 		"Cart_Shipping" : {
-			"by" : "cssSelector",
-			"selector" : ".pt-intent-orange"
+			"by" : "xpath",
+			"selector" : "//button[text()='Set Shipping Type']"
 		},
 		"Cart_Shipping_Address1" : {
 			"by" : "cssSelector",

@@ -10,6 +10,14 @@
 			"by" : "cssSelector",
 			"selector" : ".pt-spinner-track"
 		},
+		"Chat_Frame" : {
+			"by" : "cssSelector",
+			"selector" : "#drift-widget"
+		},
+		"Chat_Dismiss" : {
+			"by" : "cssSelector",
+			"selector" : "._2So8ItJQ9P6IqaCUlCO-2f"
+		},
 		
 		
 		"Header_Topbar" : {
@@ -74,9 +82,25 @@
 			"by" : "className",
 			"selector" : "carte__item"
 		},
+		"Alacarte_Item_Title" : {
+			"by" : "className",
+			"selector" : "carte__item-title"
+		},
 		"Alacarte_Item_Select" : {
 			"by" : "cssSelector",
 			"selector" : "select"
+		},
+		"Alacarte_Item_Medium" : {
+			"by" : "cssSelector",
+			"selector" : "div:nth-child(4) > div:nth-child(2) > button:nth-child(1)"
+		},
+		"Alacarte_Item_Large" : {
+			"by" : "cssSelector",
+			"selector" : "div:nth-child(4) > div:nth-child(2) > button:nth-child(2)"
+		},
+		"Alacarte_Item_Add" : {
+			"by" : "cssSelector",
+			"selector" : "div:nth-child(5) > button:nth-child(1)"
 		},
 		"Alacarte_Item1_Add" : {
 			"by" : "cssSelector",
@@ -114,6 +138,14 @@
 			"by" : "cssSelector",
 			"selector" : "div.cart__footer-subtotal:nth-child(8) > div:nth-child(2)"
 		},
+		"Cart_Item" : {
+			"by" : "className",
+			"selector" : "cart__item"
+		},
+		"Cart_Item_Remove" : {
+			"by" : "cssSelector",
+			"selector" : "div:nth-child(2) > div:nth-child(3) > p:nth-child(2)"
+		},
 		"Cart_Code_Input" : {
 			"by" : "cssSelector",
 			"selector" : "input.pt-input.pt-fill"
@@ -123,8 +155,8 @@
 			"selector" : "button.cart__promocode-btn"
 		},
 		"Cart_Shipping" : {
-			"by" : "cssSelector",
-			"selector" : ".pt-intent-orange"
+			"by" : "xpath",
+			"selector" : "//button[text()='Set Shipping Type']"
 		},
 		"Cart_Shipping_Address1" : {
 			"by" : "cssSelector",

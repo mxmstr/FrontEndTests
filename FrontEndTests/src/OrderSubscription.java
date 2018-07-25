@@ -12,6 +12,8 @@ public class OrderSubscription extends FrontEndTest {
 		System.out.println("// Testing Add Subscription");
 		System.out.println("//");
 		
+		click(select.Header_Account);
+		
 		removePaymentInfo();
 		removeSubscription();
 		

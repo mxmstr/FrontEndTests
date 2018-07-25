@@ -43,7 +43,7 @@ public abstract class FrontEndTest {
 	public SelectorTable selector_table;
 	public SelectorData select;
 	public OrderTable order_table;
-	public List<String> orders_to_test;
+	public String[] orders_to_test;
 	public static String elementJson = "PageElements.json";
 	public static String ordersJson = "MealOrders.json";
 	
@@ -59,6 +59,8 @@ public abstract class FrontEndTest {
 		
 		public SelectorString Body;
 		public SelectorString Spinner;
+		public SelectorString Chat_Frame;
+		public SelectorString Chat_Dismiss;
 		
 		public SelectorString Header_Topbar;
 		public SelectorString Header_Logo;
@@ -91,6 +93,8 @@ public abstract class FrontEndTest {
 		public SelectorString Plan_Create_Confirm;
 
 		public SelectorString Cart_Subtotal;
+		public SelectorString Cart_Item;
+		public SelectorString Cart_Item_Remove;
 		public SelectorString Cart_Code_Input;
 		public SelectorString Cart_Code_Apply;
 		public SelectorString Cart_Shipping;
@@ -197,22 +201,17 @@ public abstract class FrontEndTest {
 		selector_table = mapper.readValue(new File(elementJson), SelectorTable.class);
 		select = selector_table.selectors;
 		order_table = mapper.readValue(new File(ordersJson), OrderTable.class);
-		orders_to_test = new ArrayList<String>();
-		
 		
 		Properties configFile = new java.util.Properties();
 		try {
 			configFile.load(new FileInputStream(new File("config.cfg")));
 			
-			for (String prop : configFile.stringPropertyNames()) {
-				if (prop.equals("order")) {
-					orders_to_test.add(configFile.getProperty(prop));
-				}
-				else
-					System.setProperty(prop, configFile.getProperty(prop));
-			}
+			for (String prop : configFile.stringPropertyNames())
+				System.setProperty(prop, configFile.getProperty(prop));
 		}
 		catch(Exception e) {}
+		
+		orders_to_test = System.getProperty("orders").split(",");
 		
 		
 		if (Integer.parseInt(System.getProperty("log")) != 0)
@@ -253,7 +252,14 @@ public abstract class FrontEndTest {
         driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         driver.get(homePage);
         
+        
         signIn();
+        
+        Thread.sleep(4000);
+        
+        driver.switchTo().frame(getElement(select.Chat_Frame));
+        click(select.Chat_Dismiss);
+        driver.switchTo().defaultContent();
 	
 	}
 	
@@ -286,6 +292,12 @@ public abstract class FrontEndTest {
 				fail();
 			}
 		}
+		
+	}
+	
+	public void removeElement() {
+		
+		((JavascriptExecutor)driver).executeScript("return document.getElementByClassName('review-info-star').remove();");
 		
 	}
 	
@@ -582,7 +594,6 @@ public abstract class FrontEndTest {
 	
 	public void removePaymentInfo() {
 		
-		click(select.Header_Account);
 		click(select.Account_Payment);
 	    
 	    if (isElementPresent(select.Account_Payment_Delete)) {

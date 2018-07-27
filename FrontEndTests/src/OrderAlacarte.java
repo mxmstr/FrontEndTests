@@ -12,7 +12,7 @@ public class OrderAlacarte extends FrontEndTest {
 		for (MealInfo info : meals) {
 			for (WebElement e : getElements(select.Alacarte_Menu_Item)) {
 		    	if (getElement(e, select.Alacarte_Item_Title).getText().equals(info.name)) {
-	    			selectFromDropdown(e, Integer.toString(info.quantity));
+	    			selectFromDropdown(getElement(e, select.Alacarte_Item_Select), Integer.toString(info.quantity));
 	    			if (info.size != null)
 	    				selectMealSize(e, info.size);
 	    			getElement(e, select.Alacarte_Item_Add).click();
@@ -25,8 +25,6 @@ public class OrderAlacarte extends FrontEndTest {
 	
 	@Test
 	public void run() throws InterruptedException {
-		
-		String bodyText;
 		
 		System.out.println("//");
 		System.out.println("// Testing Adding Items");

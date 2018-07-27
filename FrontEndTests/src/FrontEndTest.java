@@ -35,19 +35,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class FrontEndTest {
 	
-	public String homePage;
-	public String email;
-	public String password;
-	public WebDriver driver;
-	public ArrayList<AsyncTester> threads;
-	public SelectorTable selector_table;
-	public SelectorData select;
-	public OrderTable order_table;
-	public String[] orders_to_test;
-	public static String elementJson = "PageElements.json";
-	public static String ordersJson = "MealOrders.json";
-	
-	
 	public static class SelectorString {
 		
 		public String by;
@@ -93,6 +80,7 @@ public abstract class FrontEndTest {
 		public SelectorString Plan_Create_Confirm;
 
 		public SelectorString Cart_Subtotal;
+		public SelectorString Cart_Total;
 		public SelectorString Cart_Item;
 		public SelectorString Cart_Item_Remove;
 		public SelectorString Cart_Code_Input;
@@ -153,9 +141,12 @@ public abstract class FrontEndTest {
 		public SelectorString ControlPanel_Meal_FirstItem;
 		public SelectorString ControlPanel_Coupon;
 		public SelectorString ControlPanel_Coupon_Add;
-		public SelectorString ControlPanel_Coupon_Name;
-		public SelectorString ControlPanel_Coupon_Percent;
+		public SelectorString ControlPanel_Coupon_Title;
+		public SelectorString ControlPanel_Coupon_Type;
+		public SelectorString ControlPanel_Coupon_Value;
 		public SelectorString ControlPanel_Coupon_Code;
+		public SelectorString ControlPanel_Coupon_Percent;
+		public SelectorString ControlPanel_Coupon_Reusable;
 		public SelectorString ControlPanel_Coupon_Create;
 		public SelectorString ControlPanel_Delivery;
 		public SelectorString ControlPanel_Delivery_Add;
@@ -193,6 +184,37 @@ public abstract class FrontEndTest {
 		
 	}
 	
+	public static class Code {
+		
+		public String title;
+		public String type;
+		public boolean percentage;
+		public boolean reusable;
+		public String value;
+		public String code;
+		
+	}
+	
+	public static class CodeTable {
+		
+		public Code[] codes;
+		
+	}
+	
+	public String homePage;
+	public String email;
+	public String password;
+	public WebDriver driver;
+	public ArrayList<AsyncTester> threads;
+	public SelectorTable selector_table;
+	public SelectorData select;
+	public OrderTable order_table;
+	public String[] orders_to_test;
+	public CodeTable code_table;
+	public static String elementJson = "PageElements.json";
+	public static String ordersJson = "MealOrders.json";
+	public static String codesJson = "PromoCodes.json";
+	
 	
 	@Before
 	public void setUp() throws Exception {
@@ -201,6 +223,8 @@ public abstract class FrontEndTest {
 		selector_table = mapper.readValue(new File(elementJson), SelectorTable.class);
 		select = selector_table.selectors;
 		order_table = mapper.readValue(new File(ordersJson), OrderTable.class);
+		code_table = mapper.readValue(new File(codesJson), CodeTable.class);
+		
 		
 		Properties configFile = new java.util.Properties();
 		try {
@@ -471,7 +495,7 @@ public abstract class FrontEndTest {
 	
 	public void selectFromDropdown(WebElement e, String option) {
 		
-		new Select(getElement(e, select.Alacarte_Item_Select)).selectByVisibleText(option);
+		new Select(e).selectByVisibleText(option);
 		
 	}
 	
@@ -521,13 +545,18 @@ public abstract class FrontEndTest {
 	    
 	    Thread.sleep(1000);
 	    
-	    //selectFromDropdown(System.getProperty("item1Name"), "5");
-	    //selectFromDropdown(System.getProperty("item2Name"), "5");
+		for (WebElement e : getElements(select.Alacarte_Menu_Item)) {
+			if (getElement(e, select.Alacarte_Item_Title).getText().equals("Soup 1")) {
+				selectFromDropdown(getElement(e, select.Alacarte_Item_Select), "10");
+    			getElement(e, select.Alacarte_Item_Add).click();
+    			break;
+			}
+		}
 	    
-	    Thread.sleep(4000);
+	    Thread.sleep(1000);
 	    
-	    driver.findElement((By.cssSelector("button[name='" + System.getProperty("item1Name") + "']"))).click();
-	    driver.findElement((By.cssSelector("button[name='" + System.getProperty("item2Name") + "']"))).click();
+	    //driver.findElement((By.cssSelector("button[name='" + System.getProperty("item1Name") + "']"))).click();
+	    //driver.findElement((By.cssSelector("button[name='" + System.getProperty("item2Name") + "']"))).click();
 	    
 	}
 	
@@ -564,12 +593,14 @@ public abstract class FrontEndTest {
 	    
 	}
 	
-	public void redeemPromoCode(String code) {
+	public void redeemPromoCode(String code) throws InterruptedException {
 			
 		clear(select.Cart_Code_Input);
 		sendKeys(select.Cart_Code_Input, code);
 		clickJS(select.Cart_Code_Apply);
     	
+		Thread.sleep(1000);
+		
 	}
 	
 	public void removeTableElement(String name) throws InterruptedException {

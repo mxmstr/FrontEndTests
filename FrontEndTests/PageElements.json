@@ -66,7 +66,7 @@
 		},
 		"Header_Cart" : {
 			"by" : "cssSelector",
-			"selector" : "button.pt-button.pt-minimal.pt-icon-shopping-cart.topbar__cart-btn.topbar__ma-top-8"
+			"selector" : ".pt-button"
 		},
 		
 		
@@ -138,6 +138,10 @@
 			"by" : "cssSelector",
 			"selector" : "div.cart__footer-subtotal:nth-child(8) > div:nth-child(2)"
 		},
+		"Cart_Total" : {
+			"by" : "cssSelector",
+			"selector" : ".cart__footer-total > div:nth-child(2)"
+		},
 		"Cart_Item" : {
 			"by" : "className",
 			"selector" : "cart__item"
@@ -167,8 +171,8 @@
 			"selector" : "//label[contains(.,'Launchbyte')]"
 		},
 		"Cart_Shipping_Confirm" : {
-			"by" : "xpath",
-			"selector" : "(//button[@type='button'])[3]"
+			"by" : "cssSelector",
+			"selector" : "button.pt-button:nth-child(7)"
 		},
 		"Cart_Checkout" : {
 			"by" : "cssSelector",
@@ -378,17 +382,29 @@
 			"by" : "cssSelector",
 			"selector" : "button.pt-button:nth-child(1)"
 		},
-		"ControlPanel_Coupon_Name" : {
+		"ControlPanel_Coupon_Title" : {
 			"by" : "cssSelector",
 			"selector" : "div.col-6:nth-child(1) > label:nth-child(1) > input:nth-child(2)"
 		},
-		"ControlPanel_Coupon_Percent" : {
+		"ControlPanel_Coupon_Type" : {
+			"by" : "cssSelector",
+			"selector" : ".pt-select > select:nth-child(1)"
+		},
+		"ControlPanel_Coupon_Value" : {
 			"by" : "cssSelector",
 			"selector" : "div.pt-input-group.pt-large > input.pt-input"
 		},
 		"ControlPanel_Coupon_Code" : {
 			"by" : "cssSelector",
 			"selector" : "div.col-6:nth-child(4) > label:nth-child(1) > input:nth-child(2)"
+		},
+		"ControlPanel_Coupon_Percent" : {
+			"by" : "cssSelector",
+			"selector" : "div.col-12:nth-child(5) > label:nth-child(1)"
+		},
+		"ControlPanel_Coupon_Reusable" : {
+			"by" : "cssSelector",
+			"selector" : "div.col-12:nth-child(10) > label:nth-child(1)"
 		},
 		"ControlPanel_Coupon_Create" : {
 			"by" : "cssSelector",

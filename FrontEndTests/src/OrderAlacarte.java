@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -23,6 +28,52 @@ public class OrderAlacarte extends FrontEndTest {
 		
 	}
 	
+	public void CheckItemsMatchOrder(MealInfo[] meals) throws InterruptedException {
+		
+		Map<String, Integer> mealValues = new HashMap<String, Integer>();
+		List<String> names = new ArrayList<String>();
+		
+		for (MealInfo info : meals)
+			if (!names.contains(info.name))
+				names.add(info.name);
+		
+		for (String name : names) {
+			int mediumCount = 0;
+			int largeCount = 0;
+			
+			for (MealInfo _info : meals) {
+				if (_info.name.equals(name)) {
+					if (_info.size == null || _info.size.equals("Large"))
+						largeCount++;
+					else if (_info.size.equals("Medium"))
+						mediumCount++;
+				}
+			}
+			
+			int instances = 0;
+			
+			for (WebElement e : getElements(select.Cart_Item)) {
+				String title = getElement(e, select.Cart_Item_Title).getText();
+				String size = getElement(e, select.Cart_Item_Quantity).getText();
+				String quantity = getFirstSelectedInDropdown(getElement(e, select.Cart_Item_Quantity)).getText();
+				
+				if (title.equals(name))
+					instances++;
+			}
+			
+			//System.out.println(instances);
+			//System.out.println((mediumCount > 0 ? 1 : 0) + (largeCount > 0 ? 1 : 0));
+			
+			Thread.sleep(5000);
+			
+		    Assert.assertTrue(
+		    		"Orders not grouped properly! " + name, 
+		    		instances == (mediumCount > 0 ? 1 : 0) + (largeCount > 0 ? 1 : 0)
+		    		);
+		}
+		
+	}
+	
 	@Test
 	public void run() throws InterruptedException {
 		
@@ -44,31 +95,38 @@ public class OrderAlacarte extends FrontEndTest {
 					
 					click(select.Header_Alacarte);
 					
-					Thread.sleep(4000);
-				    
-					sendEscapeKey();
+					waitForPopup();
 					
-				    Thread.sleep(1000);
+				    //Thread.sleep(1000);
 					
 				    addItemsToCart(order.meals);
 					
-					Thread.sleep(1000);
+					waitForPopup();
+					
+					scrollUpJS();
+					openCart();
+					
+					//Thread.sleep(1000);
+					
+					
+					System.out.println("//");
+					System.out.println("// Checking Cart Items");
+					System.out.println("//");
+					
+					CheckItemsMatchOrder(order.meals);
 					
 					
 					System.out.println("//");
 					System.out.println("// Testing Inactive Promo Code");
 					System.out.println("//");
 
-					scrollUpJS();
-					openCart();
-			    	
-					Thread.sleep(1000);
-					
 			    	redeemPromoCode(System.getProperty("inactiveCode"));
-			    	
-			    	Thread.sleep(1000);
-			    	
+					Thread.sleep(2000);
 			    	Assert.assertTrue("Inactive code accepted!", textOnPage("Code is invalid or already used."));
+			    	
+			    	
+			    	while (textOnPage("Code is invalid or already used."))
+			    		;
 			    	
 			    	
 			    	System.out.println("//");
@@ -76,13 +134,10 @@ public class OrderAlacarte extends FrontEndTest {
 					System.out.println("//");
 					
 			    	redeemPromoCode(System.getProperty("invalidCode"));
-			    	
-			    	Thread.sleep(1000);
-			    	
+					Thread.sleep(2000);
 			    	Assert.assertTrue("Invalid code accepted!", textOnPage("Code is invalid or already used."));
 					
 			    	sendEscapeKey();
-				    Thread.sleep(1000);
 				    
 			    	
 			    	System.out.println("//");
@@ -92,21 +147,13 @@ public class OrderAlacarte extends FrontEndTest {
 					scrollUpJS();
 					openCart();
 					
-			    	Thread.sleep(1000);
-
 			    	click(select.Cart_Shipping);
 					
-			    	Thread.sleep(1000);
-			    	
 			    	click(select.Cart_Shipping_Pickup);
 			    	click(select.Cart_Shipping_Pickup);
 				    click(select.Cart_Shipping_Confirm);
 				    
-				    Thread.sleep(1000);
-				    
 				    click(select.Cart_Checkout);
-				    
-				    Thread.sleep(1000);
 				    
 				    
 				    if (textOnPage("You must to have at least 10 meal items in the cart.")) {
@@ -118,13 +165,9 @@ public class OrderAlacarte extends FrontEndTest {
 					    	getElement(e, select.Cart_Item_Remove).click();
 					    
 			    		sendEscapeKey();
-					    Thread.sleep(1000);
-					    
 			    		break;
 			    	}
 				    
-				    
-				    Thread.sleep(1000);
 				    
 				    checkout(
 				    		System.getProperty("invalidCardNumber"), 
@@ -133,27 +176,20 @@ public class OrderAlacarte extends FrontEndTest {
 				    		System.getProperty("invalidCardZip")
 				    		);
 				    
-				    Thread.sleep(1000);
-				    
 				    Assert.assertTrue("Invalid card accepted!", isElementPresent(select.Cart_Checkout_Card_Frame));
 					
 				    
 				    click(select.Cart_Checkout_Close);
-				    
-				    Thread.sleep(1000);
-				    
 				    click(select.Cart_Checkout);
-				    
-				    Thread.sleep(1000);
 				    
 				    System.out.println("//");
 					System.out.println("// Testing Checkout With Valid Card");
 					System.out.println("//");
 				    
 					checkout(
-				    		System.getProperty("validCardNumber"), 
-				    		System.getProperty("validCardDate"), 
-				    		System.getProperty("validCardCVC"), 
+				    		System.getProperty("validCardNumber"),
+				    		System.getProperty("validCardDate"),
+				    		System.getProperty("validCardCVC"),
 				    		System.getProperty("validCardZip")
 				    		);
 				    
@@ -161,7 +197,6 @@ public class OrderAlacarte extends FrontEndTest {
 				    
 				    Assert.assertTrue("Valid card not accepted!", !isElementPresent(select.Cart_Checkout_Card_Frame));
 					
-				    
 				    break;
 				}
 	    	}

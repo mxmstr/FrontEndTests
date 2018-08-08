@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +20,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -27,6 +29,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,6 +86,9 @@ public abstract class FrontEndTest {
 		public SelectorString Cart_Subtotal;
 		public SelectorString Cart_Total;
 		public SelectorString Cart_Item;
+		public SelectorString Cart_Item_Title;
+		public SelectorString Cart_Item_Size;
+		public SelectorString Cart_Item_Quantity;
 		public SelectorString Cart_Item_Remove;
 		public SelectorString Cart_Code_Input;
 		public SelectorString Cart_Code_Apply;
@@ -211,6 +218,8 @@ public abstract class FrontEndTest {
 	public OrderTable order_table;
 	public String[] orders_to_test;
 	public CodeTable code_table;
+	public String[] codes_to_test;
+	public static int timeout = 5;
 	public static String elementJson = "PageElements.json";
 	public static String ordersJson = "MealOrders.json";
 	public static String codesJson = "PromoCodes.json";
@@ -236,6 +245,7 @@ public abstract class FrontEndTest {
 		catch(Exception e) {}
 		
 		orders_to_test = System.getProperty("orders").split(",");
+		codes_to_test = System.getProperty("codes").split(",");
 		
 		
 		if (Integer.parseInt(System.getProperty("log")) != 0)
@@ -273,18 +283,23 @@ public abstract class FrontEndTest {
         		new Dimension(
         				1440,
         				driver.manage().window().getSize().getHeight()));
-        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
         driver.get(homePage);
         
-        
-        signIn();
+        waitForPageLoad();
         
         Thread.sleep(4000);
         
-        driver.switchTo().frame(getElement(select.Chat_Frame));
-        click(select.Chat_Dismiss);
-        driver.switchTo().defaultContent();
-	
+        removeElement(getElement(select.Chat_Frame));
+        
+        /*if (getElement(select.Chat_Frame).isDisplayed()) {
+	        driver.switchTo().frame(getElement(select.Chat_Frame));
+	        click(select.Chat_Dismiss);
+	        driver.switchTo().defaultContent();
+        }*/
+        
+        signIn();
+        
 	}
 	
 	@After
@@ -319,83 +334,92 @@ public abstract class FrontEndTest {
 		
 	}
 	
-	public void removeElement() {
+	public void waitForPageLoad() {
 		
-		((JavascriptExecutor)driver).executeScript("return document.getElementByClassName('review-info-star').remove();");
+		new WebDriverWait(driver, timeout).until(
+				webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+		
+	}
+	
+	public By invokeByMethod(SelectorString s) {
+		
+		try {
+			java.lang.reflect.Method method = By.class.getMethod(s.by, String.class);
+			return (By)method.invoke(null, s.selector);
+		}
+		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
+	
+	public void removeElement(WebElement e) {
+		
+		((JavascriptExecutor)driver).executeScript("arguments[0].remove();", e);
+		//((JavascriptExecutor)driver).executeScript("return document.getElementByClassName('" + className + "').remove();");
 		
 	}
 	
 	public WebElement getElement(SelectorString s) {
 		
-		try {
-			java.lang.reflect.Method method = By.class.getMethod(s.by, String.class);
-			return driver.findElement((By)method.invoke(null, s.selector));
-		}
-		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
-		
-		return null;
+		By by = invokeByMethod(s);
+		return by == null ? null : driver.findElement(by);
 		
 	}
 	
 	public WebElement getElement(WebElement inElement, SelectorString s) {
 		
-		try {
-			java.lang.reflect.Method method = By.class.getMethod(s.by, String.class);
-			return inElement.findElement((By)method.invoke(null, s.selector));
-		}
-		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
-		
-		return null;
+		By by = invokeByMethod(s);
+		return by == null ? null : inElement.findElement(by);
 		
 	}
 	
 	public List<WebElement> getElements(SelectorString s) {
 		
-		try {
-			java.lang.reflect.Method method = By.class.getMethod(s.by, String.class);
-			return driver.findElements((By)method.invoke(null, s.selector));
-		}
-		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
+		By by = invokeByMethod(s);
+		return by == null ? null : driver.findElements(by);
 		
-		return null;
+	}
+	
+	public List<WebElement> getElements(WebElement inElement, SelectorString s) {
+		
+		By by = invokeByMethod(s);
+		return by == null ? null : inElement.findElements(by);
 		
 	}
 	
 	public boolean isElementPresent(SelectorString s) {
 		
 		try {
-			java.lang.reflect.Method method = By.class.getMethod(s.by, String.class);
-			driver.findElement((By)method.invoke(null, s.selector));
-			return true;
-	    } 
-		catch (NoSuchElementException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			return false;
-	    }
+			By by = invokeByMethod(s);
+			return by == null ? false : driver.findElement(by) != null;
+		}
+		catch (NoSuchElementException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
 		
 	}
 	
 	public boolean isElementPresent(WebElement inElement, SelectorString s) {
 		
-		try {
-			java.lang.reflect.Method method = By.class.getMethod(s.by, String.class);
-			inElement.findElement((By)method.invoke(null, s.selector));
-			return true;
-	    } 
-		catch (NoSuchElementException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			return false;
-	    }
+		By by = invokeByMethod(s);
+		return by == null ? false : inElement.findElement(by) != null;
 		
 	}
 	
 	public boolean isEnabled(SelectorString s) {
 		
 		return getElement(s).isEnabled();
+		
+	}
+	
+	public boolean isEnabled(WebElement e) {
+		
+		return e.isEnabled();
 		
 	}
 	
@@ -414,7 +438,20 @@ public abstract class FrontEndTest {
 	
 	public void click(SelectorString s) {
 		
-		getElement(s).click();
+		WebElement e = getElement(s);
+		long startTime = System.currentTimeMillis();
+		
+		while (true) {
+			try {
+				e.click();
+				break;
+			}
+			catch (WebDriverException exception) {}
+			
+			long elapsedTime = (new Date()).getTime() - startTime;
+			if (elapsedTime > 30000)
+				throw new TimeoutException();
+		}
 		
 	}
 	
@@ -459,11 +496,18 @@ public abstract class FrontEndTest {
 		
 	}
 	
+	public void waitForPopup() throws InterruptedException {
+		
+		Thread.sleep(4000);
+		sendEscapeKey();
+		
+	}
+	
 	public void sendEscapeKey() throws InterruptedException {
 		
 		Actions action = new Actions(driver);
     	action.sendKeys(Keys.ESCAPE).build().perform();
-    	Thread.sleep(1000);
+    	//Thread.sleep(1000);
 		
 	}
 	
@@ -471,7 +515,7 @@ public abstract class FrontEndTest {
 		
     	clickJS(select.Header_Login);
     	
-    	Thread.sleep(1000);
+    	//Thread.sleep(1000);
     	
     	clear(select.Login_Email);
     	sendKeys(select.Login_Email, email);
@@ -479,7 +523,7 @@ public abstract class FrontEndTest {
     	sendKeys(select.Login_Password, password);
     	click(select.Login_Confirm);
     	
-		Thread.sleep(1000);
+		//Thread.sleep(1000);
 	    
 	}
 	
@@ -487,7 +531,7 @@ public abstract class FrontEndTest {
 		
 		scrollUpJS();
 		
-		Thread.sleep(1000);
+		//Thread.sleep(1000);
 		
 		click(select.Header_Cart);
 		
@@ -496,6 +540,12 @@ public abstract class FrontEndTest {
 	public void selectFromDropdown(WebElement e, String option) {
 		
 		new Select(e).selectByVisibleText(option);
+		
+	}
+	
+	public WebElement getFirstSelectedInDropdown(WebElement e) {
+		
+		return new Select(e).getFirstSelectedOption();
 		
 	}
 	
@@ -521,11 +571,11 @@ public abstract class FrontEndTest {
 		
 		click(select.Alacarte_Dinner_Checkbox);
 		
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 	    
 	    //selectFromDropdown(System.getProperty("item1Name"), "1");
 	    
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 	    
 	    getElement(select.Alacarte_Menu_Item).findElement(
 	    		By.cssSelector("button[name='" + System.getProperty("item1Name") + "']")
@@ -543,7 +593,7 @@ public abstract class FrontEndTest {
 		
 		//click(select.Alacarte_Dinner_Checkbox);
 	    
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 	    
 		for (WebElement e : getElements(select.Alacarte_Menu_Item)) {
 			if (getElement(e, select.Alacarte_Item_Title).getText().equals("Soup 1")) {
@@ -553,7 +603,7 @@ public abstract class FrontEndTest {
 			}
 		}
 	    
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 	    
 	    //driver.findElement((By.cssSelector("button[name='" + System.getProperty("item1Name") + "']"))).click();
 	    //driver.findElement((By.cssSelector("button[name='" + System.getProperty("item2Name") + "']"))).click();
@@ -566,13 +616,13 @@ public abstract class FrontEndTest {
 		
 		click(select.Account_Subscription);
 		
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 	    
 	    if (isElementPresent(select.Account_Subscription_Cancel)) {
 		    click(select.Account_Subscription_Cancel);
-		    Thread.sleep(1000);
+		    //Thread.sleep(1000);
 		    click(select.Account_Subscription_Cancel_Confirm);
-		    Thread.sleep(1000);
+		    //Thread.sleep(1000);
 	    }
 		
 	}
@@ -582,11 +632,11 @@ public abstract class FrontEndTest {
 		if (isSelected(select.Plan_Gluten_Checkbox))
 			click(select.Plan_Gluten_Label);
 		
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 	    
 	    click(select.Plan_Create);
 	    
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 	    
 	    if (textOnPage("You didn't customize your order, are you sure you want to add it to your cart?"))
     		click(select.Plan_Create_Confirm);
@@ -599,8 +649,6 @@ public abstract class FrontEndTest {
 		sendKeys(select.Cart_Code_Input, code);
 		clickJS(select.Cart_Code_Apply);
     	
-		Thread.sleep(1000);
-		
 	}
 	
 	public void removeTableElement(String name) throws InterruptedException {
@@ -612,10 +660,10 @@ public abstract class FrontEndTest {
     		if (e.getText().contains(name)) {
 
     			((JavascriptExecutor)driver).executeScript("arguments[0].click();", e);
-    			Thread.sleep(1000);
+    			//Thread.sleep(1000);
     			clickJS(select.ControlPanel_Table_Delete);
     			clickJS(select.ControlPanel_Table_Delete_Confirm);
-    			Thread.sleep(1000);
+    			//Thread.sleep(1000);
     			break;
     			
     		}
@@ -627,6 +675,8 @@ public abstract class FrontEndTest {
 		
 		click(select.Account_Payment);
 	    
+		waitForPageLoad();
+		
 	    if (isElementPresent(select.Account_Payment_Delete)) {
 	    	click(select.Account_Payment_Delete);
 	    	click(select.Account_Payment_Delete_Confirm);
@@ -641,17 +691,17 @@ public abstract class FrontEndTest {
 	    clear(select.Cart_Checkout_Card_Number);
 	    sendKeys(select.Cart_Checkout_Card_Number, cardnumber);
 	    
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 	    
 	    clear(select.Cart_Checkout_Card_Date);
 	    sendKeys(select.Cart_Checkout_Card_Date, date);
 	    
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 	    
 	    clear(select.Cart_Checkout_Card_CVC);
 	    sendKeys(select.Cart_Checkout_Card_CVC, cvc);
 	    
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 	    
 	    if (isElementPresent(select.Cart_Checkout_Card_Zip)) {
 	    	clear(select.Cart_Checkout_Card_Zip);

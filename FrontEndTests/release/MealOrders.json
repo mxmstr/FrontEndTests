@@ -25,6 +25,21 @@
 					"size": "Large"
 				}
 			]
+		},
+		{
+			"name": "mixed_size",
+			"meals": [
+				{
+					"name": "Large Meal",
+					"quantity": 5,
+					"size": "Medium"
+				},
+				{
+					"name": "Large Meal",
+					"quantity": 5,
+					"size": "Large"
+				}
+			]
 		}
 		
 	]

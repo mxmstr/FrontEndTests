@@ -13,7 +13,7 @@ public class NewPromoCode extends FrontEndTest {
 		click(select.ControlPanel_Coupon);
 		click(select.ControlPanel_Coupon_Add);
 		
-		Thread.sleep(1000);
+		//Thread.sleep(1000);
 	    
 		clear(select.ControlPanel_Coupon_Title);
 		sendKeys(select.ControlPanel_Coupon_Title, code.title);
@@ -32,7 +32,7 @@ public class NewPromoCode extends FrontEndTest {
 	    
 	    click(select.ControlPanel_Coupon_Create);
 	    
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 	    
 	    if (textOnPage("The code has already been taken."))
 	    	sendEscapeKey();
@@ -41,20 +41,23 @@ public class NewPromoCode extends FrontEndTest {
 	
 	public boolean redeemAndCheckDiscount(Code code) throws InterruptedException {
 		
+		Thread.sleep(1000);
+		
 		String total1 = code.type == "Cart (Subtotal)" ? 
 				getElement(select.Cart_Subtotal).getText() : 
 				getElement(select.Cart_Total).getText();
 			
     	redeemPromoCode(generated_code);//code.code);
     	
-    	Thread.sleep(1000);
+    	Thread.sleep(10000);
     	
     	String total2 = code.type == "Cart (Subtotal)" ? 
 				getElement(select.Cart_Subtotal).getText() : 
 				getElement(select.Cart_Total).getText();
-    	
-    	Thread.sleep(1000);
-    	
+				
+		System.out.println(total1);
+		System.out.println(total2);
+		
     	return (
     			Double.parseDouble(total2.replaceAll("[$ ]","")) / 
     			Double.parseDouble(total1.replaceAll("[$ ]","")) < 1.0
@@ -73,19 +76,21 @@ public class NewPromoCode extends FrontEndTest {
 		
 		removePaymentInfo();
 		
-    	Thread.sleep(1000);
+    	//Thread.sleep(1000);
     	
     	click(select.Account_ControlPanel);
 		click(select.ControlPanel_Coupon);
 		
-		Thread.sleep(1000);
+		//Thread.sleep(1000);
 		
 		
-		for (Code code : code_table.codes)
-			addNewPromoCode(code);
+		for (String codeName : codes_to_test)
+			for (Code code : code_table.codes)
+				if (code.title.equals(codeName))
+					addNewPromoCode(code);
 		
 		
-		Thread.sleep(1000);
+		//Thread.sleep(1000);
 		
 		clickJS(select.Header_Logo_ControlPanel);
 		
@@ -95,71 +100,77 @@ public class NewPromoCode extends FrontEndTest {
 		System.out.println("//");
 		
 		
-		for (Code code : code_table.codes) {
+		for (String codeName : codes_to_test) {
+			for (Code code : code_table.codes) {
+				if (code.title.equals(codeName)) {
 		
-			boolean discounted;
-			
-			System.out.println("//");
-			System.out.println("// Testing " + code.title);
-			System.out.println("//");
-			
-			add10ItemsToCart();
-			scrollUpJS();
-			openCart();
-			
-			Thread.sleep(1000);
-	    	
-	    	discounted = redeemAndCheckDiscount(code);
-	    	
-	    	Assert.assertTrue("New code was not accepted!", !textOnPage("Code is invalid or already used."));
-	    	Assert.assertTrue("Discount was not applied!", discounted);
-	    	
-	    	if (false) {//!code.reusable) {
-	    		
-	    		click(select.Cart_Shipping);
-				
-		    	Thread.sleep(1000);
-		    	
-		    	click(select.Cart_Shipping_Pickup);
-		    	click(select.Cart_Shipping_Pickup);
-		    	Thread.sleep(1000);
-			    click(select.Cart_Shipping_Confirm);
-			    
-			    Thread.sleep(1000);
-			    
-			    click(select.Cart_Checkout);
-	    		
-	    		checkout(
-			    		System.getProperty("validCardNumber"), 
-			    		System.getProperty("validCardDate"), 
-			    		System.getProperty("validCardCVC"), 
-			    		System.getProperty("validCardZip")
-			    		);
-			    
-			    Thread.sleep(7000);
-	    		
-			    driver.navigate().refresh();
-			    
-			    add10ItemsToCart();
-				scrollUpJS();
-				openCart();
-			    
-				redeemPromoCode(code.code);
-		    	Thread.sleep(3000);
-		    	Assert.assertTrue("Used code was accepted!", textOnPage("Code is invalid or already used."));
-		    	
-	    	}
-	    	
-	    	for (WebElement e : getElements(select.Cart_Item))
-		    	getElement(e, select.Cart_Item_Remove).click();
-	    	
-	    	sendEscapeKey();
-	    	driver.navigate().refresh();
-	    	
-	    	Thread.sleep(4000);
-		    
-			sendEscapeKey();
-	    	
+					boolean discounted;
+					
+					System.out.println("//");
+					System.out.println("// Testing " + code.title);
+					System.out.println("//");
+					
+					add10ItemsToCart();
+					scrollUpJS();
+					openCart();
+					
+					//Thread.sleep(1000);
+			    	
+			    	discounted = redeemAndCheckDiscount(code);
+			    	
+			    	Thread.sleep(2000);
+			    	
+			    	Assert.assertTrue("New code was not accepted!", !textOnPage("Code is invalid or already used."));
+			    	Assert.assertTrue("Discount was not applied!", discounted);
+			    	
+			    	if (false) {//!code.reusable) {
+			    		
+			    		click(select.Cart_Shipping);
+						
+				    	//Thread.sleep(1000);
+				    	
+				    	click(select.Cart_Shipping_Pickup);
+				    	click(select.Cart_Shipping_Pickup);
+				    	//Thread.sleep(1000);
+					    click(select.Cart_Shipping_Confirm);
+					    
+					    //Thread.sleep(1000);
+					    
+					    click(select.Cart_Checkout);
+			    		
+			    		checkout(
+					    		System.getProperty("validCardNumber"), 
+					    		System.getProperty("validCardDate"), 
+					    		System.getProperty("validCardCVC"), 
+					    		System.getProperty("validCardZip")
+					    		);
+					    
+					    Thread.sleep(7000);
+			    		
+					    driver.navigate().refresh();
+					    
+					    add10ItemsToCart();
+						scrollUpJS();
+						openCart();
+					    
+						redeemPromoCode(code.code);
+				    	Thread.sleep(3000);
+				    	Assert.assertTrue("Used code was accepted!", textOnPage("Code is invalid or already used."));
+				    	
+			    	}
+			    	
+			    	for (WebElement e : getElements(select.Cart_Item))
+				    	getElement(e, select.Cart_Item_Remove).click();
+			    	
+			    	sendEscapeKey();
+			    	driver.navigate().refresh();
+			    	
+			    	Thread.sleep(4000);
+				    
+					sendEscapeKey();
+					
+				}
+			}
 		}
     	
 		
@@ -168,46 +179,50 @@ public class NewPromoCode extends FrontEndTest {
 		System.out.println("//");
     	
     	driver.findElement(By.linkText("Account")).click();
-    	Thread.sleep(1000);
+    	//Thread.sleep(1000);
     	
     	driver.findElement(By.linkText("Control Panel")).click();
 		driver.findElement(By.linkText("Coupons")).click();
 		
-		Thread.sleep(1000);
+		//Thread.sleep(1000);
     	
 		
-		for (Code code : code_table.codes)
-			removeTableElement(code.title);
+		for (String codeName : codes_to_test)
+			for (Code code : code_table.codes)
+				if (code.title.equals(codeName)) 
+					removeTableElement(code.title);
     	
 		
-    	Thread.sleep(1000);
+    	//Thread.sleep(1000);
     	
     	click(select.Header_Logo_ControlPanel);
     	
     	
-    	for (Code code : code_table.codes) {
+    	for (String codeName : codes_to_test) {
+			for (Code code : code_table.codes) {
+				if (code.title.equals(codeName)) {
     	
-    		System.out.println("//");
-			System.out.println("// Testing " + code.title);
-			System.out.println("//");
-    		
-			openCart();
-			
-			Thread.sleep(1000);
-			
-			redeemPromoCode(code.code);
-			
-			Thread.sleep(1000);
-			
-			Assert.assertTrue("Old code was accepted!", textOnPage("Code is invalid or already used."));
-			
-			sendEscapeKey();
-	    	driver.navigate().refresh();
-	    	
-	    	Thread.sleep(4000);
-			
-			sendEscapeKey();
-		
+		    		System.out.println("//");
+					System.out.println("// Testing " + code.title);
+					System.out.println("//");
+		    		
+					openCart();
+					
+					//Thread.sleep(1000);
+					
+					redeemPromoCode(generated_code);
+					Thread.sleep(2000);
+					Assert.assertTrue("Old code was accepted!", textOnPage("Code is invalid or already used."));
+					
+					sendEscapeKey();
+			    	driver.navigate().refresh();
+			    	
+			    	Thread.sleep(4000);
+					
+					sendEscapeKey();
+					
+				}
+			}
     	}
 			
 	}

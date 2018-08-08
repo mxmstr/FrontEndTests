@@ -18,32 +18,32 @@ public class OrderSubscription extends FrontEndTest {
 		removeSubscription();
 		
 		click(select.Header_Plan);
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 		click(select.Header_Plan_Complete);
 	    
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 	    
 	    addSubscription();
 	    
-    	Thread.sleep(1000);
+    	//Thread.sleep(1000);
 	    
     	click(select.Cart_Shipping);
     	
-    	Thread.sleep(1000);
+    	//Thread.sleep(1000);
 	    
     	click(select.Cart_Shipping_Pickup);
     	click(select.Cart_Shipping_Pickup);
 	    click(select.Cart_Shipping_Confirm);
     	
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 
 	    click(select.Cart_Checkout);
 	    
-	    Thread.sleep(1000);
+	    //Thread.sleep(1000);
 	    
 	    checkout("4242 4242 4242 4242", "02 / 20", "123", "02116");
 	    
-	    Thread.sleep(10000);
+	    Thread.sleep(7000);
 		
 	}
 

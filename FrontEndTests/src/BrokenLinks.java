@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -45,44 +46,51 @@ public class BrokenLinks extends FrontEndTest {
 		
 		
 		while (it.hasNext()) {
-	       
-			url = it.next().getAttribute("href");
 			
-		    if (url == null || url.isEmpty()) {
-		    	System.out.println(url + " URL is either not configured for anchor tag or it is empty");
-		    	continue;
-		    }
+			try {
+			
+				url = it.next().getAttribute("href");
+				
+			    if (url == null || url.isEmpty()) {
+			    	System.out.println(url + " URL is either not configured for anchor tag or it is empty");
+			    	continue;
+			    }
+			    
+		        if (!url.startsWith(homePage)) {
+		        	System.out.println(url + " URL belongs to another domain, skipping it.");
+		        	continue;
+		        }
+		        
+		        try {
+		        	conn = (HttpURLConnection)(new URL(url).openConnection());
+		        	conn.setRequestMethod("HEAD");
+		        	conn.connect();
+		        	
+		        	if(conn.getResponseCode() >= 400) {
+		        		System.out.println(url + " is a broken link");
+		        		broken = true;
+		        	}
+		        	else {
+		        		System.out.println(url + " is a valid link");
+		        		
+	        			if (!checkedLinks.contains(url)) {
+	        				linksToParse.add(url);
+	        				checkedLinks.add(url);
+	        			}
+		        			
+		        	}
+		        	
+		        	
+		        }
+		        catch (MalformedURLException e) {
+		        	e.printStackTrace();
+		        } 
+		        catch (IOException e) {
+		        	e.printStackTrace();
+		        }
 		    
-	        if (!url.startsWith(homePage)) {
-	        	System.out.println(url + " URL belongs to another domain, skipping it.");
-	        	continue;
-	        }
-	        
-	        try {
-	        	conn = (HttpURLConnection)(new URL(url).openConnection());
-	        	conn.setRequestMethod("HEAD");
-	        	conn.connect();
-	        	
-	        	if(conn.getResponseCode() >= 400) {
-	        		System.out.println(url + " is a broken link");
-	        		broken = true;
-	        	}
-	        	else {
-	        		System.out.println(url + " is a valid link");
-	        		
-        			if (!checkedLinks.contains(url)) {
-        				linksToParse.add(url);
-        				checkedLinks.add(url);
-        			}
-	        			
-	        	}
-	        	
-	        	
-	        } 
-	        catch (MalformedURLException e) {
-	        	e.printStackTrace();
-	        } 
-	        catch (IOException e) {
+			} 
+	        catch (StaleElementReferenceException e) {
 	        	e.printStackTrace();
 	        }
 	        

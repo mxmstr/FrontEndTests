@@ -146,9 +146,21 @@
 			"by" : "className",
 			"selector" : "cart__item"
 		},
+		"Cart_Item_Title" : {
+			"by" : "cssSelector",
+			"selector" : ".cart__item-title"
+		},
+		"Cart_Item_Size" : {
+			"by" : "cssSelector",
+			"selector" : ".cart__item-subtitle"
+		},
+		"Cart_Item_Quantity" : {
+			"by" : "cssSelector",
+			"selector" : ".cart__item-qty > div:nth-child(1) > select:nth-child(1)"
+		},
 		"Cart_Item_Remove" : {
 			"by" : "cssSelector",
-			"selector" : "div:nth-child(2) > div:nth-child(3) > p:nth-child(2)"
+			"selector" : ".cart__item-remove-btn"
 		},
 		"Cart_Code_Input" : {
 			"by" : "cssSelector",

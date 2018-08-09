@@ -53,6 +53,8 @@ public class OrderAlacarte extends FrontEndTest {
 			int instances = 0;
 			
 			for (WebElement e : getElements(select.Cart_Item)) {
+				scrollTo(e);
+				
 				String title = getElement(e, select.Cart_Item_Title).getText();
 				String size = getElement(e, select.Cart_Item_Quantity).getText();
 				String quantity = getFirstSelectedInDropdown(getElement(e, select.Cart_Item_Quantity)).getText();

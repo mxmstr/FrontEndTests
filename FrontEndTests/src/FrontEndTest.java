@@ -496,6 +496,15 @@ public abstract class FrontEndTest {
 		
 	}
 	
+	public void scrollTo(WebElement e) {
+		
+		((JavascriptExecutor)driver).executeScript(
+				"arguments[0].scrollIntoView();", 
+				e
+				);
+		
+	}
+	
 	public void waitForPopup() throws InterruptedException {
 		
 		Thread.sleep(4000);

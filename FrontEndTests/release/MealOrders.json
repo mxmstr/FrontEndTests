@@ -16,13 +16,18 @@
 			"meals": [
 				{
 					"name": "Large Meal",
-					"quantity": 5,
+					"quantity": 2,
 					"size": "Large"
 				},
 				{
-					"name": "MediumAndLargeOption",
-					"quantity": 5,
+					"name": "Veggie burger",
+					"quantity": 3,
 					"size": "Large"
+				},
+				{
+					"name": "Soup 1",
+					"quantity": 4,
+					"size": null
 				}
 			]
 		},
@@ -38,6 +43,36 @@
 					"name": "Large Meal",
 					"quantity": 5,
 					"size": "Large"
+				}
+			]
+		},
+		{
+			"name": "mixed_size2",
+			"meals": [
+				{
+					"name": "BBQ Pulled Pork Power Bowl",
+					"quantity": 2,
+					"size": "Medium"
+				},
+				{
+					"name": "BBQ Pulled Pork Power Bowl",
+					"quantity": 3,
+					"size": "Medium"
+				},
+				{
+					"name": "BBQ Pulled Pork Power Bowl",
+					"quantity": 1,
+					"size": "Large"
+				},
+				{
+					"name": "Veggie burger",
+					"quantity": 3,
+					"size": "Large"
+				},
+				{
+					"name": "Veggie burger",
+					"quantity": 3,
+					"size": "Medium"
 				}
 			]
 		}

@@ -2,7 +2,7 @@
 	"codes": [
 		
 		{
-			"title": "test_subtotal_and_percentage",
+			"title": "subtotal_and_percentage",
 			"type": "Cart (Subtotal)",
 			"percentage" : true,
 			"reusable" : false,
@@ -10,7 +10,7 @@
 			"code": "ABC123"
 		},
 		{
-			"title": "test_total_and_percentage",
+			"title": "total_and_percentage",
 			"type": "Delivery and Cart (Total)",
 			"percentage" : true,
 			"reusable" : true,

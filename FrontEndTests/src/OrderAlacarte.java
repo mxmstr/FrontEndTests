@@ -59,17 +59,17 @@ public class OrderAlacarte extends FrontEndTest {
 				String size = getElement(e, select.Cart_Item_Quantity).getText();
 				String quantity = getFirstSelectedInDropdown(getElement(e, select.Cart_Item_Quantity)).getText();
 
-				System.out.println();
-				System.out.println(title + "  " + name);
-				System.out.println(title.equals(name));
+				//System.out.println();
+				//System.out.println(title + "  " + name);
+				//System.out.println(title.equals(name));
 				if (title.equals(name))
 					instances++;
 			}
 			
-			System.out.println(instances);
-			System.out.println((mediumCount > 0 ? 1 : 0) + (largeCount > 0 ? 1 : 0));
+			//System.out.println(instances);
+			//System.out.println((mediumCount > 0 ? 1 : 0) + (largeCount > 0 ? 1 : 0));
 			
-			Thread.sleep(5000);
+			//Thread.sleep(1000);
 			
 		    Assert.assertTrue(
 		    		"Orders not grouped properly! " + name, 

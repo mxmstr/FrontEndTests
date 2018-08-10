@@ -261,6 +261,10 @@
 			"by" : "cssSelector",
 			"selector" : "div.content__input-ma:nth-child(2) > div:nth-child(2) > label:nth-child(1) > input:nth-child(1)"
 		},
+		"Account_Delivery_Add_State" : {
+			"by" : "cssSelector",
+			"selector" : ".pt-select > select:nth-child(1)"
+		},
 		"Account_Delivery_Add_Zip" : {
 			"by" : "cssSelector",
 			"selector" : "label.pt-label:nth-child(3) > input:nth-child(1)"

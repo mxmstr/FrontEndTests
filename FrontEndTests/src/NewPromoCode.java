@@ -55,8 +55,8 @@ public class NewPromoCode extends FrontEndTest {
 				getElement(select.Cart_Subtotal).getText() : 
 				getElement(select.Cart_Total).getText();
 				
-		System.out.println(total1);
-		System.out.println(total2);
+		//System.out.println(total1);
+		//System.out.println(total2);
 		
     	return (
     			Double.parseDouble(total2.replaceAll("[$ ]","")) / 

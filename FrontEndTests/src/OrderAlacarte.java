@@ -98,6 +98,17 @@ public class OrderAlacarte extends FrontEndTest {
 					
 					removePaymentInfo();
 					
+					click(select.Account_Delivery);
+				    changeDeliveryInfo(
+				    		System.getProperty("street"), 
+				    		System.getProperty("city"), 
+				    		System.getProperty("state"), 
+				    		System.getProperty("zip"), 
+				    		System.getProperty("phone")
+				    		);
+					
+				    Thread.sleep(1000);
+				    
 					click(select.Header_Alacarte);
 					
 					waitForPopup();
@@ -153,11 +164,9 @@ public class OrderAlacarte extends FrontEndTest {
 					openCart();
 					
 			    	click(select.Cart_Shipping);
-					
-			    	click(select.Cart_Shipping_Pickup);
-			    	click(select.Cart_Shipping_Pickup);
+			    	click(select.Cart_Shipping_Address1);
+			    	//click(select.Cart_Shipping_Pickup);
 				    click(select.Cart_Shipping_Confirm);
-				    
 				    click(select.Cart_Checkout);
 				    
 				    

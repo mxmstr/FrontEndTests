@@ -115,6 +115,7 @@ public abstract class FrontEndTest {
 		public SelectorString Account_Delivery_Add;
 		public SelectorString Account_Delivery_Add_Street;
 		public SelectorString Account_Delivery_Add_City;
+		public SelectorString Account_Delivery_Add_State;
 		public SelectorString Account_Delivery_Add_Zip;
 		public SelectorString Account_Delivery_Add_Number;
 		public SelectorString Account_Delivery_Add_Default_Check;
@@ -338,6 +339,24 @@ public abstract class FrontEndTest {
 		
 		new WebDriverWait(driver, timeout).until(
 				webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+		waitForSpinners();
+		
+	}
+	
+	public void waitForSpinners() {
+		
+		long startTime = System.currentTimeMillis();
+		long elapsedTime = 0L;
+		
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+		
+		while (driver.findElements(By.cssSelector(".pt-spinner-track")).size() > 0) {
+			elapsedTime = (new Date()).getTime() - startTime;
+			if (elapsedTime > Integer.parseInt(System.getProperty("pageLoadTimeout")))
+				throw new TimeoutException();
+		}
+		
+        driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
 		
 	}
 	
@@ -364,6 +383,7 @@ public abstract class FrontEndTest {
 	
 	public WebElement getElement(SelectorString s) {
 		
+		waitForPageLoad();
 		By by = invokeByMethod(s);
 		return by == null ? null : driver.findElement(by);
 		
@@ -371,6 +391,7 @@ public abstract class FrontEndTest {
 	
 	public WebElement getElement(WebElement inElement, SelectorString s) {
 		
+		waitForPageLoad();
 		By by = invokeByMethod(s);
 		return by == null ? null : inElement.findElement(by);
 		
@@ -378,6 +399,7 @@ public abstract class FrontEndTest {
 	
 	public List<WebElement> getElements(SelectorString s) {
 		
+		waitForPageLoad();
 		By by = invokeByMethod(s);
 		return by == null ? null : driver.findElements(by);
 		
@@ -385,6 +407,7 @@ public abstract class FrontEndTest {
 	
 	public List<WebElement> getElements(WebElement inElement, SelectorString s) {
 		
+		waitForPageLoad();
 		By by = invokeByMethod(s);
 		return by == null ? null : inElement.findElements(by);
 		
@@ -393,6 +416,7 @@ public abstract class FrontEndTest {
 	public boolean isElementPresent(SelectorString s) {
 		
 		try {
+			waitForPageLoad();
 			By by = invokeByMethod(s);
 			return by == null ? false : driver.findElement(by) != null;
 		}
@@ -406,6 +430,7 @@ public abstract class FrontEndTest {
 	
 	public boolean isElementPresent(WebElement inElement, SelectorString s) {
 		
+		waitForPageLoad();
 		By by = invokeByMethod(s);
 		return by == null ? false : inElement.findElement(by) != null;
 		
@@ -413,31 +438,36 @@ public abstract class FrontEndTest {
 	
 	public boolean isEnabled(SelectorString s) {
 		
+		waitForPageLoad();
 		return getElement(s).isEnabled();
 		
 	}
 	
 	public boolean isEnabled(WebElement e) {
 		
+		waitForPageLoad();
 		return e.isEnabled();
 		
 	}
 	
 	public boolean isSelected(SelectorString s) {
-		
+
+		waitForPageLoad();
 		return getElement(s).isSelected();
 		
 	}
 	
 	public boolean textOnPage(String string) {
-		
+
+		waitForPageLoad();
 		String bodyText = driver.findElement(By.tagName("body")).getText();
     	return bodyText.contains(string);
 		
 	}
 	
 	public void click(SelectorString s) {
-		
+
+		waitForPageLoad();
 		WebElement e = getElement(s);
 		long startTime = System.currentTimeMillis();
 		
@@ -456,39 +486,45 @@ public abstract class FrontEndTest {
 	}
 	
 	public void clickJS(SelectorString s) {
-		
+
+		waitForPageLoad();
 		WebElement e = getElement(s);
 		((JavascriptExecutor)driver).executeScript("arguments[0].click();", e);
 		
 	}
 	
 	public void clear(SelectorString s) {
-		
+
+		waitForPageLoad();
 		getElement(s).clear();
 		
 	}
 	
 	public void sendKeys(SelectorString s, String keys) {
-		
+
+		waitForPageLoad();
 		getElement(s).sendKeys(keys);
 		
 	}
 	
 	public void selectByVisibleText(SelectorString s, String text) {
-		
+
+		waitForPageLoad();
 		new Select(getElement(s)).selectByVisibleText(text);
 		
 	}
 	
 	public void scrollUpJS() {
-		
+
+		waitForPageLoad();
 		WebElement header = driver.findElement(By.id("root"));
 		((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", header);
 		
 	}
 	
 	public void scrollTo(SelectorString s) {
-		
+
+		waitForPageLoad();
 		((JavascriptExecutor)driver).executeScript(
 				"arguments[0].scrollIntoView();", 
 				getElement(s)
@@ -497,7 +533,8 @@ public abstract class FrontEndTest {
 	}
 	
 	public void scrollTo(WebElement e) {
-		
+
+		waitForPageLoad();
 		((JavascriptExecutor)driver).executeScript(
 				"arguments[0].scrollIntoView();", 
 				e
@@ -539,10 +576,14 @@ public abstract class FrontEndTest {
 	public void openCart() throws InterruptedException {
 		
 		scrollUpJS();
-		
-		//Thread.sleep(1000);
-		
 		click(select.Header_Cart);
+	    Thread.sleep(1000);
+		
+	}
+	
+	public void selectFromDropdown(SelectorString s, String option) {
+		
+		new Select(getElement(s)).selectByVisibleText(option);
 		
 	}
 	
@@ -662,6 +703,8 @@ public abstract class FrontEndTest {
 	
 	public void removeTableElement(String name) throws InterruptedException {
 		
+		waitForSpinners();
+		
 		WebElement table = getElement(select.ControlPanel_Table);
     	List<WebElement> tableRows = table.findElements(By.tagName("tr"));
     	
@@ -669,15 +712,44 @@ public abstract class FrontEndTest {
     		if (e.getText().contains(name)) {
 
     			((JavascriptExecutor)driver).executeScript("arguments[0].click();", e);
-    			//Thread.sleep(1000);
     			clickJS(select.ControlPanel_Table_Delete);
     			clickJS(select.ControlPanel_Table_Delete_Confirm);
-    			//Thread.sleep(1000);
     			break;
     			
     		}
     	}
 		
+	}
+	
+	public void changeDeliveryInfo(String street, String city, String state, String zip, String number) throws InterruptedException {
+		
+		if (isElementPresent(select.Account_Delivery_Edit)) {
+			clickJS(select.Account_Delivery_Edit);
+		    clickJS(select.Account_Delivery_Edit_Delete);
+		}
+		
+		click(select.Account_Delivery_Add);
+		
+		
+		clear(select.Account_Delivery_Add_Street);
+		sendKeys(select.Account_Delivery_Add_Street, street);
+		
+		clear(select.Account_Delivery_Add_City);
+		sendKeys(select.Account_Delivery_Add_City, city);
+		
+		selectFromDropdown(select.Account_Delivery_Add_State, state);
+		
+		clear(select.Account_Delivery_Add_Zip);
+		sendKeys(select.Account_Delivery_Add_Zip, zip);
+		
+		clear(select.Account_Delivery_Add_Number);
+		sendKeys(select.Account_Delivery_Add_Number, number);
+	    
+	    if (!isSelected(select.Account_Delivery_Add_Default_Check))
+	    	click(select.Account_Delivery_Add_Default_Label);
+	    
+	    click(select.Account_Delivery_Add_Default_Save);
+	    
 	}
 	
 	public void removePaymentInfo() {

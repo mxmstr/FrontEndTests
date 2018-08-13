@@ -84,6 +84,7 @@ public abstract class FrontEndTest {
 		public SelectorString Plan_Create_Confirm;
 
 		public SelectorString Cart_Subtotal;
+		public SelectorString Cart_Tax;
 		public SelectorString Cart_Total;
 		public SelectorString Cart_Item;
 		public SelectorString Cart_Item_Title;
@@ -182,7 +183,15 @@ public abstract class FrontEndTest {
 	public static class Order {
 		
 		public String name;
+		public String promo_code;
+		public String promo_type;
 		public MealInfo[] meals;
+		public String street;
+		public String city;
+		public String state;
+		public String zip;
+		public String phone;
+		public boolean has_tax;
 		
 	}
 	
@@ -701,6 +710,32 @@ public abstract class FrontEndTest {
     	
 	}
 	
+	public boolean redeemAndCheckDiscount(String code, String type) throws InterruptedException {
+		
+		Thread.sleep(1000);
+		
+		String total1 = type == "Cart (Subtotal)" ? 
+				getElement(select.Cart_Subtotal).getText() : 
+				getElement(select.Cart_Total).getText();
+			
+    	redeemPromoCode(code);//code.code);
+    	
+    	Thread.sleep(10000);
+    	
+    	String total2 = type == "Cart (Subtotal)" ? 
+				getElement(select.Cart_Subtotal).getText() : 
+				getElement(select.Cart_Total).getText();
+				
+		//System.out.println(total1);
+		//System.out.println(total2);
+		
+    	return (
+    			Double.parseDouble(total2.replaceAll("[$ ]","")) / 
+    			Double.parseDouble(total1.replaceAll("[$ ]","")) < 1.0
+    			);
+		
+	}
+	
 	public void removeTableElement(String name) throws InterruptedException {
 		
 		waitForSpinners();
@@ -726,6 +761,7 @@ public abstract class FrontEndTest {
 		if (isElementPresent(select.Account_Delivery_Edit)) {
 			clickJS(select.Account_Delivery_Edit);
 		    clickJS(select.Account_Delivery_Edit_Delete);
+		    Thread.sleep(1000);
 		}
 		
 		click(select.Account_Delivery_Add);

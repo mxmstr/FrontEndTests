@@ -39,32 +39,6 @@ public class NewPromoCode extends FrontEndTest {
 	    
 	}
 	
-	public boolean redeemAndCheckDiscount(Code code) throws InterruptedException {
-		
-		Thread.sleep(1000);
-		
-		String total1 = code.type == "Cart (Subtotal)" ? 
-				getElement(select.Cart_Subtotal).getText() : 
-				getElement(select.Cart_Total).getText();
-			
-    	redeemPromoCode(generated_code);//code.code);
-    	
-    	Thread.sleep(10000);
-    	
-    	String total2 = code.type == "Cart (Subtotal)" ? 
-				getElement(select.Cart_Subtotal).getText() : 
-				getElement(select.Cart_Total).getText();
-				
-		//System.out.println(total1);
-		//System.out.println(total2);
-		
-    	return (
-    			Double.parseDouble(total2.replaceAll("[$ ]","")) / 
-    			Double.parseDouble(total1.replaceAll("[$ ]","")) < 1.0
-    			);
-		
-	}
-	
 	@Test
 	public void run() throws InterruptedException {
 		
@@ -116,7 +90,7 @@ public class NewPromoCode extends FrontEndTest {
 					
 					//Thread.sleep(1000);
 			    	
-			    	discounted = redeemAndCheckDiscount(code);
+			    	discounted = redeemAndCheckDiscount(generated_code, code.type);
 			    	
 			    	Thread.sleep(2000);
 			    	

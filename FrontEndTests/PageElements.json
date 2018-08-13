@@ -138,6 +138,10 @@
 			"by" : "cssSelector",
 			"selector" : "div.cart__footer-subtotal:nth-child(8) > div:nth-child(2)"
 		},
+		"Cart_Tax" : {
+			"by" : "cssSelector",
+			"selector" : "div.cart__footer-subtotal:nth-child(10) > div:nth-child(2)"
+		},
 		"Cart_Total" : {
 			"by" : "cssSelector",
 			"selector" : ".cart__footer-total > div:nth-child(2)"

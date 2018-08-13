@@ -138,6 +138,10 @@
 			"by" : "cssSelector",
 			"selector" : "div.cart__footer-subtotal:nth-child(8) > div:nth-child(2)"
 		},
+		"Cart_Tax" : {
+			"by" : "cssSelector",
+			"selector" : "div.cart__footer-subtotal:nth-child(10) > div:nth-child(2)"
+		},
 		"Cart_Total" : {
 			"by" : "cssSelector",
 			"selector" : ".cart__footer-total > div:nth-child(2)"
@@ -260,6 +264,10 @@
 		"Account_Delivery_Add_City" : {
 			"by" : "cssSelector",
 			"selector" : "div.content__input-ma:nth-child(2) > div:nth-child(2) > label:nth-child(1) > input:nth-child(1)"
+		},
+		"Account_Delivery_Add_State" : {
+			"by" : "cssSelector",
+			"selector" : ".pt-select > select:nth-child(1)"
 		},
 		"Account_Delivery_Add_Zip" : {
 			"by" : "cssSelector",

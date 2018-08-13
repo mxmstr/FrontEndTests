@@ -100,11 +100,11 @@ public class OrderAlacarte extends FrontEndTest {
 					
 					click(select.Account_Delivery);
 				    changeDeliveryInfo(
-				    		System.getProperty("street"), 
-				    		System.getProperty("city"), 
-				    		System.getProperty("state"), 
-				    		System.getProperty("zip"), 
-				    		System.getProperty("phone")
+				    		order.street,
+				    		order.city,
+				    		order.state,
+				    		order.zip,
+				    		order.phone
 				    		);
 					
 				    Thread.sleep(1000);
@@ -133,42 +133,45 @@ public class OrderAlacarte extends FrontEndTest {
 					
 					
 					System.out.println("//");
-					System.out.println("// Testing Inactive Promo Code");
+					System.out.println("// Testing Promo Code");
 					System.out.println("//");
 
-			    	redeemPromoCode(System.getProperty("inactiveCode"));
-					Thread.sleep(2000);
-			    	Assert.assertTrue("Inactive code accepted!", textOnPage("Code is invalid or already used."));
-			    	
-			    	
-			    	while (textOnPage("Code is invalid or already used."))
-			    		;
-			    	
+					if (order.promo_code != null) {
+					
+						boolean discounted = redeemAndCheckDiscount(order.promo_code, order.promo_type);
+				    	Thread.sleep(2000);
+				    	Assert.assertTrue("New code was not accepted!", !textOnPage("Code is invalid or already used."));
+				    	Assert.assertTrue("Discount was not applied!", discounted);
+				    	
+				    	//while (textOnPage("Code is invalid or already used."))
+				    	//	;
+				    	
+					}
+				    
 			    	
 			    	System.out.println("//");
-					System.out.println("// Testing Invalid Promo Code");
+					System.out.println("// Testing Checkout Tax");
 					System.out.println("//");
 					
-			    	redeemPromoCode(System.getProperty("invalidCode"));
-					Thread.sleep(2000);
-			    	Assert.assertTrue("Invalid code accepted!", textOnPage("Code is invalid or already used."));
+			    	click(select.Cart_Shipping);
+			    	click(select.Cart_Shipping_Address1);
+				    click(select.Cart_Shipping_Confirm);
 					
-			    	sendEscapeKey();
-				    
+					String tax;
+					Assert.assertTrue(
+							"Order was not taxed!", 
+							order.has_tax && 
+							Double.parseDouble(
+									getElement(select.Cart_Tax).getText().replaceAll("[$ ]","")
+									) > 0
+							);
+			    	
 			    	
 			    	System.out.println("//");
 					System.out.println("// Testing Checkout With Invalid Card");
 					System.out.println("//");
-			    	
-					scrollUpJS();
-					openCart();
 					
-			    	click(select.Cart_Shipping);
-			    	click(select.Cart_Shipping_Address1);
-			    	//click(select.Cart_Shipping_Pickup);
-				    click(select.Cart_Shipping_Confirm);
 				    click(select.Cart_Checkout);
-				    
 				    
 				    if (textOnPage("You must to have at least 10 meal items in the cart.")) {
 			    		System.out.println("//");
@@ -216,51 +219,6 @@ public class OrderAlacarte extends FrontEndTest {
 	    	}
 	    }
 		
-		
-		
-    	
-    	/*System.out.println("//");
-		System.out.println("// Testing Checkout Without Shipping");
-		System.out.println("//");
-		
-    	Assert.assertTrue("Checkout without shipping info!", !isEnabled(select.Cart_Checkout));
-    	
-    	Thread.sleep(1000);
-    	
-    	
-    	System.out.println("//");
-		System.out.println("// Testing Checkout With Less Than 10 items");
-		System.out.println("//");
-
-    	click(select.Cart_Shipping);
-		
-    	Thread.sleep(1000);
-    	
-    	click(select.Cart_Shipping_Pickup);
-    	click(select.Cart_Shipping_Pickup);
-	    click(select.Cart_Shipping_Confirm);
-	    
-	    Thread.sleep(1000);
-
-	    click(select.Cart_Checkout);
-	    
-	    Thread.sleep(1000);
-	    
-		Assert.assertTrue(
-    			"Checkout with less than 10 items!", 
-    			textOnPage("You must to have at least 10 meal items in the cart."));
-		
-    	sendEscapeKey();
-    	
-    	Thread.sleep(1000);
-    	
-    	click(select.Header_Logo);
-    	
-    	add10ItemsToCart();
-    	
-    	Thread.sleep(1000);
-		
-		*/
 	}
 	
 }

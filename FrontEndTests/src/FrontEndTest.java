@@ -59,6 +59,8 @@ public abstract class FrontEndTest {
 		public SelectorString Header_Alacarte;
 		public SelectorString Header_Plan;
 		public SelectorString Header_Plan_Complete;
+		public SelectorString Header_Plan_Essential;
+		public SelectorString Header_Plan_Nutre90;
 		public SelectorString Header_Search;
 		public SelectorString Header_Search_Input;
 		public SelectorString Header_Search_Result1;
@@ -186,6 +188,7 @@ public abstract class FrontEndTest {
 		public String promo_code;
 		public String promo_type;
 		public MealInfo[] meals;
+		public String subscription;
 		public String street;
 		public String city;
 		public String state;
@@ -231,7 +234,7 @@ public abstract class FrontEndTest {
 	public String[] codes_to_test;
 	public static int timeout = 5;
 	public static String elementJson = "PageElements.json";
-	public static String ordersJson = "MealOrders.json";
+	public static String ordersJson = "Orders.json";
 	public static String codesJson = "PromoCodes.json";
 	
 	
@@ -366,6 +369,20 @@ public abstract class FrontEndTest {
 		}
 		
         driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
+		
+	}
+	
+	public SelectorString getSelectorByString(String s) {
+		
+		try {
+			java.lang.reflect.Field field = SelectorData.class.getField(s);
+	    	return (SelectorString)field.get(select);
+		}
+		catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 		
 	}
 	

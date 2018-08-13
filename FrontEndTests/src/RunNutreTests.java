@@ -24,7 +24,7 @@ public class RunNutreTests {
 				SearchBar.class,
 				ChangeAccountDetails.class,
 				ControlPanelEdit.class,
-				OrderAlacarte.class,
+				PlaceOrders.class,
 				OrderSubscription.class,
 				NewMeal.class,
 				NewPromoCode.class,

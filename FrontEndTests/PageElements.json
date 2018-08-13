@@ -44,6 +44,14 @@
 			"by" : "linkText",
 			"selector" : "Complete Plan"
 		},
+		"Header_Plan_Essential" : {
+			"by" : "linkText",
+			"selector" : "Essential Plan"
+		},
+		"Header_Plan_Nutre90" : {
+			"by" : "linkText",
+			"selector" : "Nutre90"
+		},
 		"Header_Search" : {
 			"by" : "cssSelector",
 			"selector" : "div.topbar__search-block"

@@ -58,6 +58,7 @@ public abstract class FrontEndTest {
 		public SelectorString Header_Logo_ControlPanel;
 		public SelectorString Header_Alacarte;
 		public SelectorString Header_Plan;
+		public SelectorString Header_Plan_Dropdown;
 		public SelectorString Header_Plan_Complete;
 		public SelectorString Header_Plan_Essential;
 		public SelectorString Header_Plan_Nutre90;
@@ -85,6 +86,8 @@ public abstract class FrontEndTest {
 		public SelectorString Plan_Create;
 		public SelectorString Plan_Create_Confirm;
 
+		public SelectorString Cart_Price;
+		public SelectorString Cart_Price_Value;
 		public SelectorString Cart_Subtotal;
 		public SelectorString Cart_Tax;
 		public SelectorString Cart_Total;
@@ -99,6 +102,7 @@ public abstract class FrontEndTest {
 		public SelectorString Cart_Shipping_Address1;
 		public SelectorString Cart_Shipping_Pickup;
 		public SelectorString Cart_Shipping_Confirm;
+		public SelectorString Cart_Agreement;
 		public SelectorString Cart_Checkout;
 		public SelectorString Cart_Checkout_Card_Frame;
 		public SelectorString Cart_Checkout_Card_Number;
@@ -494,7 +498,13 @@ public abstract class FrontEndTest {
 	public void click(SelectorString s) {
 
 		waitForPageLoad();
-		WebElement e = getElement(s);
+		click(getElement(s));
+		
+	}
+	
+	public void click(WebElement e) {
+		
+		waitForPageLoad();
 		long startTime = System.currentTimeMillis();
 		
 		while (true) {
@@ -514,7 +524,13 @@ public abstract class FrontEndTest {
 	public void clickJS(SelectorString s) {
 
 		waitForPageLoad();
-		WebElement e = getElement(s);
+		clickJS(getElement(s));
+		
+	}
+	
+	public void clickJS(WebElement e) {
+
+		waitForPageLoad();
 		((JavascriptExecutor)driver).executeScript("arguments[0].click();", e);
 		
 	}

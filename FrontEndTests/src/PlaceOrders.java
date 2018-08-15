@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -114,7 +115,10 @@ public class PlaceOrders extends FrontEndTest {
 				    	click(select.Header_Alacarte);
 				    else {
 				    	click(select.Header_Plan);
-				    	click(getSelectorByString("Header_Plan_" + order.subscription));
+				    	click(getElement(
+				    			getElement(select.Header_Plan_Dropdown), 
+				    			getSelectorByString("Header_Plan_" + order.subscription)
+				    			));
 				    }
 					
 					waitForPopup();
@@ -158,22 +162,31 @@ public class PlaceOrders extends FrontEndTest {
 				    	
 					}
 				    
+					
+					click(select.Cart_Shipping);
+			    	click(select.Cart_Shipping_Address1);
+				    click(select.Cart_Shipping_Confirm);
+				    Thread.sleep(1000);
+					
 			    	
 			    	System.out.println("//");
 					System.out.println("// Testing Checkout Tax");
 					System.out.println("//");
 					
-			    	click(select.Cart_Shipping);
-			    	click(select.Cart_Shipping_Address1);
-				    click(select.Cart_Shipping_Confirm);
+					WebElement shipping_element = getElements(select.Cart_Price).stream().filter(
+							x -> x.getText().contains("Shipping:")).collect(Collectors.toList()).get(0);
+					WebElement tax_element = getElements(select.Cart_Price).stream().filter(
+							x -> x.getText().contains("Tax:")).collect(Collectors.toList()).get(0);
+				    Double shipping = Double.parseDouble(getElement(shipping_element, select.Cart_Price_Value).getText().replaceAll("[$ ]",""));
+					Double tax = Double.parseDouble(getElement(tax_element, select.Cart_Price_Value).getText().replaceAll("[$ ]",""));
 					
-					String tax;
+					System.out.println(shipping);
+					System.out.println(tax);
+					
 					Assert.assertTrue(
-							"Order was not taxed!", 
-							order.has_tax && 
-							Double.parseDouble(
-									getElement(select.Cart_Tax).getText().replaceAll("[$ ]","")
-									) > 0
+							"Order was not taxed properly!", 
+							(order.has_tax && tax > 0 && tax < shipping) ||
+							(!order.has_tax && tax == 0)
 							);
 			    	
 			    	
@@ -181,7 +194,11 @@ public class PlaceOrders extends FrontEndTest {
 					System.out.println("// Testing Checkout With Invalid Card");
 					System.out.println("//");
 					
+					if (isElementPresent(select.Cart_Agreement))
+						click(select.Cart_Agreement);
+					
 				    click(select.Cart_Checkout);
+				    Thread.sleep(1000);
 				    
 				    if (textOnPage("You must to have at least 10 meal items in the cart.")) {
 			    		System.out.println("//");
@@ -224,7 +241,7 @@ public class PlaceOrders extends FrontEndTest {
 				    
 				    Assert.assertTrue("Valid card not accepted!", !isElementPresent(select.Cart_Checkout_Card_Frame));
 					
-				    if (order.subscription == null) {
+				    if (order.subscription != null) {
 				    	click(select.Header_Account);
 				    	removeSubscription();
 				    }

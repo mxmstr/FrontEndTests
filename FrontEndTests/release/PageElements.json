@@ -40,6 +40,10 @@
 			"by" : "linkText",
 			"selector" : "Meal Plans"
 		},
+		"Header_Plan_Dropdown" : {
+			"by" : "cssSelector",
+			"selector" : ".pt-menu"
+		},
 		"Header_Plan_Complete" : {
 			"by" : "linkText",
 			"selector" : "Complete Plan"
@@ -142,13 +146,25 @@
 		},
 		
 		
-		"Cart_Subtotal" : {
+		"Cart_Price" : {
 			"by" : "cssSelector",
-			"selector" : "div.cart__footer-subtotal:nth-child(8) > div:nth-child(2)"
+			"selector" : "div.cart__footer-subtotal"
+		},
+		"Cart_Price_Value" : {
+			"by" : "cssSelector",
+			"selector" : "div:nth-child(2)"
+		},
+		"Cart_Subtotal" : {
+			"by" : "xpath",
+			"selector" : "//div[@class='cart__footer-subtotal' and contains(.,'Subtotal:')]/div[2]"
+		},
+		"Cart_Shipping" : {
+			"by" : "xpath",
+			"selector" : "//div[@class='cart__footer-subtotal' and contains(.,'Shipping:')]/div[2]"
 		},
 		"Cart_Tax" : {
-			"by" : "cssSelector",
-			"selector" : "div.cart__footer-subtotal:nth-child(10) > div:nth-child(2)"
+			"by" : "xpath",
+			"selector" : "//div[@class='cart__footer-subtotal' and contains(.,'Tax:')]/div[2]"
 		},
 		"Cart_Total" : {
 			"by" : "cssSelector",
@@ -197,6 +213,10 @@
 		"Cart_Shipping_Confirm" : {
 			"by" : "cssSelector",
 			"selector" : "button.pt-button:nth-child(7)"
+		},
+		"Cart_Agreement" : {
+			"by" : "xpath",
+			"selector" : "//label[contains(., 'I understand that Nutre90 is a 90 day commitment.')]"
 		},
 		"Cart_Checkout" : {
 			"by" : "cssSelector",

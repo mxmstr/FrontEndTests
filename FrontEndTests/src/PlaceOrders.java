@@ -180,9 +180,6 @@ public class PlaceOrders extends FrontEndTest {
 				    Double shipping = Double.parseDouble(getElement(shipping_element, select.Cart_Price_Value).getText().replaceAll("[$ ]",""));
 					Double tax = Double.parseDouble(getElement(tax_element, select.Cart_Price_Value).getText().replaceAll("[$ ]",""));
 					
-					System.out.println(shipping);
-					System.out.println(tax);
-					
 					Assert.assertTrue(
 							"Order was not taxed properly!", 
 							(order.has_tax && tax > 0 && tax < shipping) ||

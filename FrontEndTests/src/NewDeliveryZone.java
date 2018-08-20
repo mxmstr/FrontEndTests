@@ -29,7 +29,7 @@ public class NewDeliveryZone extends FrontEndTest {
 	    		System.getProperty("street"), 
 	    		System.getProperty("city"), 
 	    		System.getProperty("state"), 
-	    		System.getProperty("shippingZip"), 
+	    		System.getProperty("zip"), 
 	    		System.getProperty("phone")
 	    		);
 	    

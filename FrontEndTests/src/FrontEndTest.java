@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -340,9 +341,7 @@ public abstract class FrontEndTest {
 			try {
 				test.join();
 			} 
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			catch (InterruptedException e) {}
 			catch (java.lang.AssertionError e) {
 				System.out.println("Assertion error");
 				fail();
@@ -382,9 +381,7 @@ public abstract class FrontEndTest {
 			java.lang.reflect.Field field = SelectorData.class.getField(s);
 	    	return (SelectorString)field.get(select);
 		}
-		catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException e) {
-			e.printStackTrace();
-		}
+		catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException e) {}
 		
 		return null;
 		
@@ -396,9 +393,7 @@ public abstract class FrontEndTest {
 			java.lang.reflect.Method method = By.class.getMethod(s.by, String.class);
 			return (By)method.invoke(null, s.selector);
 		}
-		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
+		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
 		
 		return null;
 		
@@ -450,9 +445,7 @@ public abstract class FrontEndTest {
 			By by = invokeByMethod(s);
 			return by == null ? false : driver.findElement(by) != null;
 		}
-		catch (NoSuchElementException e) {
-			e.printStackTrace();
-		}
+		catch (NoSuchElementException e) {}
 		
 		return false;
 		
@@ -776,14 +769,30 @@ public abstract class FrontEndTest {
 		WebElement table = getElement(select.ControlPanel_Table);
     	List<WebElement> tableRows = table.findElements(By.tagName("tr"));
     	
-    	for (WebElement e : tableRows) {
+    	/*for (WebElement e : tableRows) {
     		if (e.getText().contains(name)) {
 
     			((JavascriptExecutor)driver).executeScript("arguments[0].click();", e);
     			clickJS(select.ControlPanel_Table_Delete);
     			clickJS(select.ControlPanel_Table_Delete_Confirm);
-    			break;
+    			//break;
     			
+    		}
+    	}*/
+    	
+    	ListIterator iter = tableRows.listIterator(tableRows.size());
+
+    	while (iter.hasPrevious()) {
+    		WebElement e = (WebElement)iter.previous();
+    		
+    		//System.out.println(e.getText());
+    		if (e.getText().contains(name)) {
+    			((JavascriptExecutor)driver).executeScript("arguments[0].click();", e);
+    			if (isElementPresent(select.ControlPanel_Table_Delete))
+    				clickJS(select.ControlPanel_Table_Delete);
+    			if (isElementPresent(select.ControlPanel_Table_Delete))
+    				clickJS(select.ControlPanel_Table_Delete_Confirm);
+    			//break;
     		}
     	}
 		

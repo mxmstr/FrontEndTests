@@ -36,7 +36,7 @@ public class NewMeal extends FrontEndTest {
 		
 		click(select.Header_Account);
 		
-    	Thread.sleep(1000);
+    	//Thread.sleep(1000);
     	
     	click(select.Account_ControlPanel);
 		addNewMeal(
@@ -46,10 +46,11 @@ public class NewMeal extends FrontEndTest {
 				System.getProperty("mealDescription")
 				);
 		
-		Thread.sleep(1000);
+		//Thread.sleep(1000);
 		
 		Assert.assertTrue("Meal wasn't added!", textOnPage("New Meal"));
 
+		driver.navigate().refresh();
     	removeTableElement("New Meal");
 		
 	}
